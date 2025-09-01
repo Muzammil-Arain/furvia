@@ -20,6 +20,8 @@ interface AppTextInputProps extends Omit<TextInputProps, 'secureTextEntry'> {
   iconType?: IconType;
   iconName?: string;
   secure?: boolean;
+  showpass?: boolean;
+  value?: string;
   onSubmitNext?: () => void;
 }
 
@@ -32,15 +34,17 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
       iconType,
       iconName,
       secure = false,
+      showpass = false,
       onSubmitNext,
       style,
+      value,
       ...props
     },
     ref,
   ) => {
     const { theme } = useTheme();
     const [isSecure, setIsSecure] = useState(secure);
-    console.log('🚀 ~ isSecure:', isSecure);
+    const [isFocused, setIsFocused] = useState(false);
 
     return (
       <View style={styles.container}>
@@ -52,7 +56,11 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
           style={[
             styles.inputWrapper,
             {
-              borderColor: error ? 'red' : theme.gray,
+              borderColor: error
+                ? 'red'
+                : isFocused
+                ? theme.primary
+                : theme.gray,
               backgroundColor: theme.background,
             },
           ]}
@@ -68,19 +76,25 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
           )}
 
           <TextInput
+            value={value}
+            key={isSecure ? 'secure' : 'text'}
             ref={ref}
             style={[styles.input, { color: theme.text }, style]}
             placeholderTextColor={theme.gray}
-            secureTextEntry={isSecure} // 👈 always controlled by state
+            secureTextEntry={isSecure}
+            autoCapitalize="none"
+            textContentType="password"
             returnKeyType={onSubmitNext ? 'next' : 'done'}
             onSubmitEditing={onSubmitNext}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             {...props}
           />
 
-          {secure && (
+          {showpass && secure && (
             <Pressable
               style={styles.eyeBtn}
-              onPress={() => setIsSecure(!isSecure)}
+              onPress={() => setIsSecure(prev => !prev)} 
             >
               <VectorIcon
                 type="Feather"
@@ -100,6 +114,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
 
 const styles = StyleSheet.create({
   container: {
+    zIndex:999,
     marginBottom: ms(15),
   },
   label: {
@@ -129,6 +144,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.PoppinsRegular,
     color: 'red',
     fontSize: ms(10),
+    marginTop: ms(3),
   },
 });
 

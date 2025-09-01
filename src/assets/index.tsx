@@ -1,6 +1,7 @@
 export const BACKGROUND_COLOUR_IMAGE = require('../assets/images/background_colour.jpg');
 export const APP_LOGO = require('../assets/images/logo.png');
 export const SOCIAL_CONTENT = require('../assets/images/Social_Content.png')
+export const MAP_IMAGE = require('../assets/images/map.png')
 
 
 

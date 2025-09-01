@@ -23,8 +23,8 @@ interface AppButtonProps {
   iconColor?: string;
   disabled?: boolean;
   loading?: boolean;
-  style?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle>; // ✅ outer button style
+  textStyle?: StyleProp<TextStyle>; // ✅ text style
   variant?: 'primary' | 'secondary' | 'outline';
 }
 
@@ -37,6 +37,8 @@ const AppButton: React.FC<AppButtonProps> = ({
   disabled = false,
   loading = false,
   variant = 'primary',
+  style,
+  textStyle, // ✅ apply it
 }) => {
   const { theme } = useTheme();
 
@@ -67,6 +69,7 @@ const AppButton: React.FC<AppButtonProps> = ({
           borderColor: getBorderColor(),
           opacity: disabled ? 0.6 : 1,
         },
+        style, // ✅ external style merged here
       ]}
       onPress={onPress}
       disabled={disabled || loading}
@@ -88,9 +91,8 @@ const AppButton: React.FC<AppButtonProps> = ({
           <Text
             style={[
               styles.text,
-              {
-                color: getTextColor(),
-              },
+              { color: getTextColor() },
+              textStyle, // ✅ external text style merged here
             ]}
           >
             {title}
@@ -108,10 +110,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: ms(12),
     paddingHorizontal: ms(20),
-    borderRadius: ms(4),
+    borderRadius: ms(8), // 🔥 made slightly rounder for modern look
     borderWidth: 1,
-    zIndex: 999,
     marginVertical: ms(5),
+    zIndex: 999,
   },
   text: {
     fontSize: ms(16),

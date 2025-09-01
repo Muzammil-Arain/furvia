@@ -23,12 +23,14 @@ const VerificationScreen: React.FC<{ route: any }> = ({ route }) => {
 
   // Timer countdown
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | undefined;
+
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(prev => prev - 1);
-      }, 1000);
+      }, 1000) as unknown as number; // cast for TS
     }
+
     return () => {
       if (interval) clearInterval(interval);
     };
@@ -59,10 +61,10 @@ const VerificationScreen: React.FC<{ route: any }> = ({ route }) => {
     const enteredOtp = otp.join('');
     if (enteredOtp.length === 4) {
       console.log('Verifying OTP:', enteredOtp);
-      if (type) {
-        navigate('Login');
+      if (type == 'forgotpasswod') {
+        navigate('NewPassword');
       } else {
-        // navigation.navigate('NextScreen');
+        navigate('Login');
       }
     } else {
       console.log('Invalid OTP');

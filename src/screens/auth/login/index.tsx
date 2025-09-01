@@ -36,8 +36,8 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
 
   // Validation regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/; // at least 6 chars, letters+numbers
-  const nameRegex = /^[a-zA-Z\s]{3,}$/; // at least 3 letters, alphabets only
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+  const nameRegex = /^[a-zA-Z\s]{3,}$/;
 
   const handleChange = (name: string, value: string) => {
     setForm({ ...form, [name]: value });
@@ -164,17 +164,25 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             iconType="Ionicons"
             placeholder="Password"
             name="password"
-            secure
+            secure={true}
+            showpass={true}
             error={errors.password}
             value={form.password}
             onChangeText={text => handleChange('password', text)}
           />
 
-          <Text style={[styles.forgotPassword, { color: theme.primary }]}>
-            Forgot Password?
-          </Text>
+          <TouchableOpacity
+            style={{
+              zIndex: 999,
+            }}
+            onPress={() => navigate('ForgotPassword')}
+          >
+            <Text style={[styles.forgotPassword, { color: theme.primary }]}>
+              Forgot Password?
+            </Text>
+          </TouchableOpacity>
 
-          <AppButton title="Sign In" onPress={handleLogin} />
+          <AppButton title="Sign In" onPress={() => navigate('MapLocation')} />
 
           {/* Social Content Overlay */}
           <Image
@@ -205,11 +213,7 @@ const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             error={errors.email}
             onChangeText={text => handleChange('email', text)}
           />
-          <PhoneInputField
-            ref={phoneRef}
-            error="Invalid number"
-            touched={false}
-          />
+          <PhoneInputField ref={phoneRef} touched={false} />
 
           <AppTextInput
             iconName="lock-closed"

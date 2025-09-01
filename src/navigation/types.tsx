@@ -3,4 +3,8 @@ export type RootStackParamList = {
   Onboarding: undefined;
   Login: undefined;
   Verification: undefined;
+  ForgotPassword: undefined;
+  NewPassword: undefined;
+  MapLocation: undefined;
+  PetProfile: undefined;
 };
