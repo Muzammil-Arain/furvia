@@ -30,7 +30,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
   children,
   useSafeArea = true,
   useScrollView = true,
-  backgroundColor = COLORS.SECONDARY,
+  backgroundColor = '#56077E',
   darkMode = false,
   loader = false,
   showAppLoader = false,
