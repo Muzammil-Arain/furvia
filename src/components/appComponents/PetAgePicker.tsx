@@ -1,17 +1,27 @@
 import { Typography } from 'components/common';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Picker } from 'react-native-wheel-pick';
 import { COLORS } from 'utils/colors';
 
-const PetAgeWheel: React.FC = () => {
+interface PetAgeWheelProps {
+  onChange?: (year: string, month: string) => void; // callback for parent
+}
+
+const PetAgeWheel: React.FC<PetAgeWheelProps> = ({ onChange }) => {
   const [selectedYear, setSelectedYear] = useState('2');
   const [selectedMonth, setSelectedMonth] = useState('6');
 
-  // years array 0-20
   const years = Array.from({ length: 21 }, (_, i) => `${i}`);
-  // months array 0-11
   const months = Array.from({ length: 12 }, (_, i) => `${i}`);
+
+  const handleValueChange = (type: 'year' | 'month', value: string) => {
+    if (type === 'year') setSelectedYear(value);
+    if (type === 'month') setSelectedMonth(value);
+
+    if (onChange)
+      onChange(type === 'year' ? value : selectedYear, type === 'month' ? value : selectedMonth);
+  };
 
   return (
     <View style={styles.container}>
@@ -23,15 +33,15 @@ const PetAgeWheel: React.FC = () => {
             style={styles.picker}
             selectedValue={selectedYear}
             pickerData={years}
-            textColor={COLORS.WHITE}
-            selectTextColor={COLORS.PRIMARY}
+            textColor='#d6b8ffff'
+            selectTextColor='#DDDDDD'
             isShowSelectBackground={false}
             selectBackgroundColor='#8080801A'
             isShowSelectLine={false}
             selectLineColor='black'
             selectLineSize={6}
-            isCyclic={true}
-            onValueChange={(value: string) => setSelectedYear(value)}
+            isCyclic
+            onValueChange={(value: any) => handleValueChange('year', value)}
           />
           <Typography style={styles.unit}>Years</Typography>
         </View>
@@ -42,23 +52,19 @@ const PetAgeWheel: React.FC = () => {
             style={styles.picker}
             selectedValue={selectedMonth}
             pickerData={months}
-            textColor={COLORS.WHITE}
-            selectTextColor={COLORS.PRIMARY}
+            textColor='#d6b8ffff'
+            selectTextColor='#DDDDDD'
             isShowSelectBackground={false}
             selectBackgroundColor='#8080801A'
             isShowSelectLine={false}
             selectLineColor='black'
             selectLineSize={6}
-            isCyclic={true}
-            onValueChange={(value: string) => setSelectedMonth(value)}
+            isCyclic
+            onValueChange={(value: any) => handleValueChange('month', value)}
           />
           <Typography style={styles.unit}>Months</Typography>
         </View>
       </View>
-
-      {/* <Typography style={styles.selectedText}>
-        Selected Age: {selectedYear} years {selectedMonth} months
-      </Typography> */}
     </View>
   );
 };

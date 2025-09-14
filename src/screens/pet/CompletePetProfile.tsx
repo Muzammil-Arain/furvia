@@ -1,5 +1,7 @@
 import { Button, Typography, Wrapper } from 'components/index';
 import { IMAGES } from 'constants/assets';
+import { SCREENS } from 'constants/routes';
+import { navigate } from 'navigation/index';
 import React from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import { ms } from 'react-native-size-matters';
@@ -29,7 +31,7 @@ const CompletePetProfile: React.FC = () => {
           <Button
             style={[styles.secondaryButton, { backgroundColor: COLORS.WHITE }]}
             textStyle={{ color: COLORS.BLACK }}
-            onPress={() => {}}
+            onPress={() => {navigate(SCREENS.BOTTOM_STACK)}}
             title='Go to Home Page'
           />
         </View>

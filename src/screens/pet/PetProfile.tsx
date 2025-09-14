@@ -20,6 +20,7 @@ import PetAgePicker from 'components/appComponents/PetAgePicker';
 import { SCREENS } from 'constants/routes';
 import { useMediaPicker, UseMediaPickerOptions } from 'hooks/useMediaPicker';
 import { CameraGalleryPicker } from 'components/appComponents/openCameraOrGallery';
+import PetAgeWheel from 'components/appComponents/PetAgePicker';
 
 const TOTAL_STEPS = 7;
 
@@ -34,18 +35,22 @@ const imageConfig: UseMediaPickerOptions = {
 const PetProfileScreen: React.FC = () => {
   const { pickMedia, selectedMedia } = useMediaPicker();
   const [pickerVisible, setPickerVisible] = useState(false);
-  const [name, setName] = useState('');
-  const [step, setStep] = useState(1);
-  const [selected, setSelected] = useState<string | null>(null);
 
+  // 🔹 Form states
+  const [name, setName] = useState('');
+  const [type, setType] = useState<string | null>(null);
+  const [breed, setBreed] = useState('');
+  const [gender, setGender] = useState<string | null>(null);
+  const [genderCastration, setGenderCastration] = useState<string | null>(null);
+  const [dob, setDob] = useState<{ year: string; month: string }>({ year: '0', month: '0' });
+
+  const [step, setStep] = useState(1);
 
   const progressValue = step / TOTAL_STEPS;
 
   const handleNext = () => {
     if (step < TOTAL_STEPS) {
       setStep(step + 1);
-    } else {
-     
     }
   };
 
@@ -55,6 +60,25 @@ const PetProfileScreen: React.FC = () => {
     }
   };
 
+  // ✅ Final submit
+  const handleFinish = () => {
+    const payload = {
+      name,
+      type,
+      breed,
+      gender,
+      gender_castration: genderCastration,
+      dob,
+      photo: selectedMedia?.[0],
+    };
+
+    console.log('🚀 ~ Final Payload:', payload);
+
+    // 🔹 Yahan API call kar sakte ho
+    // await postRequest('/pets', payload)
+    navigate(SCREENS.COMPLETEPETPROFILE);
+  };
+
   return (
     <Wrapper useScrollView={step !== 6}>
       {/* Step Count */}
@@ -62,7 +86,6 @@ const PetProfileScreen: React.FC = () => {
         {step}/{TOTAL_STEPS}
       </Typography>
 
-      {/* Progress Bar */}
       <Progress.Bar
         progress={progressValue}
         width={ms(320)}
@@ -75,7 +98,6 @@ const PetProfileScreen: React.FC = () => {
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.container}>
-          {/* Heading */}
           <View style={styles.heading}>
             <Typography style={[styles.title, { color: COLORS.PRIMARY }]}>
               {step === 1 && 'FurBaby’s Name?'}
@@ -87,116 +109,135 @@ const PetProfileScreen: React.FC = () => {
               {step === 7 && 'Add a photo of your FurBaby'}
             </Typography>
           </View>
-          {/* Inputs */}
+
+          {/* 🔹 Step 1 - Name */}
           {step === 1 && (
-            <AppTextInput placeholder='Type name' value={name} onChangeText={setName} name={''} />
+            <AppTextInput placeholder='Type name' value={name} onChangeText={setName} name='' />
           )}
+
+          {/* 🔹 Step 2 - Species */}
           {step === 2 && (
             <View>
               <View style={styles.row}>
                 <SelectButton
                   icon={IMAGES.Dog}
                   label='Dog'
-                  selected={selected === 'dog'}
-                  onPress={() => setSelected('dog')}
+                  selected={type === 'dog'}
+                  onPress={() => setType('dog')}
                 />
                 <SelectButton
                   label='Cat'
                   icon={IMAGES.Cat}
-                  selected={selected === 'cat'}
-                  onPress={() => setSelected('cat')}
+                  selected={type === 'cat'}
+                  onPress={() => setType('cat')}
                 />
               </View>
               <View style={[styles.row, { marginBottom: 20 }]}>
                 <SelectButton
                   icon={IMAGES.Bird}
                   label='Bird'
-                  selected={selected === 'Bird'}
-                  onPress={() => setSelected('Bird')}
+                  selected={type === 'bird'}
+                  onPress={() => setType('bird')}
                 />
                 <SelectButton
                   icon={IMAGES.OtherPets}
                   label='Other'
-                  selected={selected === 'Other'}
-                  onPress={() => setSelected('Other')}
+                  selected={type === 'other'}
+                  onPress={() => setType('other')}
                 />
               </View>
             </View>
           )}
+
+          {/* 🔹 Step 3 - Breed */}
           {step === 3 && (
             <AppTextInput
-              iconName='paw'
-              iconType='FontAwesome'
+              // iconName='paw'
+              // iconType='FontAwesome'
               placeholder="Type pet's breed"
-              name={''}
+              value={breed}
+              onChangeText={setBreed}
+              name=''
             />
           )}
+
+          {/* 🔹 Step 4 - Gender */}
           {step === 4 && (
             <View style={styles.row}>
               <SelectButton
                 icon={IMAGES.Male}
                 label='Male'
-                selected={selected === 'Male'}
-                onPress={() => setSelected('Male')}
+                selected={gender === 'male'}
+                onPress={() => setGender('male')}
               />
               <SelectButton
                 icon={IMAGES.Female}
                 label='Female'
-                selected={selected === 'Female'}
-                onPress={() => setSelected('Female')}
+                selected={gender === 'female'}
+                onPress={() => setGender('female')}
               />
             </View>
           )}
+
+          {/* 🔹 Step 5 - Castration */}
           {step === 5 && (
             <View style={styles.row}>
               <SelectButton
                 icon={IMAGES.Yes}
                 label=''
-                selected={selected === 'Yes'}
-                onPress={() => setSelected('Yes')}
+                selected={genderCastration === 'spayed'}
+                onPress={() => setGenderCastration('spayed')}
               />
               <SelectButton
                 icon={IMAGES.No}
                 label=''
-                selected={selected === 'No'}
-                onPress={() => setSelected('No')}
+                selected={genderCastration === 'not_spayed'}
+                onPress={() => setGenderCastration('not_spayed')}
               />
             </View>
           )}
+
+          {/* 🔹 Step 6 - DOB */}
           {step === 6 && (
             <View style={{ zIndex: 999, position: 'relative', marginBottom: 20 }}>
-              <PetAgePicker />
+              <PetAgeWheel
+                onChange={(year: any, month: any) => {
+                  console.log('🚀 ~ month:', month);
+                  console.log('🚀 ~ year:', year);
+                  // const today = new Date();
+                  // const birthYear = today.getFullYear() - parseInt(year);
+                  // const birthMonth = today.getMonth() - parseInt(month);
+                  // const dobDate = new Date(
+                  //   birthYear,
+                  //   birthMonth >= 0 ? birthMonth : 0,
+                  //   today.getDate(),
+                  // );
+                  // const dobString = dobDate.toISOString().split('T')[0];
+
+                  setDob({ year: year, month: month });
+                }}
+              />
             </View>
           )}
+
+          {/* 🔹 Step 7 - Image */}
           {step === 7 && (
-            <TouchableOpacity
-              onPress={() => {
-                setPickerVisible(true);
-              }}
-            >
-              <View
-                style={{
-                  position: 'absolute',
-                  zIndex: 999,
-                  left: 35,
-                  top: -10,
-                }}
-              >
+            <TouchableOpacity onPress={() => setPickerVisible(true)}>
+              <View style={{ position: 'absolute', zIndex: 999, left: 35, top: -10 }}>
                 <Typography
                   style={{
-                    color: COLORS.WHITE,
+                    color: selectedMedia.length > 0 ? COLORS.PRIMARY : COLORS.WHITE,
                     fontWeight: 'bold',
                     fontSize: ms(25),
                   }}
                 >
-                  Ghost
+                  {name ?? 'Ghost'}
                 </Typography>
                 <Typography
-                  style={{
-                    color: COLORS.WHITE,
-                  }}
+                  style={{ color: selectedMedia.length > 0 ? COLORS.PRIMARY : COLORS.WHITE }}
                 >
-                  3 years old
+                  {' '}
+                  {dob.year}.{dob.month} years old
                 </Typography>
               </View>
               <Image
@@ -216,6 +257,7 @@ const PetProfileScreen: React.FC = () => {
               />
             </TouchableOpacity>
           )}
+
           <CameraGalleryPicker
             visible={pickerVisible}
             onClose={() => setPickerVisible(false)}
@@ -225,17 +267,16 @@ const PetProfileScreen: React.FC = () => {
             }}
             onGalleryPress={() => {
               setPickerVisible(false);
-              pickMedia({
-                source: 'gallery',
-              });
+              pickMedia({ source: 'gallery' });
             }}
           />
+
           {/* Buttons */}
           <View style={styles.buttonRow}>
             <Button
               onPress={() => {
                 if (step === TOTAL_STEPS) {
-                  navigate(SCREENS.COMPLETEPETPROFILE);
+                  handleFinish();
                 } else {
                   handleNext();
                 }

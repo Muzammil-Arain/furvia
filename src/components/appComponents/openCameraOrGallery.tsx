@@ -1,12 +1,6 @@
 import { Icon, Typography } from 'components/common';
 import React from 'react';
-import {
-  Modal,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { Modal, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { COLORS } from 'utils/colors';
 
 interface Props {
@@ -23,30 +17,19 @@ export const CameraGalleryPicker: React.FC<Props> = ({
   onGalleryPress,
 }) => {
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onClose}
-    >
+    <Modal visible={visible} transparent animationType='slide' onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Upload Photo</Text>
 
           <View style={styles.optionsRow}>
-            <TouchableOpacity
-              style={styles.optionButton}
-              onPress={onCameraPress}
-            >
-              <Icon componentName="Feather" iconName="camera" size={28} color={COLORS.PRIMARY} />
+            <TouchableOpacity style={styles.optionButton} onPress={onCameraPress}>
+              <Icon componentName='Feather' iconName='camera' size={28} color={COLORS.PRIMARY} />
               <Typography style={styles.optionText}>Camera</Typography>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.optionButton}
-              onPress={onGalleryPress}
-            >
-              <Icon componentName="Feather" iconName="image" size={28} color={COLORS.PRIMARY} />
+            <TouchableOpacity style={styles.optionButton} onPress={onGalleryPress}>
+              <Icon componentName='Feather' iconName='image' size={28} color={COLORS.PRIMARY} />
               <Typography style={styles.optionText}>Gallery</Typography>
             </TouchableOpacity>
           </View>
@@ -85,6 +68,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   optionButton: {
+    marginTop: 20,
+    height: 70,
     alignItems: 'center',
   },
   optionText: {

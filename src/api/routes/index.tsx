@@ -1,7 +1,12 @@
 export const API_ROUTES = {
+  //WORKING APIS
   LOGIN: 'auth/login',
-  LOGOUT: 'auth/logout',
-  REGISTER: 'auth/register',
+  REGISTER: 'signup',
+
+
+
+
+  LOGOUT: 'signup',
   SOCIAL_LOGIN: 'user/social-login',
   APP_INFO: 'info',
   GET_LANGUAGES: 'languages',

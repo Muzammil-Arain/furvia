@@ -23,6 +23,7 @@ interface WrapperProps {
   loader?: boolean;
   showAppLoader?: boolean;
   goBack?: boolean;
+  loading?: boolean;
 }
 
 export const Wrapper: React.FC<WrapperProps> = ({
@@ -34,6 +35,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
   loader = false,
   showAppLoader = false,
   goBack = true,
+  loading,
 }) => {
   const isAppLoading = useAppSelector((state: RootState) => state.app.isAppLoading);
   const insets = useSafeAreaInsets();
@@ -78,7 +80,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
         barStyle={darkMode ? 'light-content' : 'dark-content'}
       />
 
-      {(loader || (showAppLoader && isAppLoading)) && <Loader />}
+      {(loading || (showAppLoader && isAppLoading)) && <Loader />}
 
       <ImageBackground
         source={require('../../assets/images/common/background_colour.jpg')}
