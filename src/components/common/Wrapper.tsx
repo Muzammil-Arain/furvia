@@ -32,7 +32,6 @@ export const Wrapper: React.FC<WrapperProps> = ({
   useScrollView = true,
   backgroundColor = '#56077E',
   darkMode = false,
-  loader = false,
   showAppLoader = false,
   goBack = true,
   loading,

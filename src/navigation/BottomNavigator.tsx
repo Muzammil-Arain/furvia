@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SCREENS, VARIABLES } from 'constants/index';
+import { IMAGES, SCREENS } from 'constants/index';
 import { COLORS } from 'utils/colors';
-import { Icon, Typography } from 'components/common';
-import { View, StyleSheet } from 'react-native';
+import { Typography } from 'components/common';
+import { View, StyleSheet, Image } from 'react-native';
 import { FontSize, FontWeight } from 'types/fontTypes';
 import { isIOS, screenHeight } from 'utils/index';
 import { Home, MyAccount, Favorites, Orders } from 'screens/user';
@@ -19,18 +19,17 @@ const screens = {
 const getIconConfig = (routeName: string) => {
   switch (routeName) {
     case SCREENS.HOME:
-      return { iconName: 'home', componentName: VARIABLES.Entypo };
+      return IMAGES.homeIcon;
     case SCREENS.FAVORITES:
-      return { iconName: 'heart', componentName: VARIABLES.Feather };
+      return IMAGES.GroupIcon;
     case SCREENS.ORDERS:
-      return {
-        iconName: 'book-outline',
-        componentName: VARIABLES.Ionicons,
-      };
+      return IMAGES.petIcon;
     case SCREENS.MY_ACCOUNT:
-      return { iconName: 'person-outline', componentName: VARIABLES.Ionicons };
+      return IMAGES.calanderIcon;
+    case SCREENS.PROFILE:
+      return IMAGES.menuIcon;
     default:
-      return { iconName: 'calendar-alt', componentName: VARIABLES.FontAwesome5 };
+      return IMAGES.homeIcon;
   }
 };
 
@@ -44,40 +43,39 @@ export const BottomNavigator = () => {
   return (
     <Bottom.Navigator
       screenOptions={({ route }) => {
-        const { iconName, componentName } = getIconConfig(route.name);
+        const icon = getIconConfig(route.name);
         return {
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: COLORS.PRIMARY,
+            backgroundColor: COLORS.WHITE,
             height: screenHeight(isIOS() ? 10 : 8.5) + insets.bottom,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
-            paddingTop: 5,
+            paddingTop: 18,
           },
           tabBarIcon: ({ focused }) => (
-            <View style={styles.iconContainer}>
-              <Icon
-                iconName={iconName}
-                componentName={componentName}
-                size={FontSize.Large}
-                color={focused ? COLORS.WHITE : COLORS.BORDER}
+            <View
+              style={[
+                styles.iconContainer,
+                {
+                  padding: 18,
+                  borderRadius: 12,
+                  backgroundColor: focused ? '#E9FEFF' : COLORS.WHITE,
+                  elevation: 5,
+                  shadowColor: focused ? '#ccc' : '#fff',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                },
+              ]}
+            >
+              <Image
+                source={icon}
+                style={[styles.iconImage, { tintColor: focused ? '#008081' : COLORS.BORDER }]}
+                resizeMode='contain'
               />
             </View>
           ),
-          tabBarLabel: ({ focused }) =>
-            focused && (
-              <>
-                <Typography style={styles.label}>
-                  {route.name === SCREENS.MY_ACCOUNT ? 'My Account' : route.name}
-                </Typography>
-                <View
-                  style={[
-                    styles.indicator,
-                    { backgroundColor: focused ? COLORS.WHITE : COLORS.TRANSPARENT },
-                  ]}
-                />
-              </>
-            ),
+          tabBarLabel: ({ focused }) => focused && <></>,
           tabBarHideOnKeyboard: true,
         };
       }}
@@ -92,6 +90,10 @@ export const BottomNavigator = () => {
 const styles = StyleSheet.create({
   iconContainer: {
     alignItems: 'center',
+  },
+  iconImage: {
+    height: 25,
+    width: 25,
   },
   indicator: {
     height: 4,

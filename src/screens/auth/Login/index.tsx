@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     fontSize: ms(14),
   },
   dividerContainer: {
-    marginTop: 40,
+    marginTop: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },

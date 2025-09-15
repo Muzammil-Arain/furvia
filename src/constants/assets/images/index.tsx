@@ -42,6 +42,13 @@ export const IMAGES = {
   Dog_1: require('assets/images/common/Dog_1.png'),
   Pet_Card: require('assets/images/common/pet_card.png'),
 
+  //BottomIcon
+  calanderIcon: require('assets/icons/calanderIcon.png'),
+  menuIcon: require('assets/icons/menuIcon.png'),
+  homeIcon: require('assets/icons/homeIcon.png'),
+  petIcon: require('assets/icons/petIcon.png'),
+  GroupIcon: require('assets/icons/GroupIcon.png'),
+
   //TEMPORARY:
 };
 

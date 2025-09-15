@@ -1,11 +1,15 @@
 import { Button, Typography, Wrapper } from 'components/index';
 import { IMAGES } from 'constants/assets';
+import { VARIABLES } from 'constants/common';
 import { SCREENS } from 'constants/routes';
 import { navigate } from 'navigation/index';
 import React from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
 import { ms } from 'react-native-size-matters';
+import { setIsUserLoggedIn } from 'store/slices/appSettings';
+import store from 'store/store';
 import { COLORS } from 'utils/colors';
+import { setItem } from 'utils/storage';
 
 const CompletePetProfile: React.FC = () => {
   return (
@@ -15,7 +19,9 @@ const CompletePetProfile: React.FC = () => {
 
         <Typography style={[styles.title, { color: COLORS.PRIMARY }]}>Welcome to FURVIA</Typography>
 
-        <Typography style={[styles.subtitle, { color: COLORS.WHITE }]}>Built by Pet Lovers.</Typography>
+        <Typography style={[styles.subtitle, { color: COLORS.WHITE }]}>
+          Built by Pet Lovers.
+        </Typography>
         <Typography style={[styles.subtitle, { color: COLORS.WHITE, marginBottom: ms(20) }]}>
           Made for You.
         </Typography>
@@ -31,7 +37,10 @@ const CompletePetProfile: React.FC = () => {
           <Button
             style={[styles.secondaryButton, { backgroundColor: COLORS.WHITE }]}
             textStyle={{ color: COLORS.BLACK }}
-            onPress={() => {navigate(SCREENS.BOTTOM_STACK)}}
+            onPress={() => {
+              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+              store.dispatch(setIsUserLoggedIn(true));
+            }}
             title='Go to Home Page'
           />
         </View>
@@ -59,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: ms(10),
   },
   subtitle: {
-    fontWeight:'500',
+    fontWeight: '500',
     fontSize: ms(17),
     textAlign: 'center',
   },
