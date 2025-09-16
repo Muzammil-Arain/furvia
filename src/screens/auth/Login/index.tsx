@@ -8,7 +8,7 @@ import { navigate } from 'navigation/index';
 import { IMAGES } from 'constants/assets';
 import PhoneInputField, { PhoneInputFieldRef } from 'components/appComponents/PhoneInputField';
 import { SCREENS } from 'constants/routes';
-import { signUpUser, loginUser, signupUser } from 'api/functions/auth';
+import { loginUser, signupUser } from 'api/functions/auth';
 
 type TabType = 'login' | 'signup';
 
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
 
       setLoading(true);
       try {
-        // await loginUser(payload);
+        await loginUser(payload);
         navigate(SCREENS.MAPLOCATIONSCREEN);
       } catch (e) {
         console.error('Login Error:', e);
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
       setLoading(true);
       try {
         const response = await signupUser(payload);
-        console.log("🚀 ~ handleSignup ~ response:", response)
+        console.log('🚀 ~ handleSignup ~ response:', response);
         // navigate('Verification', { type: 'signup' });
       } catch (e) {
         console.error('Signup Error:', e);

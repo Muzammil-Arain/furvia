@@ -46,7 +46,7 @@ export interface VerifyCodePayload {
   code: string;
 }
 export const verifyCode = async (payload: VerifyCodePayload): Promise<AuthResponse> => {
-  return postRequest<AuthResponse>(API_ROUTES.VERIFY_CODE, payload);
+  return postRequest<AuthResponse>(API_ROUTES.VERIFY_EMAIL, payload);
 };
 
 // Reset Password

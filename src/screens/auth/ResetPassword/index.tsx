@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -7,8 +7,25 @@ import { Button, Typography, Wrapper } from 'components/index';
 import AppTextInput from 'components/common/Input';
 import { navigate } from 'navigation/index';
 import { COLORS } from 'utils/colors';
+import { resetPassword } from 'api/functions/auth';
 
-const ResetPassword: React.FC = () => {
+interface ResetPasswordProps {
+  route?: {
+    params?: {
+      email?: string;
+      code?: string;
+    };
+  };
+}
+
+interface FormValues {
+  password: string;
+  confirmPassword: string;
+}
+
+const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
+  const [loading, setLoading] = useState(false);
+
   // ✅ Validation schema
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -19,33 +36,59 @@ const ResetPassword: React.FC = () => {
       .required('Confirm Password is required'),
   });
 
+  // ✅ API Call
+  const handleResetPassword = async (values: FormValues) => {
+    try {
+      setLoading(true);
+
+      const response = await resetPassword({
+        email: route?.params?.email ?? '',
+        password: values.password,
+        password_confirmation: values.confirmPassword,
+        code: route?.params?.code ?? '',
+      });
+
+      console.log('✅ Password reset success:', response);
+
+      navigate('Login');
+    } catch (error: any) {
+      console.error('❌ Reset password error:', error?.message || error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Wrapper>
       <View style={styles.container}>
         {/* Heading */}
         <View style={styles.heading}>
-          <Typography style={[styles.title, { color:COLORS.PRIMARY}]}>Reset Password</Typography>
+          <Typography style={[styles.title, { color: COLORS.PRIMARY }]}>
+            Reset Password
+          </Typography>
           <Typography style={[styles.subtitle, { color: COLORS.WHITE }]}>
             Make sure to create a strong password.
           </Typography>
         </View>
 
+        {/* Loader */}
+        {loading && (
+          <ActivityIndicator size="large" color={COLORS.PRIMARY} style={styles.loader} />
+        )}
+
         {/* Formik Form */}
-        <Formik
+        <Formik<FormValues>
           initialValues={{ password: '', confirmPassword: '' }}
           validationSchema={validationSchema}
-          onSubmit={values => {
-            console.log('New Password:', values.password);
-            navigate('Login');
-          }}
+          onSubmit={handleResetPassword}
         >
           {({ handleChange, handleSubmit, values, errors, touched, setFieldTouched, isValid }) => (
             <>
               <AppTextInput
-                iconName='lock-closed'
-                iconType='Ionicons'
-                placeholder='New Password'
-                name='password'
+                iconName="lock-closed"
+                iconType="Ionicons"
+                placeholder="New Password"
+                name="password"
                 secure
                 value={values.password}
                 onChangeText={handleChange('password')}
@@ -54,10 +97,10 @@ const ResetPassword: React.FC = () => {
               />
 
               <AppTextInput
-                iconName='lock-closed'
-                iconType='Ionicons'
-                placeholder='Confirm Password'
-                name='confirmPassword'
+                iconName="lock-closed"
+                iconType="Ionicons"
+                placeholder="Confirm Password"
+                name="confirmPassword"
                 secure
                 value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}
@@ -65,8 +108,11 @@ const ResetPassword: React.FC = () => {
                 error={touched.confirmPassword ? errors.confirmPassword : undefined}
               />
 
-              {/* Continue Button */}
-              <Button title='Reset Password' onPress={handleSubmit} disabled={!isValid} />
+              <Button
+                title={loading ? 'Please wait...' : 'Reset Password'}
+                onPress={handleSubmit as any}
+                disabled={!isValid || loading}
+              />
             </>
           )}
         </Formik>
@@ -84,11 +130,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: ms(25),
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: ms(12),
     marginTop: ms(7),
+  },
+  loader: {
+    marginVertical: ms(10),
   },
 });
 

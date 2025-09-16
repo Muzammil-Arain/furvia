@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { Button, Typography, Wrapper } from '../../../components';
 import { Formik } from 'formik';
@@ -7,12 +7,37 @@ import * as Yup from 'yup';
 import { COLORS } from 'utils/colors';
 import { navigate } from 'navigation/index';
 import AppTextInput from 'components/common/Input';
+import { showToast } from 'utils/toast';
+import { forgotPassword } from 'api/functions/auth';
 
 const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
+  const [loading, setLoading] = useState(false);
+
   // ✅ Validation Schema
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Enter a valid email').required('Email is required'),
   });
+
+  const handleForgotPassword = async (email: string) => {
+    try {
+      setLoading(true);
+      const res = await forgotPassword({ email });
+
+      if (res.success) {
+        // ✅ Success toast
+        showToast({ message: res.message || 'Code sent successfully!', isError: false });
+
+        // ✅ Navigate to Verification screen with email param
+        navigate('Verification', { email, type: 'forgotpassword' });
+      } else {
+        showToast({ message: res.message || 'Something went wrong!', isError: true });
+      }
+    } catch (err: any) {
+      showToast({ message: err?.message || 'Request failed!', isError: true });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Wrapper>
@@ -31,10 +56,7 @@ const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
         <Formik
           initialValues={{ email: '' }}
           validationSchema={validationSchema}
-          onSubmit={values => {
-            // navigation with email parameter
-            navigate('Verification', { email: values.email, type: 'forgotpasswod' });
-          }}
+          onSubmit={values => handleForgotPassword(values.email)}
         >
           {({ handleChange, handleSubmit, values, errors, touched, setFieldTouched, isValid }) => (
             <>
@@ -51,7 +73,16 @@ const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
               />
 
               {/* Continue Button */}
-              <Button title='Continue' onPress={handleSubmit} disabled={!isValid} />
+              <Button
+                title={loading ? '' : 'Continue'}
+                onPress={handleSubmit}
+                disabled={!isValid || loading}
+              />
+
+              {/* ✅ Loader inside button */}
+              {loading && (
+                <ActivityIndicator size='small' color={COLORS.PRIMARY} style={styles.loader} />
+              )}
             </>
           )}
         </Formik>
@@ -69,11 +100,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: ms(25),
-    fontWeight:'bold',
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: ms(12),
     marginTop: ms(10),
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: ms(60), // ✅ Button ke upar loader aayega
   },
 });
 

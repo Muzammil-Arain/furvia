@@ -1,16 +1,26 @@
+import { forgotPassword, verifyCode } from 'api/functions/auth';
 import { Button, Typography, Wrapper } from 'components/index';
 import { navigate } from 'navigation/index';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { COLORS } from 'utils/colors';
+import { showToast } from 'utils/toast';
 
 const Verification: React.FC<{ route: any }> = ({ route }) => {
-  const { type } = route?.params || {};
-  console.log("🚀 ~ Verification ~ type:", type)
+  const { type, email } = route?.params || {};
+  console.log('🚀 ~ Verification ~ type:', type, email);
 
   const [timer, setTimer] = useState(60); // 1 min timer
   const [otp, setOtp] = useState(['', '', '', '']); // 4 digit OTP
+  const [loading, setLoading] = useState(false);
   const inputs = useRef<TextInput[]>([]);
 
   // Timer countdown
@@ -20,7 +30,7 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(prev => prev - 1);
-      }, 1000) as unknown as number; // cast for TS
+      }, 1000) as unknown as number;
     }
 
     return () => {
@@ -40,26 +50,49 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
 
   const handleKeyPress = (e: any, index: number) => {
     if (e.nativeEvent.key === 'Backspace' && otp[index] === '' && index > 0) {
-      inputs.current[index - 1]?.focus(); // move back
+      inputs.current[index - 1]?.focus();
     }
   };
 
-  const handleResendOtp = () => {
-    setTimer(60);
-    console.log('OTP Resent!');
+  // ✅ Resend OTP API
+  const handleResendOtp = async () => {
+    try {
+      setLoading(true);
+      await forgotPassword({ email });
+      setTimer(60);
+      showToast({ message: 'OTP resent successfully!', isError: false });
+    } catch (err: any) {
+      showToast({ message: err?.message || 'Failed to resend OTP', isError: true });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleVerifyOtp = () => {
+  // ✅ Verify OTP API
+  const handleVerifyOtp = async () => {
     const enteredOtp = otp.join('');
     if (enteredOtp.length === 4) {
-      console.log('Verifying OTP:', enteredOtp);
-      if (type == 'forgotpasswod') {
-        navigate('ResetPassword');
-      } else {
-        navigate('Login');
+      try {
+        setLoading(true);
+        const res = await verifyCode({ email, code: enteredOtp });
+
+        if (res.success) {
+          showToast({ message: res.message || 'OTP Verified!', isError: false });
+          if (type === 'forgotpassword') {
+            navigate('ResetPassword', { email });
+          } else {
+            navigate('Login');
+          }
+        } else {
+          showToast({ message: res.message || 'Invalid code!', isError: true });
+        }
+      } catch (err: any) {
+        showToast({ message: err?.message || 'Verification failed!', isError: true });
+      } finally {
+        setLoading(false);
       }
     } else {
-      console.log('Invalid OTP');
+      showToast({ message: 'Please enter 4 digit code', isError: true });
     }
   };
 
@@ -72,10 +105,12 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
           <Typography style={[styles.subtitle, { color: COLORS.WHITE }]}>
             Please enter the code we sent to
           </Typography>
-          <Typography style={[styles.subtitle, { color: COLORS.PRIMARY,fontWeight:'bold' }]}>bill.san***@example.com</Typography>
+          <Typography style={[styles.subtitle, { color: COLORS.PRIMARY, fontWeight: 'bold' }]}>
+            {email}
+          </Typography>
         </View>
 
-        {/* Custom OTP Input */}
+        {/* OTP Input */}
         <View style={styles.otpContainer}>
           {otp.map((digit, index) => (
             <TextInput
@@ -105,7 +140,7 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
           {timer > 0 ? (
             <Text style={[styles.timerText, { color: COLORS.WHITE }]}>Resend code in {timer}s</Text>
           ) : (
-            <TouchableOpacity onPress={handleResendOtp}>
+            <TouchableOpacity onPress={handleResendOtp} disabled={loading}>
               <Text style={[styles.resendText, { color: COLORS.PRIMARY }]}>Resend Code</Text>
             </TouchableOpacity>
           )}
@@ -113,10 +148,13 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
 
         {/* Continue Button */}
         <Button
-          disabled={otp.join('').length < otp.length}
-          title='Continue'
+          disabled={otp.join('').length < otp.length || loading}
+          title={loading ? '' : 'Continue'}
           onPress={handleVerifyOtp}
         />
+
+        {/* Loader */}
+        {loading && <ActivityIndicator size='small' color={COLORS.PRIMARY} style={styles.loader} />}
       </View>
     </Wrapper>
   );
@@ -131,7 +169,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: ms(25),
-    fontWeight:'bold'
+    fontWeight: 'bold',
   },
   subtitle: {
     fontSize: ms(12),
@@ -162,6 +200,11 @@ const styles = StyleSheet.create({
   resendText: {
     fontSize: ms(14),
     fontWeight: 'bold',
+  },
+  loader: {
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: ms(60),
   },
 });
 
