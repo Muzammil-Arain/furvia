@@ -2,7 +2,10 @@ export const API_ROUTES = {
   //WORKING APIS
   LOGIN: 'auth/login',
   REGISTER: 'signup',
-
+  VERIFY_EMAIL: 'verify-email',
+  FORGOT_PASSWORD: 'forget-password',
+  OTP_VERIFICATION:'otp-verification',
+  RESET_PASSWORD: 'reset-password',
 
 
 
@@ -10,16 +13,12 @@ export const API_ROUTES = {
   SOCIAL_LOGIN: 'user/social-login',
   APP_INFO: 'info',
   GET_LANGUAGES: 'languages',
-  VERIFY_EMAIL: 'auth/verify-email',
-  RESET_PASSWORD: 'auth/reset-password',
   VERIFY_OTP: 'auth/verify-token',
   HOME: 'user/home',
   GET_PROFILE: 'user/user',
   RESEND_VERFICATION: 'auth/resend-verification',
   CONTACT_US: 'contact',
-
   REFRESH_TOKEN: 'auth/token/refresh',
-  FORGOT_PASSWORD: 'auth/forgot-password',
   CHANGE_PASSWORD: 'auth/change-password',
   SEND_OTP: 'auth/otp/send',
   LOGOUT_ALL: 'auth/logout/all',

@@ -12,6 +12,7 @@ import ResetPassword from 'screens/auth/ResetPassword';
 import MapLocationScreen from 'screens/pet/MapLocation';
 import PetProfileScreen from 'screens/pet/PetProfile';
 import CompletePetProfile from 'screens/pet/CompletePetProfile';
+import UserType from 'screens/auth/UserType';
 
 export const AuthNavigator = () => {
   useBackHandler();
@@ -40,6 +41,10 @@ export const AuthNavigator = () => {
     //     }),
     [SCREENS.ONBOARDING]: {
       component: OnBoarding,
+      options: { headerShown: false },
+    },
+    [SCREENS.UserType]: {
+      component: UserType,
       options: { headerShown: false },
     },
     [SCREENS.LOGIN]: {

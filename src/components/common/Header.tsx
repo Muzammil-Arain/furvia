@@ -26,16 +26,18 @@ const Header: React.FC<HeaderProps> = ({ goBack = true, style }) => {
       {/* Back Button */}
       {goBack && (
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Icon componentName='Ionicons' iconName='arrow-back' size={24} color={COLORS.WHITE} />
+          <Icon componentName="Ionicons" iconName="arrow-back" size={24} color={COLORS.WHITE} />
         </TouchableOpacity>
       )}
 
-      {/* Center Logo */}
-      <View style={styles.logoContainer}>
-        <Image source={IMAGES.APP_LOGO} style={styles.logo} resizeMode='contain' />
+      {/* Title / Logo (absolute center) */}
+      <View style={styles.centerContent}>
+        <Image source={IMAGES.APP_LOGO} style={styles.logo} resizeMode="contain" />
+        {/* Or if you want a text title instead of logo:
+        <Typography style={styles.title}>Screen Title</Typography> */}
       </View>
 
-      {/* Right spacer to balance layout */}
+      {/* Right spacer */}
       <View style={styles.rightSpacer} />
     </View>
   );
@@ -45,24 +47,34 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingTop:20,
     paddingHorizontal: 20,
-    backgroundColor: 'transparent',
+    height: ms(80),
   },
   backButton: {
     width: 40,
     alignItems: 'flex-start',
+    justifyContent: 'center',
   },
-  logoContainer: {
-    flex: 1,
+  centerContent: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top:30,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    height: ms(100),
+    height: ms(50),
     width: ms(120),
   },
   rightSpacer: {
     width: 40,
+  },
+  title: {
+    fontSize: ms(18),
+    fontWeight: '600',
+    color: COLORS.WHITE,
   },
 });
 

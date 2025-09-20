@@ -6,15 +6,15 @@ import { FontSize, useAppSelector } from 'types/index';
 import { navigate } from 'navigation/index';
 
 const services = [
-  { id: '1', name: 'Groomer', icon: require('assets/icons/groomer.png') },
-  { id: '2', name: 'Walkers', icon: require('assets/icons/walkers.png') },
-  { id: '3', name: 'Trainers', icon: require('assets/icons/trainers.png') },
-  { id: '4', name: 'Vets', icon: require('assets/icons/vet.png') },
+  // { id: '1', name: 'Groomer', icon: require('assets/icons/groomer.png') },
+  // { id: '2', name: 'Walkers', icon: require('assets/icons/walkers.png') },
+  // { id: '3', name: 'Trainers', icon: require('assets/icons/trainers.png') },
+  // { id: '4', name: 'Vets', icon: require('assets/icons/vet.png') },
 ];
 
 const pets = [
-  { id: '1', image: require('assets/images/pet1.png') },
-  { id: '2', image: require('assets/images/pet2.png') },
+  // { id: '1', image: require('assets/images/pet1.png') },
+  // { id: '2', image: require('assets/images/pet2.png') },
 ];
 
 const advisors = [
@@ -25,7 +25,7 @@ const advisors = [
     rating: 4.5,
     price: '$23',
     status: 'Available',
-    image: require('assets/images/doctor1.png'),
+    // image: require('assets/images/doctor1.png'),
   },
   {
     id: '2',
@@ -34,7 +34,7 @@ const advisors = [
     rating: 4.5,
     price: '$54',
     status: 'Not available',
-    image: require('assets/images/doctor2.png'),
+    // image: require('assets/images/doctor2.png'),
   },
 ];
 
@@ -43,7 +43,9 @@ export const Home = () => {
   return (
     <Wrapper>
       <View style={styles.header}>
-        <Image source={require('assets/images/profile.png')} style={styles.avatar} />
+        
+        {/* <Image source={require('assets/images/profile.png')} style={styles.avatar} /> */}
+
         <View style={styles.locationBox}>
           <Typography style={styles.locationText}>Location</Typography>
           <Typography style={styles.location}>📍 California, USA</Typography>

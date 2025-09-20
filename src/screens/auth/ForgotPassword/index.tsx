@@ -23,7 +23,7 @@ const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
       setLoading(true);
       const res = await forgotPassword({ email });
 
-      if (res.success) {
+      if (res.status == 'success') {
         // ✅ Success toast
         showToast({ message: res.message || 'Code sent successfully!', isError: false });
 
@@ -40,7 +40,7 @@ const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper loading={loading}>
       <View style={styles.container}>
         {/* Heading */}
         <View style={styles.heading}>
@@ -78,11 +78,6 @@ const ForgotPassword: React.FC<{ route: any }> = ({ route }) => {
                 onPress={handleSubmit}
                 disabled={!isValid || loading}
               />
-
-              {/* ✅ Loader inside button */}
-              {loading && (
-                <ActivityIndicator size='small' color={COLORS.PRIMARY} style={styles.loader} />
-              )}
             </>
           )}
         </Formik>

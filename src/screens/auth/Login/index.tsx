@@ -105,6 +105,7 @@ const Login: React.FC = () => {
         name: form.name.trim(),
         email: form.email.trim(),
         password: form.password,
+        type: 'provider',
         confirm_password: form.confirm_password,
         phone: phoneRef.current?.getValue?.() || '',
       };
@@ -114,7 +115,7 @@ const Login: React.FC = () => {
       try {
         const response = await signupUser(payload);
         console.log('🚀 ~ handleSignup ~ response:', response);
-        // navigate('Verification', { type: 'signup' });
+        navigate('Verification', { type: 'signup', email: form.email.trim() });
       } catch (e) {
         console.error('Signup Error:', e);
       } finally {

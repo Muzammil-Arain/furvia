@@ -42,29 +42,31 @@ export const forgotPassword = async (payload: ForgotPasswordPayload): Promise<Au
 
 // Verification Code (OTP)
 export interface VerifyCodePayload {
-  email: string;
-  code: string;
+  otp: string;
 }
 export const verifyCode = async (payload: VerifyCodePayload): Promise<AuthResponse> => {
   return postRequest<AuthResponse>(API_ROUTES.VERIFY_EMAIL, payload);
+};
+
+// Verification Code (OTP)
+export interface VerifyOTPCodePayload {
+  email: string;
+  otp: string;
+}
+export const verifyOTP = async (payload: VerifyOTPCodePayload): Promise<AuthResponse> => {
+  return postRequest<AuthResponse>(API_ROUTES.OTP_VERIFICATION, payload);
 };
 
 // Reset Password
 export interface ResetPasswordPayload {
   email: string;
   password: string;
-  password_confirmation: string;
-  code: string; // OTP / verification code
+  confirm_password: string;
+  reset_token: string; // OTP / verification code
 }
 export const resetPassword = async (payload: ResetPasswordPayload): Promise<AuthResponse> => {
   return postRequest<AuthResponse>(API_ROUTES.RESET_PASSWORD, payload);
 };
-
-
-
-
-
-
 
 //////////////////////////////
 

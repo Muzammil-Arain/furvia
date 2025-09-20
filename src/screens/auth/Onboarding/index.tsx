@@ -1,5 +1,6 @@
 import { Button } from 'components/index';
 import { IMAGES } from 'constants/assets';
+import { SCREENS } from 'constants/routes';
 import { navigate } from 'navigation/index';
 import React, { useRef, useState } from 'react';
 import { View, StyleSheet, FlatList, Image, Dimensions } from 'react-native';
@@ -21,7 +22,7 @@ const OnBoarding: React.FC<{ navigation: any }> = ({}) => {
     if (currentIndex < onboardingData.length - 1) {
       flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
     } else {
-      navigate('Login');
+      navigate(SCREENS.UserType);
     }
   };
 

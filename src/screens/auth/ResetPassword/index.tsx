@@ -24,6 +24,9 @@ interface FormValues {
 }
 
 const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
+  const { email, token } = route?.params || {};
+  console.log('🚀 ~ ResetPassword ~ token:', token);
+  console.log('🚀 ~ ResetPassword ~ email:', email);
   const [loading, setLoading] = useState(false);
 
   // ✅ Validation schema
@@ -42,10 +45,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
       setLoading(true);
 
       const response = await resetPassword({
-        email: route?.params?.email ?? '',
+        email: email,
         password: values.password,
-        password_confirmation: values.confirmPassword,
-        code: route?.params?.code ?? '',
+        confirm_password: values.confirmPassword,
+        reset_token: token,
       });
 
       console.log('✅ Password reset success:', response);
@@ -59,22 +62,15 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper loading={loading}>
       <View style={styles.container}>
         {/* Heading */}
         <View style={styles.heading}>
-          <Typography style={[styles.title, { color: COLORS.PRIMARY }]}>
-            Reset Password
-          </Typography>
+          <Typography style={[styles.title, { color: COLORS.PRIMARY }]}>Reset Password</Typography>
           <Typography style={[styles.subtitle, { color: COLORS.WHITE }]}>
             Make sure to create a strong password.
           </Typography>
         </View>
-
-        {/* Loader */}
-        {loading && (
-          <ActivityIndicator size="large" color={COLORS.PRIMARY} style={styles.loader} />
-        )}
 
         {/* Formik Form */}
         <Formik<FormValues>
@@ -85,10 +81,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
           {({ handleChange, handleSubmit, values, errors, touched, setFieldTouched, isValid }) => (
             <>
               <AppTextInput
-                iconName="lock-closed"
-                iconType="Ionicons"
-                placeholder="New Password"
-                name="password"
+                iconName='lock-closed'
+                iconType='Ionicons'
+                placeholder='New Password'
+                name='password'
                 secure
                 value={values.password}
                 onChangeText={handleChange('password')}
@@ -97,10 +93,10 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({ route }) => {
               />
 
               <AppTextInput
-                iconName="lock-closed"
-                iconType="Ionicons"
-                placeholder="Confirm Password"
-                name="confirmPassword"
+                iconName='lock-closed'
+                iconType='Ionicons'
+                placeholder='Confirm Password'
+                name='confirmPassword'
                 secure
                 value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}

@@ -5,6 +5,7 @@ export interface AppSettingsState {
   isAppLoading: boolean;
   isUserVisitedApp: boolean;
   appLanguage: string;
+  userRole: 'user' | 'provider' | null;
 }
 
 const initialState: AppSettingsState = {
@@ -12,6 +13,7 @@ const initialState: AppSettingsState = {
   isAppLoading: false,
   isUserVisitedApp: false,
   appLanguage: '',
+  userRole: null,
 };
 
 const appSlice = createSlice({
@@ -24,6 +26,9 @@ const appSlice = createSlice({
     setIsUserVisitedApp(state, action: PayloadAction<boolean>) {
       state.isUserVisitedApp = action.payload;
     },
+    setUserRole(state, action: PayloadAction<'user' | 'provider'>) {
+      state.userRole = action.payload;
+    },
     setIsAppLoading(state, action: PayloadAction<boolean>) {
       state.isAppLoading = action.payload;
     },
@@ -33,6 +38,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { setIsUserLoggedIn, setIsUserVisitedApp, setIsAppLoading, setAppLanguage } =
+export const { setIsUserLoggedIn, setIsUserVisitedApp, setIsAppLoading,setUserRole, setAppLanguage } =
   appSlice.actions;
 export default appSlice.reducer;

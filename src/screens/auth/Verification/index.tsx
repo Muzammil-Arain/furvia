@@ -1,6 +1,7 @@
-import { forgotPassword, verifyCode } from 'api/functions/auth';
+import { forgotPassword, verifyCode, verifyOTP } from 'api/functions/auth';
 import { Button, Typography, Wrapper } from 'components/index';
-import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
+import { navigate, reset } from 'navigation/index';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -59,6 +60,7 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
     try {
       setLoading(true);
       await forgotPassword({ email });
+      clearAll();
       setTimer(60);
       showToast({ message: 'OTP resent successfully!', isError: false });
     } catch (err: any) {
@@ -68,36 +70,53 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
     }
   };
 
-  // ✅ Verify OTP API
-  const handleVerifyOtp = async () => {
-    const enteredOtp = otp.join('');
-    if (enteredOtp.length === 4) {
-      try {
-        setLoading(true);
-        const res = await verifyCode({ email, code: enteredOtp });
-
-        if (res.success) {
-          showToast({ message: res.message || 'OTP Verified!', isError: false });
-          if (type === 'forgotpassword') {
-            navigate('ResetPassword', { email });
-          } else {
-            navigate('Login');
-          }
-        } else {
-          showToast({ message: res.message || 'Invalid code!', isError: true });
-        }
-      } catch (err: any) {
-        showToast({ message: err?.message || 'Verification failed!', isError: true });
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      showToast({ message: 'Please enter 4 digit code', isError: true });
-    }
+  const clearAll = () => {
+    setOtp(Array(otp.length).fill(''));
+    inputs.current.forEach(input => input?.clear());
   };
 
+ const handleVerifyOtp = async () => {
+  const enteredOtp = otp.join('');
+
+  if (enteredOtp.length !== 4) {
+    showToast({ message: 'Please enter 4 digit code', isError: true });
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    let res: any;
+
+    if (type === 'forgotpassword') {
+      res = await verifyOTP({ email, otp: enteredOtp });
+    } else {
+      res = await verifyCode({ otp: enteredOtp });
+    }
+
+    console.log('🚀 ~ handleVerifyOtp ~ res:', res);
+
+    if (res?.status === 'success') {
+      showToast({ message: res.message || 'OTP Verified!', isError: false });
+
+      if (type === 'forgotpassword') {
+        navigate('ResetPassword', { email, token: res.reset_token });
+      } else {
+        navigate(SCREENS.MAPLOCATIONSCREEN);
+      }
+    } else {
+      showToast({ message: res?.message || 'Invalid code!', isError: true });
+    }
+  } catch (err: any) {
+    showToast({ message: err?.message || 'Verification failed!', isError: true });
+  } finally {
+    setLoading(false);
+  }
+};
+
+
   return (
-    <Wrapper>
+    <Wrapper loading={loading}>
       <View style={styles.container}>
         {/* Heading */}
         <View style={styles.heading}>
@@ -152,9 +171,6 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
           title={loading ? '' : 'Continue'}
           onPress={handleVerifyOtp}
         />
-
-        {/* Loader */}
-        {loading && <ActivityIndicator size='small' color={COLORS.PRIMARY} style={styles.loader} />}
       </View>
     </Wrapper>
   );
