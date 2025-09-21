@@ -82,6 +82,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
       {(loading || (showAppLoader && isAppLoading)) && <Loader />}
 
       <ImageBackground
+        pointerEvents='box-none'
         source={require('../../assets/images/common/background_colour.jpg')}
         style={styles.flex}
         resizeMode='cover'

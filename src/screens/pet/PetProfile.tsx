@@ -21,6 +21,8 @@ import { SCREENS } from 'constants/routes';
 import { useMediaPicker, UseMediaPickerOptions } from 'hooks/useMediaPicker';
 import { CameraGalleryPicker } from 'components/appComponents/openCameraOrGallery';
 import PetAgeWheel from 'components/appComponents/PetAgePicker';
+import { addPet } from 'api/functions/app/home';
+import { showToast } from 'utils/toast';
 
 const TOTAL_STEPS = 7;
 
@@ -40,6 +42,7 @@ const PetProfileScreen: React.FC = () => {
   const [name, setName] = useState('');
   const [type, setType] = useState<string | null>(null);
   const [breed, setBreed] = useState('');
+  const [loading, setLoading] = useState(false);
   const [gender, setGender] = useState<string | null>(null);
   const [genderCastration, setGenderCastration] = useState<string | null>(null);
   const [dob, setDob] = useState<{ year: string; month: string }>({ year: '0', month: '0' });
@@ -60,27 +63,109 @@ const PetProfileScreen: React.FC = () => {
     }
   };
 
+  // ✅ Validation function
+  const validateStep = () => {
+    switch (step) {
+      case 1: // Name
+        if (!name.trim()) {
+          showToast({ message: 'Please enter your FurBaby’s name', isError: true });
+          return false;
+        }
+        break;
+
+      case 2: // Type
+        if (!type) {
+          showToast({ message: 'Please select a species', isError: true });
+          return false;
+        }
+        break;
+
+      case 3: // Breed
+        if (!breed.trim()) {
+          showToast({ message: 'Please enter breed', isError: true });
+          return false;
+        }
+        break;
+
+      case 4: // Gender
+        if (!gender) {
+          showToast({ message: 'Please select gender', isError: true });
+          return false;
+        }
+        break;
+
+      case 5: // Castration
+        if (!genderCastration) {
+          showToast({ message: 'Please select spayed / neutered option', isError: true });
+          return false;
+        }
+        break;
+
+      case 6: // Age
+        if (dob.year === '0' && dob.month === '0') {
+          showToast({ message: 'Please select age', isError: true });
+          return false;
+        }
+        break;
+
+      case 7: // Photo
+        if (!selectedMedia || selectedMedia.length === 0) {
+          showToast({ message: 'Please add a photo of your FurBaby', isError: true });
+          return false;
+        }
+        break;
+    }
+    return true;
+  };
+
   // ✅ Final submit
-  const handleFinish = () => {
-    const payload = {
-      name,
-      type,
-      breed,
-      gender,
-      gender_castration: genderCastration,
-      dob,
-      photo: selectedMedia?.[0],
-    };
+  const handleFinish = async () => {
+    try {
+      setLoading(true);
 
-    console.log('🚀 ~ Final Payload:', payload);
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('type', type || '');
+      formData.append('breed', breed);
+      formData.append('gender', gender || '');
+      formData.append('gender_castration', genderCastration || '');
+      formData.append('dob', JSON.stringify(dob));
 
-    // 🔹 Yahan API call kar sakte ho
-    // await postRequest('/pets', payload)
-    navigate(SCREENS.COMPLETEPETPROFILE);
+      if (selectedMedia?.[0]?.uri) {
+        formData.append('photo', {
+          uri: selectedMedia[0].uri,
+          type: selectedMedia[0].type || 'image/jpeg',
+          name: selectedMedia[0].fileName || 'photo.jpg',
+        });
+      }
+
+      console.log('🚀 ~ Final Payload:', formData);
+
+      // const res = await addPet(formData);
+
+      // console.log('🚀 ~ Add Pet Response:', res);
+
+      setTimeout(() => {
+        navigate(SCREENS.COMPLETEPETPROFILE);
+        setLoading(false);
+      }, 5000);
+
+      // if (res?.status === 'success') {
+      //   showToast({ message: res.message || 'Pet added successfully!', isError: false });
+      //   navigate(SCREENS.COMPLETEPETPROFILE);
+      // } else {
+      //   showToast({ message: res?.message || 'Failed to add pet', isError: true });
+      // }
+    } catch (error: any) {
+      // console.error('❌ Add Pet Error:', error);
+      // showToast({ message: error?.message || 'Something went wrong', isError: true });
+    } finally {
+      // setLoading(false); // 🔹 Loader stop
+    }
   };
 
   return (
-    <Wrapper useScrollView={step !== 6}>
+    <Wrapper loading={loading} useScrollView={step !== 6}>
       {/* Step Count */}
       <Typography style={[styles.Bartitle, { color: COLORS.PRIMARY }]}>
         {step}/{TOTAL_STEPS}
@@ -222,7 +307,7 @@ const PetProfileScreen: React.FC = () => {
 
           {/* 🔹 Step 7 - Image */}
           {step === 7 && (
-            <TouchableOpacity onPress={() => setPickerVisible(true)}>
+            <TouchableOpacity style={{ marginTop: 10 }} onPress={() => setPickerVisible(true)}>
               <View style={{ position: 'absolute', zIndex: 999, left: 35, top: -10 }}>
                 <Typography
                   style={{
@@ -236,7 +321,6 @@ const PetProfileScreen: React.FC = () => {
                 <Typography
                   style={{ color: selectedMedia.length > 0 ? COLORS.PRIMARY : COLORS.WHITE }}
                 >
-                  {' '}
                   {dob.year}.{dob.month} years old
                 </Typography>
               </View>
@@ -258,31 +342,23 @@ const PetProfileScreen: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          <CameraGalleryPicker
-            visible={pickerVisible}
-            onClose={() => setPickerVisible(false)}
-            onCameraPress={() => {
-              setPickerVisible(false);
-              pickMedia({ source: 'camera' });
-            }}
-            onGalleryPress={() => {
-              setPickerVisible(false);
-              pickMedia({ source: 'gallery' });
-            }}
-          />
-
           {/* Buttons */}
           <View style={styles.buttonRow}>
             <Button
               onPress={() => {
                 if (step === TOTAL_STEPS) {
-                  handleFinish();
+                  if (validateStep()) {
+                    handleFinish();
+                  }
                 } else {
-                  handleNext();
+                  if (validateStep()) {
+                    handleNext();
+                  }
                 }
               }}
               title={step === TOTAL_STEPS ? 'Finish' : 'Next'}
             />
+
             {step > 1 && (
               <Button
                 style={{ marginTop: 20 }}
@@ -294,6 +370,18 @@ const PetProfileScreen: React.FC = () => {
           </View>
         </View>
       </TouchableWithoutFeedback>
+      <CameraGalleryPicker
+        visible={pickerVisible}
+        onClose={() => setPickerVisible(false)}
+        onCameraPress={() => {
+          setPickerVisible(false);
+          pickMedia({ source: 'camera' });
+        }}
+        onGalleryPress={() => {
+          setPickerVisible(false);
+          pickMedia({ source: 'gallery' });
+        }}
+      />
     </Wrapper>
   );
 };
@@ -309,8 +397,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: ms(22),
+    fontSize: ms(25),
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   Bartitle: {
     textAlign: 'right',

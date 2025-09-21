@@ -17,7 +17,7 @@ export const CameraGalleryPicker: React.FC<Props> = ({
   onGalleryPress,
 }) => {
   return (
-    <Modal visible={visible} transparent animationType='slide' onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType='fade' onRequestClose={onClose}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <Text style={styles.title}>Upload Photo</Text>
@@ -47,9 +47,12 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
   },
   container: {
+    left: 0,
+    right: 9,
+    bottom: 0,
+    position: 'absolute',
     backgroundColor: COLORS.WHITE,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,

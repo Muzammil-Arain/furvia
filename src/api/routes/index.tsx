@@ -1,13 +1,13 @@
 export const API_ROUTES = {
   //WORKING APIS
-  LOGIN: 'auth/login',
+  LOGIN: 'login',
   REGISTER: 'signup',
   VERIFY_EMAIL: 'verify-email',
   FORGOT_PASSWORD: 'forget-password',
-  OTP_VERIFICATION:'otp-verification',
+  OTP_VERIFICATION: 'otp-verification',
   RESET_PASSWORD: 'reset-password',
-
-
+  ADD_LOCATION: 'add-location',
+  ADD_PET: 'add-pet',
 
   LOGOUT: 'signup',
   SOCIAL_LOGIN: 'user/social-login',

@@ -133,14 +133,14 @@ export const PhoneInputComponent: React.FC<PhoneInputProp> = ({
               ref={phoneRef}
               defaultValue={value}
               defaultCode={defaultCode}
-              placeholder={i18n.t(placeholder)}
+              placeholder={i18n.t(placeholder) || '(123) 456-7890'}
               containerStyle={[{ height }, styles.innerContainer]}
               countryPickerButtonStyle={styles.countryPickerButtonStyle}
               textInputProps={{
                 placeholderTextColor: isDarkMode ? COLORS.ICONS : COLORS.TEXT,
                 editable: editable,
                 returnKeyType: returnKeyType,
-                maxLength: 12,
+                maxLength: 14,
                 blurOnSubmit: blurOnSubmit,
                 onSubmitEditing: handleSubmitEditing,
                 onBlur: () => setActiveInput(''),

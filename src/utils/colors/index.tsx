@@ -8,7 +8,7 @@ export const COLORS = {
   HEADER: '#ECECEC',
   INPUT_BACKGROUND: '#F9F9F9',
   BORDER: '#CACACA',
-  TEXT: '##4D4D4D',
+  TEXT: '#4D4D4D',
   GREEN_STATUS: '#00B406',
 
   // COMMON:

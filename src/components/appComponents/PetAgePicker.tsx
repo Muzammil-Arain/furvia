@@ -33,8 +33,8 @@ const PetAgeWheel: React.FC<PetAgeWheelProps> = ({ onChange }) => {
             style={styles.picker}
             selectedValue={selectedYear}
             pickerData={years}
-            textColor='#d6b8ffff'
-            selectTextColor='#DDDDDD'
+            textColor='#B452F8'
+            selectTextColor='#00B3C3'
             isShowSelectBackground={false}
             selectBackgroundColor='#8080801A'
             isShowSelectLine={false}
@@ -52,8 +52,8 @@ const PetAgeWheel: React.FC<PetAgeWheelProps> = ({ onChange }) => {
             style={styles.picker}
             selectedValue={selectedMonth}
             pickerData={months}
-            textColor='#d6b8ffff'
-            selectTextColor='#DDDDDD'
+            textColor='#B452F8'
+            selectTextColor='#00B3C3'
             isShowSelectBackground={false}
             selectBackgroundColor='#8080801A'
             isShowSelectLine={false}

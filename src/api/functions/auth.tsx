@@ -67,37 +67,3 @@ export interface ResetPasswordPayload {
 export const resetPassword = async (payload: ResetPasswordPayload): Promise<AuthResponse> => {
   return postRequest<AuthResponse>(API_ROUTES.RESET_PASSWORD, payload);
 };
-
-//////////////////////////////
-
-// import { loginUser, forgotPassword, verifyCode, resetPassword, signupUser } from "services/authService";
-
-// // ✅ Login
-// const doLogin = async () => {
-//   try {
-//     const res = await loginUser({ email: "test@test.com", password: "123456" });
-//     console.log("Login success:", res);
-//   } catch (err) {
-//     console.log("Login error:", err);
-//   }
-// };
-
-// // ✅ Forgot password
-// const doForgot = async () => {
-//   await forgotPassword({ email: "test@test.com" });
-// };
-
-// // ✅ Verify OTP
-// const doVerify = async () => {
-//   await verifyCode({ email: "test@test.com", code: "123456" });
-// };
-
-// // ✅ Reset password
-// const doReset = async () => {
-//   await resetPassword({
-//     email: "test@test.com",
-//     password: "newpassword",
-//     password_confirmation: "newpassword",
-//     code: "123456",
-//   });
-// };

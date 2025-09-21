@@ -88,8 +88,8 @@ const Login: React.FC = () => {
 
       setLoading(true);
       try {
-        await loginUser(payload);
-        navigate(SCREENS.MAPLOCATIONSCREEN);
+        // await loginUser(payload);
+        navigate(SCREENS.COMPLETEPETPROFILE);
       } catch (e) {
         console.error('Login Error:', e);
       } finally {
@@ -115,7 +115,11 @@ const Login: React.FC = () => {
       try {
         const response = await signupUser(payload);
         console.log('🚀 ~ handleSignup ~ response:', response);
-        navigate('Verification', { type: 'signup', email: form.email.trim() });
+        navigate('Verification', {
+          type: 'signup',
+          email: form.email.trim(),
+          password: form.password,
+        });
       } catch (e) {
         console.error('Signup Error:', e);
       } finally {

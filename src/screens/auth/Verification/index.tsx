@@ -1,4 +1,4 @@
-import { forgotPassword, verifyCode, verifyOTP } from 'api/functions/auth';
+import { forgotPassword, loginUser, verifyCode, verifyOTP } from 'api/functions/auth';
 import { Button, Typography, Wrapper } from 'components/index';
 import { SCREENS } from 'constants/routes';
 import { navigate, reset } from 'navigation/index';
@@ -12,12 +12,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { ms } from 'react-native-size-matters';
+import { setUserDetails } from 'store/slices/user';
+import store from 'store/store';
 import { COLORS } from 'utils/colors';
 import { showToast } from 'utils/toast';
 
 const Verification: React.FC<{ route: any }> = ({ route }) => {
-  const { type, email } = route?.params || {};
-  console.log('🚀 ~ Verification ~ type:', type, email);
+  const { type, email, password } = route?.params || {};
+  console.log('🚀 ~ Verification ~ type:', type, email, password);
 
   const [timer, setTimer] = useState(60); // 1 min timer
   const [otp, setOtp] = useState(['', '', '', '']); // 4 digit OTP
@@ -75,45 +77,51 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
     inputs.current.forEach(input => input?.clear());
   };
 
- const handleVerifyOtp = async () => {
-  const enteredOtp = otp.join('');
+  const handleVerifyOtp = async () => {
+    const enteredOtp = otp.join('');
 
-  if (enteredOtp.length !== 4) {
-    showToast({ message: 'Please enter 4 digit code', isError: true });
-    return;
-  }
-
-  try {
-    setLoading(true);
-
-    let res: any;
-
-    if (type === 'forgotpassword') {
-      res = await verifyOTP({ email, otp: enteredOtp });
-    } else {
-      res = await verifyCode({ otp: enteredOtp });
+    if (enteredOtp.length !== 4) {
+      showToast({ message: 'Please enter 4 digit code', isError: true });
+      return;
     }
 
-    console.log('🚀 ~ handleVerifyOtp ~ res:', res);
+    try {
+      setLoading(true);
 
-    if (res?.status === 'success') {
-      showToast({ message: res.message || 'OTP Verified!', isError: false });
+      let res: any;
 
       if (type === 'forgotpassword') {
-        navigate('ResetPassword', { email, token: res.reset_token });
+        res = await verifyOTP({ email, otp: enteredOtp });
       } else {
-        navigate(SCREENS.MAPLOCATIONSCREEN);
+        res = await verifyCode({ otp: enteredOtp });
       }
-    } else {
-      showToast({ message: res?.message || 'Invalid code!', isError: true });
-    }
-  } catch (err: any) {
-    showToast({ message: err?.message || 'Verification failed!', isError: true });
-  } finally {
-    setLoading(false);
-  }
-};
 
+      console.log('🚀 ~ handleVerifyOtp ~ res:', res);
+
+      if (res?.status === 'success') {
+        showToast({ message: res.message || 'OTP Verified!', isError: false });
+
+        if (type === 'forgotpassword') {
+          navigate('ResetPassword', { email, token: res.reset_token });
+        } else {
+          const loginpayload = {
+            email:email,
+            password:password,
+          };
+          // const loginres = await loginUser(loginpayload);
+          // console.log("🚀 ~ handleVerifyOtp ~ loginres:", loginres)
+          // store.dispatch(setUserDetails(loginres));
+          navigate(SCREENS.MAPLOCATIONSCREEN);
+        }
+      } else {
+        showToast({ message: res?.message || 'Invalid code!', isError: true });
+      }
+    } catch (err: any) {
+      showToast({ message: err?.message || 'Verification failed!', isError: true });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Wrapper loading={loading}>

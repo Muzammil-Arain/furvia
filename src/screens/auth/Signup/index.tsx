@@ -11,7 +11,7 @@ import { FocusProvider, useFormikForm } from 'hooks/index';
 import { FontSize } from 'types/fontTypes';
 import { Button, Input, AuthComponent, PhoneInputComponent } from 'components/index';
 import { getCurrentLocation, reverseGeocode } from 'utils/location';
-import { signUpUser } from 'api/functions/auth';
+import { signupUser } from 'api/functions/auth';
 
 interface SignUpFormValues {
   email: string;
@@ -56,7 +56,7 @@ export const SignUp = () => {
       phone_number,
       ...deviceInfo,
     };
-    signUpUser({ data });
+    signupUser({ data });
   };
 
   const formik = useFormikForm<SignUpFormValues>({

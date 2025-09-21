@@ -11,9 +11,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const screens = {
   [SCREENS.HOME]: Home,
-  [SCREENS.FAVORITES]: Favorites,
-  [SCREENS.ORDERS]: Orders,
-  [SCREENS.MY_ACCOUNT]: MyAccount,
+  [SCREENS.FAVORITES]: Home,
+  [SCREENS.ORDERS]: Home,
+  [SCREENS.MY_ACCOUNT]: Home,
 };
 
 const getIconConfig = (routeName: string) => {
@@ -48,7 +48,7 @@ export const BottomNavigator = () => {
           headerShown: false,
           tabBarStyle: {
             backgroundColor: COLORS.WHITE,
-            height: screenHeight(isIOS() ? 10 : 8.5) + insets.bottom,
+            height: screenHeight(isIOS() ? 10 : 10) + insets.bottom,
             borderTopLeftRadius: 15,
             borderTopRightRadius: 15,
             paddingTop: 18,
