@@ -27,6 +27,7 @@ import { BottomNavigator } from './BottomNavigator';
 import { useBackHandler, useTranslation } from 'hooks/index';
 import { screenOptions } from '.';
 import { PrivacyPolicy } from 'screens/common';
+import QuestionScreen from 'screens/provider/questions';
 export const AppNavigator = () => {
   useBackHandler();
   const Stack = createNativeStackNavigator();

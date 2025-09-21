@@ -88,5 +88,6 @@ export const SCREENS = {
   MAPLOCATIONSCREEN: 'MapLocationScreen',
   CREATEPETPROFILE: 'PetProfileScreen',
   COMPLETEPETPROFILE: 'CompletePetProfile',
-  UserType:'UserType'
+  UserType: 'UserType',
+  QuestionScreen: 'QuestionScreen',
 } as const;

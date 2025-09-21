@@ -9,12 +9,14 @@ import { IMAGES } from 'constants/assets';
 import PhoneInputField, { PhoneInputFieldRef } from 'components/appComponents/PhoneInputField';
 import { SCREENS } from 'constants/routes';
 import { loginUser, signupUser } from 'api/functions/auth';
+import { useAppSelector } from 'types/reduxTypes';
 
 type TabType = 'login' | 'signup';
 
 const Login: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('login');
   const phoneRef = useRef<PhoneInputFieldRef>(null);
+  const role = useAppSelector(state => state.app.userRole);
 
   const [form, setForm] = useState({
     name: '',
@@ -89,7 +91,11 @@ const Login: React.FC = () => {
       setLoading(true);
       try {
         // await loginUser(payload);
-        navigate(SCREENS.COMPLETEPETPROFILE);
+        if (role == 'user') {
+          navigate(SCREENS.MAPLOCATIONSCREEN);
+        } else {
+          navigate(SCREENS.QuestionScreen);
+        }
       } catch (e) {
         console.error('Login Error:', e);
       } finally {

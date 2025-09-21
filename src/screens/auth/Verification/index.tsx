@@ -14,6 +14,7 @@ import {
 import { ms } from 'react-native-size-matters';
 import { setUserDetails } from 'store/slices/user';
 import store from 'store/store';
+import { useAppSelector } from 'types/reduxTypes';
 import { COLORS } from 'utils/colors';
 import { showToast } from 'utils/toast';
 
@@ -25,6 +26,8 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
   const [otp, setOtp] = useState(['', '', '', '']); // 4 digit OTP
   const [loading, setLoading] = useState(false);
   const inputs = useRef<TextInput[]>([]);
+  const role = useAppSelector(state => state.app.userRole);
+  console.log('🚀 ~ Verification ~ role:', role);
 
   // Timer countdown
   useEffect(() => {
@@ -105,13 +108,17 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
           navigate('ResetPassword', { email, token: res.reset_token });
         } else {
           const loginpayload = {
-            email:email,
-            password:password,
+            email: email,
+            password: password,
           };
           // const loginres = await loginUser(loginpayload);
           // console.log("🚀 ~ handleVerifyOtp ~ loginres:", loginres)
           // store.dispatch(setUserDetails(loginres));
-          navigate(SCREENS.MAPLOCATIONSCREEN);
+          if (role == 'user') {
+            navigate(SCREENS.MAPLOCATIONSCREEN);
+          } else {
+            navigate(SCREENS.QuestionScreen);
+          }
         }
       } else {
         showToast({ message: res?.message || 'Invalid code!', isError: true });

@@ -13,6 +13,7 @@ import MapLocationScreen from 'screens/pet/MapLocation';
 import PetProfileScreen from 'screens/pet/PetProfile';
 import CompletePetProfile from 'screens/pet/CompletePetProfile';
 import UserType from 'screens/auth/UserType';
+import QuestionScreen from 'screens/provider/questions';
 
 export const AuthNavigator = () => {
   useBackHandler();
@@ -41,6 +42,10 @@ export const AuthNavigator = () => {
     //     }),
     [SCREENS.ONBOARDING]: {
       component: OnBoarding,
+      options: { headerShown: false },
+    },
+    [SCREENS.QuestionScreen]: {
+      component: QuestionScreen,
       options: { headerShown: false },
     },
     [SCREENS.UserType]: {
