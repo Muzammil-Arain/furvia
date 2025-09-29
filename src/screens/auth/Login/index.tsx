@@ -10,6 +10,10 @@ import PhoneInputField, { PhoneInputFieldRef } from 'components/appComponents/Ph
 import { SCREENS } from 'constants/routes';
 import { loginUser, signupUser } from 'api/functions/auth';
 import { useAppSelector } from 'types/reduxTypes';
+import { setItem } from 'utils/storage';
+import { VARIABLES } from 'constants/common';
+import store from 'store/store';
+import { setIsUserLoggedIn } from 'store/slices/appSettings';
 
 type TabType = 'login' | 'signup';
 
@@ -17,6 +21,7 @@ const Login: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('login');
   const phoneRef = useRef<PhoneInputFieldRef>(null);
   const role = useAppSelector(state => state.app.userRole);
+  console.log('🚀 ~ Login ~ role:', role);
 
   const [form, setForm] = useState({
     name: '',
@@ -81,6 +86,10 @@ const Login: React.FC = () => {
 
   /* 🔹 Handle Login */
   const handleLogin = async () => {
+    setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+    store.dispatch(setIsUserLoggedIn(true));
+    return;
+
     if (validateLogin()) {
       const payload = {
         email: form.email.trim(),
@@ -90,8 +99,10 @@ const Login: React.FC = () => {
 
       setLoading(true);
       try {
-        // await loginUser(payload);
-        if (role == 'user') {
+        const response = await loginUser(payload);
+        console.log('🚀 ~ handleLogin ~ response:', response?.data);
+        // return;
+        if (response?.data?.user?.type == 'user') {
           navigate(SCREENS.MAPLOCATIONSCREEN);
         } else {
           navigate(SCREENS.QuestionScreen);
@@ -111,7 +122,7 @@ const Login: React.FC = () => {
         name: form.name.trim(),
         email: form.email.trim(),
         password: form.password,
-        type: 'provider',
+        type: role,
         confirm_password: form.confirm_password,
         phone: phoneRef.current?.getValue?.() || '',
       };

@@ -1,11 +1,10 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { IMAGES, SCREENS } from 'constants/index';
 import { COLORS } from 'utils/colors';
-import { Typography } from 'components/common';
 import { View, StyleSheet, Image } from 'react-native';
 import { FontSize, FontWeight } from 'types/fontTypes';
 import { isIOS, screenHeight } from 'utils/index';
-import { Home, MyAccount, Favorites, Orders } from 'screens/user';
+import { Home } from 'screens/user';
 import { useTranslation } from 'hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

@@ -14,6 +14,8 @@ import { ms, vs } from 'react-native-size-matters';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppSelector } from 'types/index';
 import { COLORS } from 'utils/index';
+import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
 
 // Dummy Data
 const services = [
@@ -230,7 +232,9 @@ export const Home = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Typography style={styles.sectionTitle}>Our Services</Typography>
-            <Typography style={styles.seeAllView}>See All</Typography>
+            <TouchableOpacity onPress={() => navigate(SCREENS.services)}>
+              <Typography style={styles.seeAllView}>See All</Typography>
+            </TouchableOpacity>
           </View>
           <FlatList
             horizontal
@@ -256,7 +260,14 @@ export const Home = () => {
         </View>
 
         {/* Pets */}
-        <View style={styles.section}>
+        <View
+          style={[
+            styles.section,
+            {
+              marginBottom: 0,
+            },
+          ]}
+        >
           <View style={styles.sectionHeader}>
             <Typography style={styles.sectionTitle}>My Pet</Typography>
             <Typography style={styles.seeAllView}>See All</Typography>
@@ -270,15 +281,40 @@ export const Home = () => {
           />
         </View>
 
-        {/* Banner */}
-        <Image
-          resizeMode='cover'
-          style={{ flex: 1, marginBottom: 20 }}
-          source={require('../../assets/images/common/Banner.png')}
-        />
+        {/* Bottom Card */}
+        <View style={styles.bottomCard}>
+          <View style={styles.bottomCardbottomRow}>
+            <Image
+              source={require('../../assets/images/common/bannerdog.png')}
+              resizeMode='contain'
+              style={styles.bottomImage}
+            />
+            <View style={styles.bottomContent}>
+              <Typography style={styles.bottomTitle}>Pet Care Boarding</Typography>
+              <Typography style={styles.bottomSubtitle}>
+                We offer long-term and short-term boarding
+              </Typography>
+            </View>
+            <TouchableOpacity style={styles.bottomButton}>
+              <Icon
+                componentName='Ionicons'
+                iconName='chevron-forward'
+                size={20}
+                color={COLORS.WHITE}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {/* Advisors */}
-        <View style={styles.section}>
+        <View
+          style={[
+            styles.section,
+            {
+              marginTop: ms(20),
+            },
+          ]}
+        >
           <View style={styles.sectionHeader}>
             <Typography style={styles.sectionTitle}>Emergency Advisor</Typography>
             <Typography style={styles.seeAllView}>See All</Typography>
@@ -341,7 +377,7 @@ const styles = StyleSheet.create({
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   sectionTitle: { fontSize: ms(16), fontWeight: '600', marginBottom: vs(10), color: COLORS.TEXT },
   seeAllView: {
-    fontSize: ms(14),
+    fontSize: ms(12),
     marginBottom: vs(10),
     fontWeight: '500',
     color: COLORS.SECONDARY,
@@ -426,4 +462,45 @@ const styles = StyleSheet.create({
   rating: { flexDirection: 'row', alignItems: 'center' },
   ratingText: { fontSize: ms(12), marginLeft: ms(4), color: '#444' },
   price: { fontSize: ms(14), fontWeight: '700', color: '#5A205A' },
+
+  bottomCard: {
+    backgroundColor: COLORS.LIGHT_BLUE,
+    borderRadius: ms(16),
+    padding: ms(16),
+    marginBottom: vs(20),
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    elevation: 3,
+  },
+  bottomCardbottomRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bottomImage: {
+    width: ms(50),
+    height: ms(50),
+    marginRight: ms(12),
+  },
+  bottomContent: {
+    flex: 1,
+  },
+  bottomTitle: {
+    fontSize: ms(14),
+    fontWeight: '600',
+    color: COLORS.BLACK,
+    marginBottom: vs(4),
+  },
+  bottomSubtitle: {
+    fontSize: ms(10),
+    color: COLORS.TEXT,
+  },
+  bottomButton: {
+    backgroundColor: COLORS.PRIMARY,
+    width: ms(40),
+    height: ms(40),
+    borderRadius: ms(12),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

@@ -27,7 +27,10 @@ import { BottomNavigator } from './BottomNavigator';
 import { useBackHandler, useTranslation } from 'hooks/index';
 import { screenOptions } from '.';
 import { PrivacyPolicy } from 'screens/common';
-import QuestionScreen from 'screens/provider/questions';
+import DashboardScreen from 'screens/provider/DashboardScreen';
+import services from 'screens/petowner/services';
+import TrainersScreen from 'screens/petowner/Trainer';
+
 export const AppNavigator = () => {
   useBackHandler();
   const Stack = createNativeStackNavigator();
@@ -134,6 +137,18 @@ export const AppNavigator = () => {
     [SCREENS.CHECKOUT]: {
       component: Checkout,
       options: { headerShown: true, headerTitle: 'Checkout' },
+    },
+    [SCREENS.DashboardScreen]: {
+      component: DashboardScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.services]: {
+      component: services,
+      options: { headerShown: false },
+    },
+    [SCREENS.TrainersScreen]: {
+      component: TrainersScreen,
+      options: { headerShown: false },
     },
   };
   return (

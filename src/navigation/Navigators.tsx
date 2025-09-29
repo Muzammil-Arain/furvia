@@ -57,6 +57,7 @@ export type RootStackParamList = {
   [SCREENS.COMPLETEPETPROFILE]: undefined;
   [SCREENS.MAPLOCATIONSCREEN]: undefined;
   [SCREENS.UserType]: undefined;
+  [SCREENS.services]: undefined;
   [SCREENS.QuestionScreen]: undefined;
   [SCREENS.RESET_PASSWORD]: { token: string };
   [SCREENS.VERIFICATION]: { isFromForgot?: boolean; email: string };

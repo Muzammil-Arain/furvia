@@ -90,4 +90,9 @@ export const SCREENS = {
   COMPLETEPETPROFILE: 'CompletePetProfile',
   UserType: 'UserType',
   QuestionScreen: 'QuestionScreen',
+  TrainersScreen:'TrainersScreen',
+  DashboardScreen: 'DashboardScreen',
+
+  //PET OWNER
+  services: 'services',
 } as const;
