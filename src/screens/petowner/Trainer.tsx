@@ -4,6 +4,8 @@ import { AppWrapper } from 'components/common/AppWapper';
 import { Icon, Typography } from 'components/index';
 import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';
+import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
 
 const trainersData = [
   {
@@ -55,7 +57,7 @@ const TrainersScreen = () => {
             style={{
               position: 'absolute',
               bottom: 10,
-              left:ms(50),
+              left: ms(50),
             }}
           >
             <Icon
@@ -102,17 +104,15 @@ const TrainersScreen = () => {
 
       {/* Bottom Buttons */}
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.appointmentBtn}>
+        <TouchableOpacity
+          onPress={() => navigate(SCREENS.TrainerDetails)}
+          style={styles.appointmentBtn}
+        >
           <Typography style={styles.appointmentText}>Start Appointment | ${item.price}</Typography>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.messageBtn}>
-          <Icon
-            componentName='Ionicons'
-            iconName='chatbubble-ellipses'
-            size={14}
-            color={COLORS.RED}
-          />
+          <Icon componentName='Feather' iconName='lock' size={14} color={COLORS.RED} />
           <Typography style={styles.messageText}>Messages</Typography>
         </TouchableOpacity>
       </View>

@@ -20,9 +20,13 @@ import { SCREENS } from 'constants/routes';
 // Dummy Data
 const services = [
   { id: '1', title: 'Groomer', icon: require('../../assets/icons/services/Groomer.png') },
-  { id: '2', title: 'Walkers', icon: require('../../assets/icons/services/Walkers.png') },
-  { id: '3', title: 'Trainers', icon: require('../../assets/icons/services/Walkers.png') },
-  { id: '4', title: 'Vets', icon: require('../../assets/icons/services/Vets.png') },
+  { id: '2', title: 'Training', icon: require('../../assets/icons/services/Training.png') },
+  { id: '3', title: 'Sitting', icon: require('../../assets/icons/services/Training.png') },
+  { id: '4', title: 'Dermatology', icon: require('../../assets/icons/services/Groomer.png') },
+  { id: '5', title: 'Walking', icon: require('../../assets/icons/services/Training.png') },
+  { id: '6', title: 'Vets', icon: require('../../assets/icons/services/Vets.png') },
+  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Vector.png') },
+  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Nutrition.png') },
 ];
 
 const pets = [
@@ -244,14 +248,23 @@ export const Home = () => {
             renderItem={({ item }) => (
               <ScaleTouchable>
                 <View style={styles.serviceCard}>
-                  <Image
-                    source={item.icon}
-                    resizeMode='contain'
+                  <View
                     style={{
-                      width: ms(60),
-                      height: ms(60),
+                      backgroundColor: '#F3F3F3',
+                      padding: 18,
+                      borderRadius: 100,
                     }}
-                  />
+                  >
+                    <Image
+                      source={item.icon}
+                      resizeMode='contain'
+                      style={{
+                        width: ms(30),
+                        height: ms(30),
+                      }}
+                    />
+                  </View>
+
                   <Typography style={styles.serviceText}>{item.title}</Typography>
                 </View>
               </ScaleTouchable>
@@ -391,7 +404,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: ms(12),
   },
-  serviceText: { fontSize: ms(12), marginTop: vs(6), color: COLORS.TEXT },
+  serviceText: { fontSize: ms(10), marginTop: vs(1), color: COLORS.TEXT },
 
   petCardWrapper: {
     marginBottom: 20,

@@ -56,4 +56,7 @@ export const IMAGES = {
 
 // export const Dog_1 = require('../assets/images/common/Dog_1.png');
 
+
+export const DEFULT_IMAGE = 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352010-stock-illustration-default-placeholder-man-and-woman.jpg'
+
 export const VIDEO = {};

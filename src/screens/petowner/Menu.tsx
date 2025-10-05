@@ -1,22 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Switch, FlatList } from 'react-native';
 import { Typography, Icon } from 'components/index';
 import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';
 import { AppWrapper } from 'components/common/AppWapper';
+import { CustomToggle } from 'components/appComponents/CustomToggle';
+import { SCREENS } from 'constants/routes';
+import { navigate } from 'navigation/index';
 
 const menuItems = [
-  { id: '1', label: 'My Account', icon: 'user', lib: 'FontAwesome' },
-  { id: '2', label: 'My Bookings', icon: 'calendar', lib: 'Feather' },
-  { id: '3', label: 'Gallery', icon: 'image', lib: 'Feather' },
-  { id: '4', label: 'Testimonials', icon: 'star', lib: 'AntDesign' },
-  { id: '5', label: 'Change Password', icon: 'star', lib: 'AntDesign' },
-  { id: '6', label: 'My Address', icon: 'star', lib: 'AntDesign' },
-  { id: '7', label: 'Help and Support', icon: 'star', lib: 'AntDesign' },
-  { id: '8', label: 'Terms & Conditions', icon: 'star', lib: 'AntDesign' },
+  {
+    id: '1',
+    navigate: SCREENS.EDIT_PROFILE,
+    label: 'My Account',
+    icon: require('../../assets/images/common/menu_user.png'),
+  },
+  {
+    id: '2',
+    navigate: SCREENS.MyBooking,
+    label: 'My Bookings',
+    icon: require('../../assets/images/common/menu_history.png'),
+  },
+  {
+    id: '3',
+    navigate: SCREENS.MyPetProfile,
+    label: 'Gallery',
+    icon: require('../../assets/images/common/menu_history.png'),
+  },
+  {
+    id: '3',
+    navigate: SCREENS.ReferralProgram,
+    label: 'Referral Program',
+    icon: require('../../assets/images/common/menu_history.png'),
+  },
+  // { id: '4', label: 'Testimonials', icon: require('../../assets/images/common/menu_history.png') },
+  {
+    id: '5',
+    navigate: SCREENS.CHANGE_PASSWORD,
+    label: 'Change Password',
+    icon: require('../../assets/images/common/menu_locked.png'),
+  },
+  {
+    id: '6',
+    navigate: SCREENS.AddAddress,
+    label: 'My Address',
+    icon: require('../../assets/images/common/menu_location.png'),
+  },
+  {
+    id: '7',
+    navigate: SCREENS.HelpAndSupport,
+    label: 'Help and Support',
+    icon: require('../../assets/images/common/menu_support.png'),
+  },
+  {
+    id: '8',
+    navigate: SCREENS.TermsAndConditions,
+    label: 'Terms & Conditions',
+    icon: require('../../assets/images/common/menu_policy.png'),
+  },
 ];
 
 const MenuScreen = () => {
+  const [darkmode, setDarkMode] = useState(false);
   return (
     <AppWrapper title='Menu'>
       <View style={styles.container}>
@@ -46,23 +91,31 @@ const MenuScreen = () => {
 
         {/* Points Section */}
         <View style={styles.pointsRow}>
-          <View style={styles.pointsCard}>
+          <TouchableOpacity onPress={() => navigate(SCREENS.Wallet)} style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Visit Points</Typography>
             <Typography style={styles.pointsValue}>850 Pts</Typography>
             <Typography style={styles.pointsSub}>($850.00)</Typography>
-          </View>
-          <View style={styles.pointsCard}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate(SCREENS.Wallet)} style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Referral Points</Typography>
             <Typography style={styles.pointsValue}>100 Pts</Typography>
             <Typography style={styles.pointsSub}>($100.00)</Typography>
-          </View>
+          </TouchableOpacity>
         </View>
 
         {/* Dark Mode Toggle */}
         <View style={styles.darkModeRow}>
-          <Icon componentName='Feather' iconName='moon' size={18} color={COLORS.GRAY} />
+          <Image
+            source={require('../../assets/images/common/menu_darkmode.png')}
+            resizeMode='contain'
+            style={{
+              width: ms(40),
+              height: ms(40),
+            }}
+          />
           <Typography style={styles.darkModeText}>Dark Mode</Typography>
-          <Switch value={false} onValueChange={() => {}} />
+          {/* <Switch value={false} onValueChange={() => {}} /> */}
+          <CustomToggle value={darkmode} onValueChange={setDarkMode} />
         </View>
 
         {/* Menu Items */}
@@ -70,8 +123,23 @@ const MenuScreen = () => {
           data={menuItems}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity
+              onPress={() => {
+                if (item.navigate) {
+                  navigate(item.navigate);
+                }
+              }}
+              style={styles.menuItem}
+            >
               <View style={styles.menuLeft}>
+                <Image
+                  source={item.icon}
+                  resizeMode='contain'
+                  style={{
+                    width: ms(40),
+                    height: ms(40),
+                  }}
+                />
                 <Typography style={styles.menuLabel}>{item.label}</Typography>
               </View>
               <Icon
@@ -105,9 +173,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   profileImage: {
-    width: ms(50),
-    height: ms(50),
-    borderRadius: ms(25),
+    width: ms(70),
+    height: ms(70),
+    borderRadius: 100,
     marginRight: ms(12),
   },
   name: {
@@ -129,6 +197,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.WHITE,
     borderRadius: ms(12),
     padding: ms(12),
+    height: ms(100),
+    justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: ms(6),
     elevation: 2,
@@ -152,6 +222,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: ms(12),
+    paddingHorizontal: 10,
     borderBottomWidth: 0.5,
     borderBottomColor: '#E0E0E0',
   },
@@ -178,7 +249,11 @@ const styles = StyleSheet.create({
   darkModeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: ms(20),
+    marginTop: ms(20),
+    borderBottomWidth: 0.5,
+    paddingVertical: ms(12),
+    paddingHorizontal: 10,
+    borderBottomColor: '#E0E0E0',
   },
   darkModeText: {
     flex: 1,

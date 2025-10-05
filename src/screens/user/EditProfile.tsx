@@ -1,71 +1,40 @@
-import { StyleSheet, View } from 'react-native';
-import { Button, Icon, Input, PhoneInputComponent, Photo, Wrapper } from 'components/index';
-import { IMAGES, VARIABLES } from 'constants/index';
-import { COMMON_TEXT } from 'constants/index';
-import { FocusProvider, useFormikForm } from 'hooks/index';
-import { FontSize, FontWeight, useAppSelector } from 'types/index';
-import {
-  editProfileValidationSchema,
-  getCurrentLocation,
-  reverseGeocode,
-  screenHeight,
-  screenWidth,
-  COLORS,
-  FLEX_CENTER,
-  STYLES,
-  safeString,
-  splitPhoneNumberWithCode,
-  openCameraOrGallery,
-  normalizePhoneNumber,
-} from 'utils/index';
-import { updateUserDetails } from 'api/functions/app/user';
-import { EditProfileFormExtended } from './Profile';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { AppWrapper } from 'components/common/AppWapper';
+import { Typography } from 'components/index';
+import { COLORS } from 'utils/colors';
+import { ms } from 'react-native-size-matters';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { openCameraOrGallery } from 'utils/helpers';
 import { useMediaPicker, UseMediaPickerOptions } from 'hooks/useMediaPicker';
+import { DEFULT_IMAGE } from 'constants/assets'; // Assuming you have a default image constant
 
-export const EditProfile = () => {
+const EditProfile = () => {
   const { pickMedia, selectedMedia } = useMediaPicker();
-  const { userDetails } = useAppSelector(state => state?.user);
-  const initialValues: EditProfileFormExtended = {
-    email: safeString(userDetails?.email),
-    full_name: safeString(userDetails?.full_name),
-    user_name: safeString(userDetails?.user_name),
-    country: safeString(userDetails?.country),
-    phone_number: safeString(splitPhoneNumberWithCode(userDetails?.phone_number)?.number),
-    country_code: safeString(userDetails?.country_code),
-    calling_code:
-      safeString(splitPhoneNumberWithCode(userDetails?.phone_number)?.countryCode) ??
-      safeString(userDetails?.calling_code),
-  };
+  const [isEditing, setIsEditing] = useState(false);
 
-  const getCountry = async () => {
-    const position = await getCurrentLocation();
-    if (position?.coords) {
-      const getAddress = await reverseGeocode({
-        latitude: position?.coords?.latitude,
-        longitude: position?.coords?.longitude,
-      });
-      formik.setFieldValue('country', getAddress?.country);
-    }
-  };
-
-  const handleSubmit = async (values: EditProfileFormExtended) => {
-    const phone_number = normalizePhoneNumber(values?.phone_number, values?.calling_code);
-
-    updateUserDetails({
-      ...values,
-      phone_number,
-      ...(selectedMedia?.[0]?.uri && {
-        profile_image: selectedMedia?.[0],
-      }),
-    });
-  };
-
-  const formik = useFormikForm<EditProfileFormExtended>({
-    initialValues,
-    enableReinitialize: true,
-    validationSchema: editProfileValidationSchema,
-    onSubmit: handleSubmit,
+  const [userData, setUserData] = useState({
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    phone: '+1234567890',
+    profilePicture: '', // Initially, empty, meaning no profile picture
   });
+
+  useEffect(() => {
+    // When a new image is selected, update the profile picture
+    if (selectedMedia[0]?.uri) {
+      setUserData(prevData => ({ ...prevData, profilePicture: selectedMedia[0].uri }));
+    }
+  }, [selectedMedia]);
+
+  const handleChange = (key, value) => {
+    setUserData(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
   const imageConfig: UseMediaPickerOptions = {
     mediaType: 'image',
     cropping: true,
@@ -73,187 +42,190 @@ export const EditProfile = () => {
     height: 300,
     cropperCircleOverlay: true,
   };
+
   return (
-    <Wrapper useScrollView={true} useSafeArea={false}>
-      <View style={STYLES.CONTAINER}>
-        <FocusProvider>
-          <View style={styles.profileHeader}>
-            <View style={styles.photoContainer}>
-              <Photo
-                source={selectedMedia?.[0]?.uri ?? userDetails?.profile_image ?? IMAGES.USER_IMAGE}
-                resizeMode='contain'
-                imageStyle={styles.photo}
-              />
-              <Icon
-                componentName={VARIABLES.Entypo}
-                iconName={'camera'}
-                onPress={() => {
+    <AppWrapper title='Profile'>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        {/* Profile Image Section */}
+        <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.card}>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                if (isEditing) {
                   openCameraOrGallery({
                     cameraPress: () => {
                       pickMedia({ ...imageConfig, source: 'camera' });
                     },
                     galleryPress: () => {
-                      pickMedia({
-                        ...imageConfig,
-                        source: 'gallery',
-                      });
+                      pickMedia({ ...imageConfig, source: 'gallery' });
                     },
                   });
-                }}
-                color={COLORS.PRIMARY}
-                iconStyle={styles.editIcon}
+                }
+              }}
+            >
+              {/* Profile image */}
+              <Image
+                source={{ uri: userData.profilePicture || DEFULT_IMAGE }}
+                style={styles.image}
               />
-            </View>
+            </TouchableOpacity>
+            {isEditing && (
+              <TouchableOpacity
+                onPress={() => {
+                  openCameraOrGallery({
+                    cameraPress: () => pickMedia({ ...imageConfig, source: 'camera' }),
+                    galleryPress: () => pickMedia({ ...imageConfig, source: 'gallery' }),
+                  });
+                }}
+                style={styles.uploadIcon}
+              >
+                <Image
+                  source={{ uri: 'https://cdn-icons-png.flaticon.com/128/3524/3524388.png' }}
+                  style={styles.uploadIconImage}
+                />
+              </TouchableOpacity>
+            )}
           </View>
-          <Input
-            name={COMMON_TEXT.FULL_NAME}
-            title={COMMON_TEXT.FULL_NAME}
-            onChangeText={formik.handleChange('full_name')}
-            onBlur={formik.handleBlur('full_name')}
-            value={formik.values.full_name}
-            placeholder={COMMON_TEXT.ENTER_FULL_NAME}
-            startIcon={{
-              componentName: VARIABLES.Feather,
-              iconName: 'user',
-            }}
-            error={formik.errors.full_name}
-            touched={Boolean(formik.touched.full_name && formik.submitCount)}
-          />
-          <Input
-            name={COMMON_TEXT.USERNAME}
-            title={COMMON_TEXT.USERNAME}
-            onChangeText={formik.handleChange('user_name')}
-            onBlur={formik.handleBlur('user_name')}
-            value={formik.values.user_name}
-            placeholder={COMMON_TEXT.ENTER_USER_NAME}
-            startIcon={{
-              componentName: VARIABLES.Feather,
-              iconName: 'user',
-            }}
-            error={formik.errors.user_name}
-            touched={Boolean(formik.touched.user_name && formik.submitCount)}
-          />
-          <Input
-            name={COMMON_TEXT.EMAIL}
-            title={COMMON_TEXT.EMAIL}
-            onChangeText={formik.handleChange('email')}
-            onBlur={formik.handleBlur('email')}
-            value={formik.values.email}
-            allowSpacing={false}
-            editable={false}
-            startIcon={{
-              componentName: VARIABLES.MaterialCommunityIcons,
-              iconName: 'email-outline',
-            }}
-            keyboardType={'email-address'}
-            placeholder={COMMON_TEXT.ENTER_YOUR_EMAIL}
-            error={formik.errors.email}
-            touched={Boolean(formik.touched.email && formik.submitCount)}
-          />
-          <Input
-            name={COMMON_TEXT.COUNTRY}
-            title={COMMON_TEXT.COUNTRY}
-            onChangeText={formik.handleChange('country')}
-            onBlur={formik.handleBlur('country')}
-            value={formik.values.country}
-            placeholder={COMMON_TEXT.ENTER_COUNTRY}
-            startIcon={{
-              componentName: VARIABLES.MaterialIcons,
-              iconName: 'language',
-            }}
-            endIcon={{
-              componentName: VARIABLES.MaterialIcons,
-              iconName: 'my-location',
-              size: FontSize.Large,
-              onPress: () => {
-                getCountry();
-              },
-            }}
-            error={formik.errors.country}
-            touched={Boolean(formik.touched.country && formik.submitCount)}
-          />
-          <PhoneInputComponent
-            name={COMMON_TEXT.PHONE_NUMBER}
-            title={COMMON_TEXT.PHONE_NUMBER}
-            onChangeText={formik.handleChange('phone_number')}
-            value={formik.values.phone_number}
-            allowSpacing={false}
-            defaultCode={formik.values.country_code as any}
-            onChangeCountryCode={formik.handleChange('country_code')}
-            onChangeCallingCode={formik.handleChange('calling_code')}
-            startIcon={{
-              componentName: VARIABLES.Feather,
-              iconName: 'phone',
-            }}
-            placeholder={COMMON_TEXT.PHONE_NUMBER}
-            error={formik.errors.phone_number}
-            touched={Boolean(formik.touched.phone_number && formik.submitCount)}
-          />
-        </FocusProvider>
-        <Button
-          loading={true}
-          title={COMMON_TEXT.UPDATE}
-          onPress={formik.handleSubmit}
-          style={styles.button}
-        />
-      </View>
-    </Wrapper>
+        </Animated.View>
+
+        {/* Editable Name and Phone */}
+        <View style={styles.inputContainer}>
+          <Typography style={styles.label}>Name</Typography>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={userData.name}
+              onChangeText={text => handleChange('name', text)}
+              placeholder='Enter Name'
+              placeholderTextColor={COLORS.GRAY}
+            />
+          ) : (
+            <Typography style={styles.value}>{userData.name}</Typography>
+          )}
+
+          <Typography style={styles.label}>Phone Number</Typography>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={userData.phone}
+              onChangeText={text => handleChange('phone', text)}
+              placeholder='Enter Phone Number'
+              placeholderTextColor={COLORS.GRAY}
+            />
+          ) : (
+            <Typography style={styles.value}>{userData.phone}</Typography>
+          )}
+        </View>
+
+        {/* Save Button */}
+        <TouchableOpacity style={styles.saveButton} onPress={() => setIsEditing(!isEditing)}>
+          <Typography style={styles.saveButtonText}>
+            {!isEditing ? 'Edit Profile' : 'Save Changes'}
+          </Typography>
+        </TouchableOpacity>
+      </ScrollView>
+    </AppWrapper>
   );
 };
 
+export default EditProfile;
+
 const styles = StyleSheet.create({
-  nameinput: {
-    width: screenWidth(43),
+  scrollViewContent: {
+    paddingHorizontal: ms(20),
+    paddingBottom: 40,
   },
-  row: {
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 10,
+  card: {
+    alignItems: 'center',
+    backgroundColor: COLORS.WHITE,
+    borderRadius: ms(20),
+    paddingVertical: ms(30),
+    marginBottom: ms(25),
+    elevation: 8,
+    shadowColor: COLORS.BLACK,
+    shadowOpacity: 0.1,
+    shadowRadius: ms(6),
+    shadowOffset: { width: 0, height: 5 },
   },
-  profileHeader: {
-    marginBottom: 10,
-    ...FLEX_CENTER,
+  imageContainer: {
+    width: ms(120),
+    height: ms(120),
+    borderRadius: ms(60),
+    overflow: 'hidden',
+    position: 'relative',
+    backgroundColor: COLORS.LIGHT_GRAY,
   },
-  photoContainer: {
-    marginVertical: 20,
-    ...FLEX_CENTER,
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: ms(60),
+  },
+  uploadIcon: {
+    position: 'absolute',
+    top: ms(40),
+    left: ms(40),
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    borderRadius: ms(20),
+    padding: ms(10),
+  },
+  uploadIconImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+    tintColor: COLORS.WHITE,
   },
   editIcon: {
+    zIndex: 999,
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    backgroundColor: COLORS.WHITE,
-    borderWidth: 1,
-    borderColor: COLORS.PRIMARY,
-    padding: 5,
-    borderRadius: 14,
-    overflow: 'hidden',
+    bottom: ms(8),
+    right: ms(8),
+    backgroundColor: COLORS.PRIMARY,
+    borderRadius: ms(20),
+    padding: ms(8),
+    elevation: 5,
   },
-  photo: {
-    width: screenWidth(30),
-    height: screenHeight(14),
-    borderWidth: 1,
-    padding: 5,
-    backgroundColor: COLORS.WHITE,
-    borderColor: COLORS.PRIMARY,
-    borderRadius: screenWidth(35),
+  editIconImage: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
   },
-  button: {
-    marginVertical: 20,
+  inputContainer: {
+    marginTop: ms(20),
   },
-  changePasswordText: {
-    color: COLORS.PRIMARY,
-    fontSize: FontSize.MediumLarge,
-    textAlign: 'center',
-    marginBottom: 20,
+  label: {
+    fontSize: ms(14),
+    color: COLORS.ICONS,
+    fontWeight: '600',
+    marginBottom: ms(5),
   },
-  line: {
-    width: screenWidth(100),
-    height: 1,
-    backgroundColor: COLORS.BLACK,
+  input: {
+    borderBottomWidth: 1.5,
+    borderColor: COLORS.GRAY,
+    paddingVertical: ms(8),
+    fontSize: ms(16),
+    color: COLORS.BLACK,
+    marginBottom: ms(20),
+    width: '100%',
+    borderRadius: ms(12),
+    paddingHorizontal: ms(10),
   },
-  title: {
-    fontWeight: FontWeight.Bold,
+  value: {
+    fontSize: ms(16),
+    color: COLORS.BLACK,
+    fontWeight: '600',
+    marginBottom: ms(20),
   },
-  spacing: { marginBottom: 10 },
+  saveButton: {
+    marginTop: ms(25),
+    backgroundColor: COLORS.PRIMARY,
+    paddingVertical: ms(14),
+    borderRadius: ms(12),
+    alignItems: 'center',
+    marginBottom: ms(10),
+  },
+  saveButtonText: {
+    color: COLORS.WHITE,
+    fontSize: ms(16),
+    fontWeight: '600',
+  },
 });

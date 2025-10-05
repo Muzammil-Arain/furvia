@@ -7,25 +7,32 @@ import { isIOS, screenHeight } from 'utils/index';
 import { Home } from 'screens/user';
 import { useTranslation } from 'hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Services from 'screens/petowner/services';
+import MyPetProfile from 'screens/petowner/PetProfile';
+import MyBooking from 'screens/petowner/MyBooking';
+import MenuScreen from 'screens/petowner/Menu';
 
 const screens = {
   [SCREENS.HOME]: Home,
-  [SCREENS.FAVORITES]: Home,
-  [SCREENS.ORDERS]: Home,
-  [SCREENS.MY_ACCOUNT]: Home,
+  [SCREENS.services]: Services,
+  [SCREENS.MyPetProfile]: MyPetProfile,
+  [SCREENS.MyBooking]: MyBooking,
+  [SCREENS.MENU]: MenuScreen,
 };
 
 const getIconConfig = (routeName: string) => {
   switch (routeName) {
     case SCREENS.HOME:
       return IMAGES.homeIcon;
-    case SCREENS.FAVORITES:
+    case SCREENS.services:
       return IMAGES.GroupIcon;
-    case SCREENS.ORDERS:
+    case SCREENS.MyPetProfile:
       return IMAGES.petIcon;
-    case SCREENS.MY_ACCOUNT:
+    case SCREENS.MyBooking:
       return IMAGES.calanderIcon;
     case SCREENS.PROFILE:
+      return IMAGES.menuIcon;
+    case SCREENS.MENU:
       return IMAGES.menuIcon;
     default:
       return IMAGES.homeIcon;

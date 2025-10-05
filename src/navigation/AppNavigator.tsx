@@ -9,7 +9,6 @@ import {
   AddReview,
   NotificationListing,
   Profile,
-  EditProfile,
   Language,
   ContactUs,
   Cart,
@@ -17,9 +16,7 @@ import {
   Help,
   Location,
   Home,
-  ChangePassword,
   AddCard,
-  Wallet,
   ProductDetail,
   Checkout,
 } from 'screens/user';
@@ -30,6 +27,26 @@ import { PrivacyPolicy } from 'screens/common';
 import DashboardScreen from 'screens/provider/DashboardScreen';
 import services from 'screens/petowner/services';
 import TrainersScreen from 'screens/petowner/Trainer';
+import GromingService from 'screens/services/gromingservice';
+import MyPetProfile from 'screens/petowner/PetProfile';
+import PetProfileDetails from 'screens/petowner/EditPetprofile';
+import MyBooking from 'screens/petowner/MyBooking';
+import RescheduleBooking from 'screens/petowner/RescheduleBooking';
+import ReferralProgram from 'screens/petowner/ReferralProgram';
+import Wallet from 'screens/petowner/Wallet';
+import TrainerDetails from 'screens/petowner/TrainerDetails';
+import ServiceDetails from 'screens/services/ServiceDetails';
+import BookService from 'screens/booking/BookService';
+import CheckoutScreen from 'screens/booking/Checkout';
+import PaymentMethodScreen from 'screens/booking/PaymentMethod';
+import BookingComplete from 'screens/booking/BookingComplete';
+import AddAddress from 'screens/petowner/AddAddress';
+import ChangePassword from 'screens/user/ChangePassword';
+import TermsAndConditions from 'screens/common/PrivacyPolicy/TermsAndConditions';
+import HelpAndSupport from 'screens/common/PrivacyPolicy/HelpAndSupport';
+import SubmitQuery from 'screens/common/PrivacyPolicy/SubmitQuery';
+import TestimonialsScreen from 'screens/petowner/Testimonials';
+import EditProfile from 'screens/user/EditProfile';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -45,6 +62,87 @@ export const AppNavigator = () => {
       component: Home,
       options: { headerShown: false },
     },
+    [SCREENS.GromingService]: {
+      component: GromingService,
+      options: { headerShown: false },
+    },
+    [SCREENS.MyPetProfile]: {
+      component: MyPetProfile,
+      options: { headerShown: false },
+    },
+    [SCREENS.PetProfileDetails]: {
+      component: PetProfileDetails,
+      options: { headerShown: false },
+    },
+    [SCREENS.MyBooking]: {
+      component: MyBooking,
+      options: { headerShown: false },
+    },
+    [SCREENS.RescheduleBooking]: {
+      component: RescheduleBooking,
+      options: { headerShown: false },
+    },
+    [SCREENS.ReferralProgram]: {
+      component: ReferralProgram,
+      options: { headerShown: false },
+    },
+    [SCREENS.Wallet]: {
+      component: Wallet,
+      options: { headerShown: false },
+    },
+    [SCREENS.TrainerDetails]: {
+      component: TrainerDetails,
+      options: { headerShown: false },
+    },
+    [SCREENS.ServiceDetails]: {
+      component: ServiceDetails,
+      options: { headerShown: false },
+    },
+    [SCREENS.BookService]: {
+      component: BookService,
+      options: { headerShown: false },
+    },
+    [SCREENS.CheckoutScreen]: {
+      component: CheckoutScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.PaymentMethodScreen]: {
+      component: PaymentMethodScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.BookingComplete]: {
+      component: BookingComplete,
+      options: { headerShown: false },
+    },
+    [SCREENS.CHANGE_PASSWORD]: {
+      component: ChangePassword,
+      options: { headerShown: false },
+    },
+    [SCREENS.AddAddress]: {
+      component: AddAddress,
+      options: { headerShown: false },
+    },
+    [SCREENS.TermsAndConditions]: {
+      component: TermsAndConditions,
+      options: { headerShown: false },
+    },
+    [SCREENS.HelpAndSupport]: {
+      component: HelpAndSupport,
+      options: { headerShown: false },
+    },
+    [SCREENS.SubmitQuery]: {
+      component: SubmitQuery,
+      options: { headerShown: false },
+    },
+    [SCREENS.TestimonialsScreen]: {
+      component: TestimonialsScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.EDIT_PROFILE]: {
+      component: EditProfile,
+      options: { headerShown: false },
+    },
+    //extra
     [SCREENS.NOTIFICATION_LISTING]: {
       component: NotificationListing,
       options: { headerShown: false },
@@ -66,10 +164,6 @@ export const AppNavigator = () => {
       component: AddCard,
       options: { headerShown: true, headerTitle: 'Payment Details' },
     },
-    [SCREENS.WALLET]: {
-      component: Wallet,
-      options: { headerShown: true, headerTitle: 'My Wallet' },
-    },
     [SCREENS.PRODUCT_DETAIL]: {
       component: ProductDetail,
       options: { headerShown: false },
@@ -78,22 +172,15 @@ export const AppNavigator = () => {
       component: Profile,
       options: { headerShown: true, headerTitle: 'My Profile' },
     },
-    [SCREENS.EDIT_PROFILE]: {
-      component: EditProfile,
-      options: { headerShown: true, headerTitle: t(COMMON_TEXT.EDIT_PROFILE) },
-    },
+
     [SCREENS.PRIVACY_POLICY]: {
       component: PrivacyPolicy,
       options: { headerShown: true, headerTitle: t(COMMON_TEXT.PRIVACY_POLICY) },
     },
-    [SCREENS.TERMS_AND_CONDITIONS]: {
-      component: EditProfile,
-      options: { headerShown: true, headerTitle: t(COMMON_TEXT.TERMS_AND_CONDITIONS) },
-    },
-    [SCREENS.CHANGE_PASSWORD]: {
-      component: ChangePassword,
-      options: { headerShown: true, headerTitle: t(COMMON_TEXT.CHANGE_PASSWORD) },
-    },
+    // [SCREENS.TERMS_AND_CONDITIONS]: {
+    //   component: EditProfile,
+    //   options: { headerShown: true, headerTitle: t(COMMON_TEXT.TERMS_AND_CONDITIONS) },
+    // },
     [SCREENS.SEARCH]: {
       component: Search,
       options: { headerShown: false },

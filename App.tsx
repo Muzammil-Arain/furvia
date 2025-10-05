@@ -10,8 +10,8 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        {/* <MainNavigation /> */}
-        <MenuScreen />
+        <MainNavigation />
+        {/* <MenuScreen /> */}
       </Provider>
     </SafeAreaProvider>
   );

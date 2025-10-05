@@ -1,36 +1,38 @@
 import React from 'react';
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { AppWrapper } from 'components/common/AppWapper';
 import { Icon, Typography } from 'components/index';
 import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
 
 // Dummy Data
 const servicesData = [
   { id: '1', title: 'Groomer', icon: require('../../assets/icons/services/Groomer.png') },
-  { id: '2', title: 'Training', icon: require('../../assets/icons/services/Walkers.png') },
-  { id: '3', title: 'Sitting', icon: require('../../assets/icons/services/Walkers.png') },
-//   { id: '4', title: 'Dermatology', icon: require('../../assets/icons/services/Vets.png') },
+  { id: '2', title: 'Training', icon: require('../../assets/icons/services/Training.png') },
+  { id: '3', title: 'Sitting', icon: require('../../assets/icons/services/Training.png') },
+  { id: '4', title: 'Dermatology', icon: require('../../assets/icons/services/Groomer.png') },
+  { id: '5', title: 'Walking', icon: require('../../assets/icons/services/Training.png') },
+  { id: '6', title: 'Vets', icon: require('../../assets/icons/services/Vets.png') },
+  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Vector.png') },
+  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Nutrition.png') },
 ];
 
 const Services = () => {
   const renderService = ({ item, index }: { item: any; index: number }) => (
-    <Animated.View
-      entering={FadeInDown.delay(index * 100).springify()}
-      style={styles.serviceCard}
-    >
-      <View style={styles.iconWrapper}>
-        <Image source={item.icon} resizeMode="contain" style={styles.serviceIcon} />
-      </View>
-      <Typography style={styles.serviceText}>{item.title}</Typography>
-    </Animated.View>
+    <TouchableOpacity onPress={() => navigate(SCREENS.ServiceDetails)}>
+      <Animated.View
+        entering={FadeInDown.delay(index * 100).springify()}
+        style={styles.serviceCard}
+      >
+        <View style={styles.iconWrapper}>
+          <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
+        </View>
+        <Typography style={styles.serviceText}>{item.title}</Typography>
+      </Animated.View>
+    </TouchableOpacity>
   );
 
   const BottomCard = () => (
@@ -38,20 +40,20 @@ const Services = () => {
       <View style={styles.bottomRow}>
         <Image
           source={require('../../assets/images/common/serviceBanner.png')}
-          resizeMode="cover"
+          resizeMode='cover'
           style={styles.bottomImage}
         />
         <Typography style={styles.bottomText}>
           Our Experience Trainers are ready to take care of your pets
         </Typography>
-        <View style={styles.forwardButton}>
+        <TouchableOpacity onPress={() => navigate(SCREENS.TrainersScreen)} style={styles.forwardButton}>
           <Icon
-            componentName="Ionicons"
-            iconName="chevron-forward"
+            componentName='Ionicons'
+            iconName='chevron-forward'
             size={20}
             color={COLORS.WHITE}
           />
-        </View>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.joinButton}>
         <Typography style={styles.joinButtonText}>Join Our Community</Typography>
@@ -60,7 +62,7 @@ const Services = () => {
   );
 
   return (
-    <AppWrapper title="Services">
+    <AppWrapper title='Services'>
       <Typography style={styles.headerTitle}>Explore Services</Typography>
       <FlatList
         data={servicesData}
@@ -104,11 +106,11 @@ const styles = StyleSheet.create({
     marginBottom: ms(8),
   },
   serviceIcon: {
-    width: ms(32),
-    height: ms(32),
+    width: ms(30),
+    height: ms(30),
   },
   serviceText: {
-    fontSize: ms(12),
+    fontSize: ms(10),
     color: COLORS.BLACK,
     textAlign: 'center',
   },
