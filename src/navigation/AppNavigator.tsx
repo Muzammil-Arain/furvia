@@ -47,6 +47,9 @@ import HelpAndSupport from 'screens/common/PrivacyPolicy/HelpAndSupport';
 import SubmitQuery from 'screens/common/PrivacyPolicy/SubmitQuery';
 import TestimonialsScreen from 'screens/petowner/Testimonials';
 import EditProfile from 'screens/user/EditProfile';
+import Dashboard from 'screens/community/Dashboard';
+import CreateEvent from 'screens/community/CreateEvent';
+import StoryView from 'screens/community/ViewStory';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -140,6 +143,18 @@ export const AppNavigator = () => {
     },
     [SCREENS.EDIT_PROFILE]: {
       component: EditProfile,
+      options: { headerShown: false },
+    },
+    [SCREENS.Dashboard]: {
+      component: Dashboard,
+      options: { headerShown: false },
+    },
+    [SCREENS.CreateEvent]: {
+      component: CreateEvent,
+      options: { headerShown: false },
+    },
+    [SCREENS.StoryView]: {
+      component: StoryView,
       options: { headerShown: false },
     },
     //extra

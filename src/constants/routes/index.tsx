@@ -113,4 +113,7 @@ export const SCREENS = {
   SubmitQuery: 'SubmitQuery',
   TestimonialsScreen: 'TestimonialsScreen',
   EDIT_PROFILE: 'EditProfile',
+  Dashboard: 'Dashboard',
+  CreateEvent:'CreateEvent',
+  StoryView:'StoryView'
 } as const;

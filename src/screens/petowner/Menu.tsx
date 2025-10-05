@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Switch, FlatList } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Typography, Icon } from 'components/index';
 import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';

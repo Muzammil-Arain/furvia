@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Platform } from 'react-native';
-import { AppWrapper } from 'components/common/AppWapper';
-import { Typography, Icon } from 'components/index';
-import { COLORS } from 'utils/colors';
+import React, { useState } from 'react';
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView,
+  Alert,
+} from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
-import * as Animatable from 'react-native-animatable';
+import { COLORS } from 'utils/colors';
+import { Typography, Icon } from 'components/index';
+import { AppWrapper } from 'components/common/AppWapper';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { onBack } from 'navigation/index';
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -18,10 +27,17 @@ const ChangePassword = () => {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
-  // Validate inputs whenever they change
-  useEffect(() => {
-    validateForm();
-  }, [currentPassword, newPassword, confirmPassword]);
+  // Handle input change and clear errors dynamically when the user types
+  const handleInputChange = (value, field) => {
+    setErrors(prevState => ({
+      ...prevState,
+      [field]: '', // Clear the error for the specific field
+    }));
+
+    if (field === 'currentPassword') setCurrentPassword(value);
+    if (field === 'newPassword') setNewPassword(value);
+    if (field === 'confirmPassword') setConfirmPassword(value);
+  };
 
   const validateForm = () => {
     let valid = true;
@@ -50,106 +66,107 @@ const ChangePassword = () => {
 
     setErrors(newErrors);
     setIsValid(valid);
+    return valid;
   };
 
   const handleChangePassword = () => {
-    validateForm();
-    if (isValid) {
+    if (validateForm()) {
       console.log('✅ Password Changed Successfully');
       // handle API call here
+      onBack();
     }
   };
 
   return (
     <AppWrapper title='Change Password'>
-      {/* Current Password */}
-      <View style={styles.inputWrapper}>
-        <Typography style={styles.label}>Current Password</Typography>
-        <View
-          style={[styles.inputBoxWrapper, errors.current && { borderColor: COLORS.ERROR || 'red' }]}
-        >
-          <TextInput
-            value={currentPassword}
-            onChangeText={setCurrentPassword}
-            placeholder='Enter current password'
-            placeholderTextColor='#AAA'
-            style={styles.inputBox}
-            secureTextEntry={!showCurrent}
-          />
-          <TouchableOpacity onPress={() => setShowCurrent(!showCurrent)}>
-            <Icon
-              componentName='Ionicons'
-              iconName={showCurrent ? 'eye-off' : 'eye'}
-              size={20}
-              color={COLORS.GRAY}
+      <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+        {/* Current Password */}
+        <View style={styles.inputWrapper}>
+          <Typography style={styles.label}>Current Password</Typography>
+          <View
+            style={[styles.inputBoxWrapper, errors.current && { borderColor: COLORS.ERROR || 'red' }]}
+          >
+            <TextInput
+              value={currentPassword}
+              onChangeText={(value) => handleInputChange(value, 'currentPassword')}
+              placeholder='Enter current password'
+              placeholderTextColor='#AAA'
+              style={styles.inputBox}
+              secureTextEntry={!showCurrent}
             />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowCurrent(!showCurrent)}>
+              <Icon
+                componentName='Ionicons'
+                iconName={showCurrent ? 'eye-off' : 'eye'}
+                size={20}
+                color={COLORS.GRAY}
+              />
+            </TouchableOpacity>
+          </View>
+          {errors.current && <Text style={styles.errorText}>{errors.current}</Text>}
         </View>
-        {errors.current && <Text style={styles.errorText}>{errors.current}</Text>}
-      </View>
 
-      {/* New Password */}
-      <View style={styles.inputWrapper}>
-        <Typography style={styles.label}>New Password</Typography>
-        <View
-          style={[styles.inputBoxWrapper, errors.new && { borderColor: COLORS.ERROR || 'red' }]}
-        >
-          <TextInput
-            value={newPassword}
-            onChangeText={setNewPassword}
-            placeholder='Enter new password'
-            placeholderTextColor='#AAA'
-            style={styles.inputBox}
-            secureTextEntry={!showNew}
-          />
-          <TouchableOpacity onPress={() => setShowNew(!showNew)}>
-            <Icon
-              componentName='Ionicons'
-              iconName={showNew ? 'eye-off' : 'eye'}
-              size={20}
-              color={COLORS.GRAY}
+        {/* New Password */}
+        <View style={styles.inputWrapper}>
+          <Typography style={styles.label}>New Password</Typography>
+          <View
+            style={[styles.inputBoxWrapper, errors.new && { borderColor: COLORS.ERROR || 'red' }]}
+          >
+            <TextInput
+              value={newPassword}
+              onChangeText={(value) => handleInputChange(value, 'newPassword')}
+              placeholder='Enter new password'
+              placeholderTextColor='#AAA'
+              style={styles.inputBox}
+              secureTextEntry={!showNew}
             />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowNew(!showNew)}>
+              <Icon
+                componentName='Ionicons'
+                iconName={showNew ? 'eye-off' : 'eye'}
+                size={20}
+                color={COLORS.GRAY}
+              />
+            </TouchableOpacity>
+          </View>
+          {errors.new && <Text style={styles.errorText}>{errors.new}</Text>}
         </View>
-        {errors.new && <Text style={styles.errorText}>{errors.new}</Text>}
-      </View>
 
-      {/* Confirm Password */}
-      <View style={styles.inputWrapper}>
-        <Typography style={styles.label}>Confirm Password</Typography>
-        <View
-          style={[styles.inputBoxWrapper, errors.confirm && { borderColor: COLORS.ERROR || 'red' }]}
-        >
-          <TextInput
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            placeholder='Confirm new password'
-            placeholderTextColor='#AAA'
-            style={styles.inputBox}
-            secureTextEntry={!showConfirm}
-          />
-          <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
-            <Icon
-              componentName='Ionicons'
-              iconName={showConfirm ? 'eye-off' : 'eye'}
-              size={20}
-              color={COLORS.GRAY}
+        {/* Confirm Password */}
+        <View style={styles.inputWrapper}>
+          <Typography style={styles.label}>Confirm Password</Typography>
+          <View
+            style={[styles.inputBoxWrapper, errors.confirm && { borderColor: COLORS.ERROR || 'red' }]}
+          >
+            <TextInput
+              value={confirmPassword}
+              onChangeText={(value) => handleInputChange(value, 'confirmPassword')}
+              placeholder='Confirm new password'
+              placeholderTextColor='#AAA'
+              style={styles.inputBox}
+              secureTextEntry={!showConfirm}
             />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowConfirm(!showConfirm)}>
+              <Icon
+                componentName='Ionicons'
+                iconName={showConfirm ? 'eye-off' : 'eye'}
+                size={20}
+                color={COLORS.GRAY}
+              />
+            </TouchableOpacity>
+          </View>
+          {errors.confirm && <Text style={styles.errorText}>{errors.confirm}</Text>}
         </View>
-        {errors.confirm && <Text style={styles.errorText}>{errors.confirm}</Text>}
-      </View>
 
-      {/* Save Button */}
-      <Animatable.View animation='fadeInUp' delay={400}>
+        {/* Save Button */}
         <TouchableOpacity
           style={[styles.saveButton, !isValid && { opacity: 0.6 }]}
           activeOpacity={isValid ? 0.9 : 1}
-          onPress={isValid ? handleChangePassword : validateForm}
+          onPress={handleChangePassword}
         >
           <Typography style={styles.saveText}>Change Password</Typography>
         </TouchableOpacity>
-      </Animatable.View>
+      </ScrollView>
     </AppWrapper>
   );
 };
@@ -185,7 +202,7 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
   },
   errorText: {
-    color: COLORS.ERROR || 'red',
+    color: COLORS.RED || 'red',
     fontSize: ms(11),
     marginTop: 4,
     marginLeft: 5,

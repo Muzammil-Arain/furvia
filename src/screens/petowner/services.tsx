@@ -55,7 +55,7 @@ const Services = () => {
           />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.joinButton}>
+      <TouchableOpacity onPress={() => navigate(SCREENS.Dashboard)} style={styles.joinButton}>
         <Typography style={styles.joinButtonText}>Join Our Community</Typography>
       </TouchableOpacity>
     </Animated.View>

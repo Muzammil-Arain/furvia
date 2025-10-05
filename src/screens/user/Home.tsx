@@ -16,18 +16,9 @@ import { useAppSelector } from 'types/index';
 import { COLORS } from 'utils/index';
 import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
+import { servicesData } from 'api/data';
 
-// Dummy Data
-const services = [
-  { id: '1', title: 'Groomer', icon: require('../../assets/icons/services/Groomer.png') },
-  { id: '2', title: 'Training', icon: require('../../assets/icons/services/Training.png') },
-  { id: '3', title: 'Sitting', icon: require('../../assets/icons/services/Training.png') },
-  { id: '4', title: 'Dermatology', icon: require('../../assets/icons/services/Groomer.png') },
-  { id: '5', title: 'Walking', icon: require('../../assets/icons/services/Training.png') },
-  { id: '6', title: 'Vets', icon: require('../../assets/icons/services/Vets.png') },
-  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Vector.png') },
-  { id: '7', title: 'Nutrition', icon: require('../../assets/icons/services/Nutrition.png') },
-];
+
 
 const pets = [
   {
@@ -243,7 +234,7 @@ export const Home = () => {
           <FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            data={services}
+            data={servicesData}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
               <ScaleTouchable>

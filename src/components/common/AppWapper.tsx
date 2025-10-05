@@ -7,6 +7,7 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { COLORS, isIOS } from 'utils/index';
 import { Icon, Loader, Typography } from './index';
@@ -26,6 +27,7 @@ interface WrapperProps {
   goBack?: boolean;
   loading?: boolean;
   title?: string;
+  onRightPress?: () => void;
   onBackPress?: () => void;
 }
 
@@ -39,7 +41,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   goBack = true,
   title,
   loading,
-  onBackPress,
+  onRightPress,
 }) => {
   const isAppLoading = useAppSelector((state: RootState) => state.app.isAppLoading);
   const insets = useSafeAreaInsets();
@@ -76,7 +78,10 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   return (
     <>
       {useSafeArea && (
-        <SafeAreaView edges={['top']} style={[styles.safeArea, { backgroundColor: COLORS.HEADER_BACKGROUND }]} />
+        <SafeAreaView
+          edges={['top']}
+          style={[styles.safeArea, { backgroundColor: COLORS.HEADER_BACKGROUND }]}
+        />
       )}
 
       <StatusBar
@@ -87,14 +92,11 @@ export const AppWrapper: React.FC<WrapperProps> = ({
       {(loading || (showAppLoader && isAppLoading)) && <Loader />}
 
       {/* ✅ Cool Animated Header */}
-      <Animated.View
-        entering={FadeInDown.duration(500)}
-        style={styles.headerContainer}
-      >
+      <Animated.View entering={FadeInDown.duration(500)} style={styles.headerContainer}>
         <View style={styles.headerRow}>
           {goBack ? (
             <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-              <Icon componentName="Ionicons" iconName="arrow-back" color={COLORS.WHITE} size={22} />
+              <Icon componentName='Ionicons' iconName='arrow-back' color={COLORS.WHITE} size={22} />
             </TouchableOpacity>
           ) : (
             <View style={{ width: ms(40) }} />
@@ -103,7 +105,19 @@ export const AppWrapper: React.FC<WrapperProps> = ({
           <Typography style={styles.headerTitle}>{title}</Typography>
 
           {/* Placeholder for right side */}
-          <View style={{ width: ms(40) }} />
+          {onRightPress ? (
+            <TouchableOpacity onPress={onRightPress}>
+              <Image
+                source={require('../../assets/images/common/plus.png')}
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </TouchableOpacity>
+          ) : (
+            <View style={{ width: ms(40) }} />
+          )}
         </View>
       </Animated.View>
 
