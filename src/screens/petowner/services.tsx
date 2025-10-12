@@ -22,7 +22,15 @@ const servicesData = [
 
 const Services = () => {
   const renderService = ({ item, index }: { item: any; index: number }) => (
-    <TouchableOpacity onPress={() => navigate(SCREENS.ServiceDetails)}>
+    <TouchableOpacity
+      onPress={() => {
+        if (item.title == 'Groomer') {
+          navigate(SCREENS.GromingService);
+        } else {
+          navigate(SCREENS.TrainersScreen);
+        }
+      }}
+    >
       <Animated.View
         entering={FadeInDown.delay(index * 100).springify()}
         style={styles.serviceCard}
@@ -46,7 +54,10 @@ const Services = () => {
         <Typography style={styles.bottomText}>
           Our Experience Trainers are ready to take care of your pets
         </Typography>
-        <TouchableOpacity onPress={() => navigate(SCREENS.TrainersScreen)} style={styles.forwardButton}>
+        <TouchableOpacity
+          // onPress={() => navigate(SCREENS.TrainersScreen)}
+          style={styles.forwardButton}
+        >
           <Icon
             componentName='Ionicons'
             iconName='chevron-forward'

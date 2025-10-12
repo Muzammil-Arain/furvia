@@ -3,7 +3,6 @@ import { COMMON_TEXT, SCREENS } from 'constants/index';
 import {
   Chat,
   Filter,
-  Messages,
   Search,
   Reviews,
   AddReview,
@@ -50,6 +49,10 @@ import EditProfile from 'screens/user/EditProfile';
 import Dashboard from 'screens/community/Dashboard';
 import CreateEvent from 'screens/community/CreateEvent';
 import StoryView from 'screens/community/ViewStory';
+import GroupsScreen from 'screens/community/GroupsScreen';
+import CommentScreen from 'screens/community/CommentsScreen';
+import Messages from 'screens/user/Messages';
+import GroupChatScreen from 'screens/user/Messages';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -157,6 +160,10 @@ export const AppNavigator = () => {
       component: StoryView,
       options: { headerShown: false },
     },
+    [SCREENS.MESSAGES]: {
+      component: GroupChatScreen,
+      options: { headerShown: false },
+    },
     //extra
     [SCREENS.NOTIFICATION_LISTING]: {
       component: NotificationListing,
@@ -250,6 +257,14 @@ export const AppNavigator = () => {
     },
     [SCREENS.TrainersScreen]: {
       component: TrainersScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.GroupsScreen]: {
+      component: GroupsScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.CommentsScreen]: {
+      component: CommentScreen,
       options: { headerShown: false },
     },
   };

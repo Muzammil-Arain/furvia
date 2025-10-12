@@ -1,283 +1,332 @@
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
-  FlatListComponent,
-  Header,
-  Icon,
-  Input,
-  RowComponent,
-  Typography,
-  Wrapper,
-} from 'components/common';
-import { VARIABLES } from 'constants/common';
-import { COMMON_TEXT, TEMPORARY_TEXT } from 'constants/screens';
-import { useState } from 'react';
-import { View, SectionList, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontSize, FontWeight } from 'types/fontTypes';
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  Animated,
+  Easing,
+} from 'react-native';
+import { GiftedChat, Bubble, InputToolbar, Send } from 'react-native-gifted-chat';
+import LinearGradient from 'react-native-linear-gradient';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ms } from 'react-native-size-matters';
 import { COLORS } from 'utils/colors';
-import { screenWidth } from 'utils/helpers';
-import { FLEX_CENTER } from '../../utils/commonStyles/index';
-import { IMAGES } from 'constants/assets';
-import { useTranslation } from 'hooks/useTranslation';
+import { Typography } from 'components/index';
+import { onBack } from 'navigation/index';
+import GroupInfoModal from 'components/appComponents/GroupInfoModal';
 
-interface Message {
-  id: string;
-  text: string;
-  sender: 'user' | 'other';
-  createdAt: Date;
-  profilePic?: string;
-}
+const { width } = Dimensions.get('window');
 
-// interface SectionData {
-//   title: string;
-//   data: Message[];
-// }
-// Function to group messages by date
-const groupMessagesByDate = (messages: Message[]) => {
-  const sections = messages.reduce((acc, message) => {
-    const date = message.createdAt.toDateString();
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(message);
-    return acc;
-  }, {} as Record<string, Message[]>);
-
-  return Object.keys(sections).map(date => ({
-    data: sections[date],
-    title: date,
-  }));
+// Dummy group data
+const dummyGroup = {
+  id: 'group_001',
+  name: 'Friends Trip ',
+  members: [
+    { _id: 2, name: 'Sophia', avatar: 'https://randomuser.me/api/portraits/women/65.jpg' },
+    { _id: 3, name: 'David', avatar: 'https://randomuser.me/api/portraits/men/52.jpg' },
+    { _id: 4, name: 'You', avatar: 'https://randomuser.me/api/portraits/men/45.jpg' },
+  ],
+  coverImage:
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=60',
+  description: 'Weekend trip with the squad!',
 };
 
-export const Messages = () => {
-  const { isLangRTL } = useTranslation();
-  const tempList: Message[] = [
-    {
-      id: '1',
-      text: 'Hello #Username, How can I help you?',
-      sender: 'other',
-      createdAt: new Date(),
-    },
-    {
-      id: '2',
-      text: 'Hey doc, we had a session 3 days ago, but sadly I am feeling pain in my cuts.',
-      sender: 'user',
-      createdAt: new Date(),
-    },
-    {
-      id: '3',
-      text: 'Did you take precautions as suggested?',
-      sender: 'other',
-      createdAt: new Date(),
-    },
-  ];
+const GroupChatScreen = ({ route }) => {
+  const group = dummyGroup;
+  const [messages, setMessages] = useState([]);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(-50)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const rotateAnim = useRef(new Animated.Value(0)).current;
 
-  const [messages, setMessages] = useState<Message[]>(tempList);
-  const [inputText, setInputText] = useState('');
+  const [infoVisible, setInfoVisible] = useState(false);
 
-  const handleSend = () => {
-    if (inputText.trim().length > 0) {
-      const newMessage: Message = {
-        id: (messages.length + 1).toString(),
-        text: inputText,
-        sender: 'user',
+  useEffect(() => {
+    // Animate header appearance
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        friction: 6,
+      }),
+    ]).start();
+
+    // Continuous pulse animation for send button
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.05,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+
+    // Dummy messages
+    setMessages([
+      {
+        _id: 1,
+        text: 'Welcome everyone! 🎉',
         createdAt: new Date(),
-      };
-      setMessages(prevMessages => [...prevMessages, newMessage]);
-      setInputText('');
-    }
-  };
+        user: {
+          _id: 2,
+          name: 'Ayesha',
+          avatar: 'https://randomuser.me/api/portraits/women/75.jpg',
+        },
+      },
+      {
+        _id: 2,
+        text: 'Hey guys 👋 excited for the trip!',
+        createdAt: new Date(),
+        user: {
+          _id: 3,
+          name: 'Ali',
+          avatar: 'https://randomuser.me/api/portraits/men/33.jpg',
+        },
+      },
+      {
+        _id: 3,
+        text: 'Same here, let’s plan soon! 😄',
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+          name: 'You',
+          avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
+        },
+      },
+    ]);
+  }, []);
 
-  const groupedMessages = groupMessagesByDate(messages);
+  const onSend = useCallback((msgs = []) => {
+    // Trigger rotation animation when sending
+    Animated.sequence([
+      Animated.timing(rotateAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rotateAnim, {
+        toValue: 0,
+        duration: 0,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-  const renderMessage = ({ item }: { item: Message }) => {
-    const timeString = item.createdAt.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-    return (
-      <RowComponent
+    setMessages(prevMsgs => GiftedChat.append(prevMsgs, msgs));
+  }, []);
+
+  // Interpolations for rotation effect
+  const rotateInterpolate = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
+
+  return (
+    <View style={styles.container}>
+      {/* Animated Header */}
+      <Animated.View
         style={[
-          styles.row,
+          styles.headerContainer,
           {
-            justifyContent: item.sender === 'user' ? 'flex-end' : 'flex-start',
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
           },
         ]}
       >
-        {/* {item.sender === 'other' && item.profilePic && (
-        <Photo source={IMAGES.USER} imageStyle={styles.profilePic} />
-      )} */}
-        <View
-          style={[
-            styles.messageContainer,
-            item.sender === 'user' ? styles.userMessage : styles.otherMessage,
-          ]}
-        >
-          <View style={styles.messageContent}>
-            <Typography
-              style={item.sender === 'user' ? styles.userMessageText : styles.otherMessageText}
-            >
-              {item.text}
-            </Typography>
-            <Typography style={styles.timestamp}>{timeString}</Typography>
-          </View>
-        </View>
-      </RowComponent>
-    );
-  };
-
-  const previousSearchList = [
-    { id: '1', searchName: 'Yes' },
-    { id: '2', searchName: 'Yeah Ok' },
-    { id: '3', searchName: 'Sure!' },
-    { id: '4', searchName: 'Ok' },
-    { id: '5', searchName: '👍' },
-  ];
-  const handlePress = (searchName: string) => {
-    setInputText(prev => prev + ` ${searchName}`);
-  };
-
-  const renderItem = ({ item }: { item: { id: string; searchName: string } }) => (
-    <TouchableOpacity style={styles.itemContainer} onPress={() => handlePress(item.searchName)}>
-      <Typography numberOfLines={1} style={styles.itemText}>
-        {item.searchName}
-      </Typography>
-    </TouchableOpacity>
-  );
-
-  return (
-    <>
-      <Wrapper>
-        <Header title={TEMPORARY_TEXT.JOHN_DOE} centerImage={IMAGES.USER} />
-        <SectionList
-          sections={groupedMessages}
-          renderItem={renderMessage}
-          renderSectionHeader={({ section }) => {
-            const dateObj = new Date(section.title);
-            const formattedDate =
-              `${dateObj.getDate()} ` +
-              dateObj.toLocaleDateString(undefined, {
-                month: 'short',
-              }) +
-              `,  ${dateObj.getFullYear()}`;
-            return (
-              <View style={styles.sectionHeaderContainer}>
-                <Typography style={styles.sectionHeader}>{formattedDate}</Typography>
+        <LinearGradient colors={[COLORS.SECONDARY, COLORS.SECONDARY]} style={styles.headerGradient}>
+          <TouchableOpacity style={styles.backButton} onPress={() => onBack()}>
+            <Icon name='arrow-back' size={ms(22)} color={COLORS.WHITE} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setInfoVisible(true)}>
+            <View style={styles.groupHeaderContent}>
+              <Image source={{ uri: group.coverImage }} style={styles.groupImage} />
+              <View style={styles.groupInfo}>
+                <Typography style={styles.groupName}>{group.name}</Typography>
+                <Typography style={styles.groupMembers}>{group.members.length} Members</Typography>
               </View>
-            );
-          }}
-          keyExtractor={item => item.id}
-        />
+            </View>
+          </TouchableOpacity>
+        </LinearGradient>
+      </Animated.View>
 
-        <FlatListComponent
-          horizontal
-          style={{ marginLeft: 15 }}
-          data={previousSearchList}
-          renderItem={renderItem}
-        />
-        <RowComponent style={styles.inputContainer}>
-          <Input
-            name={COMMON_TEXT.EMAIL}
-            onChangeText={setInputText}
-            containerStyle={{ width: screenWidth(78) }}
-            value={inputText}
-            placeholder={COMMON_TEXT.WRITE_MESSAGE}
-            endIcon={{
-              componentName: VARIABLES.FontAwesome5,
-              iconName: 'plus-circle',
-              color: COLORS.ICONS,
-              iconStyle: { paddingRight: 0 },
-              size: FontSize.ExtraLarge,
-              onPress: () => {},
+      {/* Chat Section */}
+      <GiftedChat
+        messages={messages}
+        onSend={onSend}
+        user={{
+          _id: 1,
+          name: 'You',
+          avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
+        }}
+        placeholder='Type a message...'
+        renderBubble={props => (
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: {
+                backgroundColor: COLORS.PRIMARY,
+                borderRadius: ms(14),
+                padding: ms(4),
+                marginBottom: 10,
+              },
+              left: {
+                backgroundColor: COLORS.LIGHT_GREY,
+                padding: ms(4),
+                marginBottom: 10,
+              },
+            }}
+            textStyle={{
+              right: { color: COLORS.WHITE },
+              left: { color: COLORS.BLACK },
             }}
           />
-          <Icon
-            componentName={VARIABLES.Ionicons}
-            iconName={'send'}
-            onPress={handleSend}
-            iconStyle={{
-              backgroundColor: COLORS.SECONDARY,
-              color: COLORS.WHITE,
-              marginBottom: 15,
-              padding: 10,
-              fontSize: FontSize.ExtraLarge,
-              overflow: 'hidden',
-              borderRadius: 10,
-              transform: [{ scaleX: isLangRTL ? -1 : 1 }],
-            }}
+        )}
+        renderSend={props => (
+          <Send {...props} disabled={!props.text?.trim()}>
+            <View style={styles.sendButton}>
+              <Icon name='send' size={ms(18)} color={COLORS.WHITE} />
+            </View>
+          </Send>
+        )}
+        renderInputToolbar={props => (
+          <InputToolbar
+            {...props}
+            containerStyle={styles.inputToolbarContainer}
+            primaryStyle={styles.inputPrimary}
+            textInputStyle={styles.textInput}
           />
-        </RowComponent>
-      </Wrapper>
-    </>
+        )}
+        showUserAvatar
+        scrollToBottom
+        alwaysShowSend
+        renderAvatarOnTop
+        showAvatarForEveryMessage
+        bottomOffset={10}
+      />
+
+      <GroupInfoModal visible={infoVisible} onClose={() => setInfoVisible(false)} group={group} />
+    </View>
   );
 };
 
+export default GroupChatScreen;
+
 const styles = StyleSheet.create({
-  row: {
-    marginVertical: 5,
-    marginHorizontal: 15,
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.WHITE_OPACITY,
   },
-  profilePic: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+  headerContainer: {
+    shadowColor: COLORS.BLACK,
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 5,
+    zIndex: 5,
   },
-  messageContainer: {
-    padding: 10,
-    borderRadius: 10,
-    maxWidth: screenWidth(78),
+  headerGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: ms(14),
+    paddingHorizontal: ms(15),
+    borderBottomLeftRadius: ms(20),
+    borderBottomRightRadius: ms(20),
   },
-  itemContainer: {
-    borderWidth: 1,
-    borderColor: COLORS.BORDER,
-    paddingHorizontal: 13,
-    paddingVertical: 8,
-    marginTop: 10,
-    marginRight: 10,
-    borderRadius: 10,
+  backButton: {
+    marginRight: ms(10),
+    padding: ms(6),
+    borderRadius: ms(10),
   },
-  userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: COLORS.PRIMARY,
+  groupHeaderContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  otherMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: COLORS.SEARCH_BAR,
+  groupImage: {
+    width: ms(55),
+    height: ms(55),
+    borderRadius: ms(28),
+    borderWidth: 2,
+    borderColor: COLORS.WHITE,
   },
-  messageText: {
-    color: COLORS.BLACK,
+  groupInfo: {
+    marginLeft: ms(12),
   },
-  userMessageText: {
+  groupName: {
+    fontSize: ms(15),
+    fontWeight: '700',
     color: COLORS.WHITE,
   },
-  otherMessageText: {
-    color: COLORS.BLACK,
+  groupMembers: {
+    fontSize: ms(11),
+    color: COLORS.WHITE,
+    opacity: 0.9,
+    marginTop: 2,
   },
-  timestamp: {
-    fontSize: FontSize.ExtraSmall,
-    color: COLORS.BORDER,
-    textAlign: 'right',
+  // inputToolbar: {
+  //   borderTopWidth: 0,
+  //   marginHorizontal: ms(10),
+  //   marginBottom: ms(10),
+  //   borderRadius: ms(25),
+  //   elevation: 5,
+  //   shadowColor: COLORS.BLACK,
+  //   shadowOpacity: 0.1,
+  //   shadowRadius: 6,
+  // },
+  // sendButton: {
+  //   margin: 5,
+  //   width: ms(40),
+  //   height: ms(40),
+  //   borderRadius: ms(25),
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  // },
+  inputToolbarContainer: {
+    borderTopWidth: 0,
+    borderRadius: ms(25),
+    marginHorizontal: ms(12),
+    marginBottom: ms(8),
+    shadowColor: COLORS.BLACK,
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  inputPrimary: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  textInput: {
+    color: COLORS.TEXT,
+    fontSize: ms(14),
+    lineHeight: ms(20),
+    paddingTop: ms(6),
+    paddingBottom: ms(6),
+    paddingHorizontal: ms(10),
+  },
+
+  sendButton: {
+    backgroundColor: COLORS.PRIMARY,
+    width: ms(35),
+    height: ms(35),
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 5,
-  },
-  inputContainer: {
-    gap: 10,
-    marginBottom: 20,
-    paddingTop: 10,
-    ...FLEX_CENTER,
-  },
-  itemText: {
-    textAlign: 'center',
-    lineHeight: 25,
-  },
-  messageContent: {
-    maxWidth: screenWidth(100),
-  },
-  sectionHeaderContainer: {
-    backgroundColor: COLORS.WHITE,
-    paddingVertical: 10,
-  },
-  sectionHeader: {
-    fontWeight: FontWeight.SemiBold,
-    textAlign: 'center',
-    color: COLORS.BLACK,
   },
 });

@@ -18,8 +18,6 @@ import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
 import { servicesData } from 'api/data';
 
-
-
 const pets = [
   {
     id: '1',
@@ -27,8 +25,7 @@ const pets = [
     gender: 'Male',
     age: '1 yr 3 m',
     weight: '2.5 KG',
-    image:
-      'https://png.pngtree.com/png-vector/20250111/ourmid/pngtree-golden-retriever-dog-pictures-png-image_15147078.png',
+    image: require('../../assets/images/pet2.png'),
     bgColor: '#E5F9FF',
   },
   {
@@ -37,8 +34,7 @@ const pets = [
     gender: 'Male',
     age: '1 yr 1 m',
     weight: '1.8 KG',
-    image:
-      'https://png.pngtree.com/png-vector/20240808/ourmid/pngtree-happy-golden-retriever-dog-png-image_13369601.png',
+    image: require('../../assets/images/pet3.png'),
     bgColor: '#FFEFF5',
   },
 ];
@@ -120,7 +116,7 @@ export const Home = () => {
     <ScaleTouchable>
       <View style={styles.petCardWrapper}>
         <View style={[styles.imageContainer, { backgroundColor: pet.bgColor }]}>
-          <Image source={{ uri: pet.image }} style={styles.petImage} resizeMode='contain' />
+          <Image source={pet.image} style={styles.petImage} resizeMode='contain' />
         </View>
         <Text style={styles.petName}>{pet.name}</Text>
         <View style={styles.infoRow}>
@@ -215,10 +211,8 @@ export const Home = () => {
             </TouchableOpacity>
           </View>
           <Image
-            resizeMode='cover'
-            source={{
-              uri: 'https://png.pngtree.com/png-vector/20250111/ourmid/pngtree-golden-retriever-dog-pictures-png-image_15147078.png',
-            }}
+            resizeMode='contain'
+            source={require('../../assets/images/pet.png')}
             style={styles.bannerImage}
           />
         </Animated.View>
@@ -237,7 +231,7 @@ export const Home = () => {
             data={servicesData}
             keyExtractor={item => item.id}
             renderItem={({ item }) => (
-              <ScaleTouchable>
+              <TouchableOpacity onPress={() => navigate(SCREENS.GromingService)}>
                 <View style={styles.serviceCard}>
                   <View
                     style={{
@@ -258,7 +252,7 @@ export const Home = () => {
 
                   <Typography style={styles.serviceText}>{item.title}</Typography>
                 </View>
-              </ScaleTouchable>
+              </TouchableOpacity>
             )}
           />
         </View>
@@ -375,7 +369,7 @@ const styles = StyleSheet.create({
     marginTop: vs(8),
   },
   bannerButtonText: { color: COLORS.WHITE, fontSize: ms(12) },
-  bannerImage: { width: ms(100), height: ms(100) },
+  bannerImage: { width: ms(150), height: ms(150) },
 
   section: { marginBottom: vs(20) },
   sectionHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },

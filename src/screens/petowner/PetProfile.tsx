@@ -75,7 +75,7 @@ const MyPetProfile = () => {
                     <Typography style={styles.petAge}>{pet.age}</Typography>
                   </View>
                   <TouchableOpacity
-                    onPress={() => navigate(SCREENS.PetProfileDetails)}
+                    // onPress={() => navigate(SCREENS.PetProfileDetails)}
                     style={styles.editButton}
                   >
                     <Image

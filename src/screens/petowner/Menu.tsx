@@ -11,50 +11,50 @@ import { navigate } from 'navigation/index';
 const menuItems = [
   {
     id: '1',
-    navigate: SCREENS.EDIT_PROFILE,
+    // navigate: SCREENS.EDIT_PROFILE,
     label: 'My Account',
     icon: require('../../assets/images/common/menu_user.png'),
   },
   {
     id: '2',
-    navigate: SCREENS.MyBooking,
+    // navigate: SCREENS.MyBooking,
     label: 'My Bookings',
     icon: require('../../assets/images/common/menu_history.png'),
   },
   {
     id: '3',
-    navigate: SCREENS.MyPetProfile,
+    // navigate: SCREENS.MyPetProfile,
     label: 'Gallery',
     icon: require('../../assets/images/common/menu_history.png'),
   },
   {
     id: '3',
-    navigate: SCREENS.ReferralProgram,
+    // navigate: SCREENS.ReferralProgram,
     label: 'Referral Program',
     icon: require('../../assets/images/common/menu_history.png'),
   },
   // { id: '4', label: 'Testimonials', icon: require('../../assets/images/common/menu_history.png') },
   {
     id: '5',
-    navigate: SCREENS.CHANGE_PASSWORD,
+    // navigate: SCREENS.CHANGE_PASSWORD,
     label: 'Change Password',
     icon: require('../../assets/images/common/menu_locked.png'),
   },
   {
     id: '6',
-    navigate: SCREENS.AddAddress,
+    // navigate: SCREENS.AddAddress,
     label: 'My Address',
     icon: require('../../assets/images/common/menu_location.png'),
   },
   {
     id: '7',
-    navigate: SCREENS.HelpAndSupport,
+    // navigate: SCREENS.HelpAndSupport,
     label: 'Help and Support',
     icon: require('../../assets/images/common/menu_support.png'),
   },
   {
     id: '8',
-    navigate: SCREENS.TermsAndConditions,
+    // navigate: SCREENS.TermsAndConditions,
     label: 'Terms & Conditions',
     icon: require('../../assets/images/common/menu_policy.png'),
   },
@@ -91,12 +91,18 @@ const MenuScreen = () => {
 
         {/* Points Section */}
         <View style={styles.pointsRow}>
-          <TouchableOpacity onPress={() => navigate(SCREENS.Wallet)} style={styles.pointsCard}>
+          <TouchableOpacity
+            //  onPress={() => navigate(SCREENS.Wallet)}
+            style={styles.pointsCard}
+          >
             <Typography style={styles.pointsLabel}>Visit Points</Typography>
             <Typography style={styles.pointsValue}>850 Pts</Typography>
             <Typography style={styles.pointsSub}>($850.00)</Typography>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigate(SCREENS.Wallet)} style={styles.pointsCard}>
+          <TouchableOpacity
+            // onPress={() => navigate(SCREENS.Wallet)}
+            style={styles.pointsCard}
+          >
             <Typography style={styles.pointsLabel}>Referral Points</Typography>
             <Typography style={styles.pointsValue}>100 Pts</Typography>
             <Typography style={styles.pointsSub}>($100.00)</Typography>
@@ -124,11 +130,11 @@ const MenuScreen = () => {
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => {
-                if (item.navigate) {
-                  navigate(item.navigate);
-                }
-              }}
+              // onPress={() => {
+              //   if (item.navigate) {
+              //     navigate(item.navigate);
+              //   }
+              // }}
               style={styles.menuItem}
             >
               <View style={styles.menuLeft}>

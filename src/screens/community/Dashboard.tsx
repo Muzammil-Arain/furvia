@@ -29,14 +29,14 @@ const storyData = [
 const parksData = [
   {
     id: '1',
-    title: 'Paws and Play Park',
+    name: 'Paws and Play Park',
     location: 'Parker Rd, Allentown, New Mexico',
     image:
       'https://media.istockphoto.com/id/841278554/photo/beautiful-morning-light-in-public-park-with-green-grass-field.jpg?s=612x612&w=0&k=20&c=rXOM3Uq9kPbpM5IWnCAnffHOP8KKpVKCJDMuNBlTNls=',
   },
   {
     id: '2',
-    title: 'PetPals Picnic',
+    name: 'PetPals Picnic',
     location: 'Elgin St. Center, New Mexico',
     image:
       'https://us.123rf.com/450wm/themorningglory/themorningglory1602/themorningglory160200194/52530295-beautiful-green-summer-park-garden-with-blue-sky.jpg?ver=6',
@@ -149,34 +149,39 @@ const Dashboard = () => {
   );
 
   const renderParkItem = ({ item }) => (
-    <View
-      style={[
-        styles.card,
-        {
-          margin: 3,
-          width: ms(250),
-          backgroundColor: COLORS.WHITE,
-          borderRadius: 6,
-          elevation: 3,
-        },
-      ]}
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={() => navigate(SCREENS.ParkInfoScreen, { park: item })}
     >
-      <View style={styles.parkImageContainer}>
-        <Image source={{ uri: item.image }} style={styles.parkImage} />
-      </View>
-      <Typography style={styles.parkTitle}>{item.title}</Typography>
       <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginLeft: 5,
-          marginBottom: 10,
-        }}
+        style={[
+          styles.card,
+          {
+            margin: 3,
+            width: ms(250),
+            backgroundColor: COLORS.WHITE,
+            borderRadius: 6,
+            elevation: 3,
+          },
+        ]}
       >
-        <Icon componentName='Entypo' iconName='location-pin' color={COLORS.SECONDARY} />
-        <Typography style={styles.parkLocation}>{item.location}</Typography>
+        <View style={styles.parkImageContainer}>
+          <Image source={{ uri: item.image }} style={styles.parkImage} />
+        </View>
+        <Typography style={styles.parkTitle}>{item.name}</Typography>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 5,
+            marginBottom: 10,
+          }}
+        >
+          <Icon componentName='Entypo' iconName='location-pin' color={COLORS.SECONDARY} />
+          <Typography style={styles.parkLocation}>{item.location}</Typography>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderActivityItem = ({ item }) => (
@@ -233,12 +238,14 @@ const Dashboard = () => {
           data={servicesData}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <View style={styles.serviceCard}>
-              <View style={styles.serviceIconContainer}>
-                <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
+            <TouchableOpacity onPress={() => navigate(SCREENS.GroupsScreen)}>
+              <View style={styles.serviceCard}>
+                <View style={styles.serviceIconContainer}>
+                  <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
+                </View>
+                <Typography style={styles.serviceText}>{item.title}</Typography>
               </View>
-              <Typography style={styles.serviceText}>{item.title}</Typography>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -256,7 +263,7 @@ const Dashboard = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Typography style={styles.title}>Furvia Recommended Parks</Typography>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate(SCREENS.ParksScreen)}>
             <Typography style={styles.viewAllText}>View all</Typography>
           </TouchableOpacity>
         </View>

@@ -122,7 +122,7 @@ const ServiceDetails = () => {
         {/* Book Button */}
         <Animatable.View animation='pulse' iterationCount='infinite' delay={1200}>
           <TouchableOpacity
-            onPress={() => navigate(SCREENS.BookService)}
+            onPress={() => navigate(SCREENS.TrainersScreen)}
             activeOpacity={0.9}
             style={styles.button}
           >

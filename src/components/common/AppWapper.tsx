@@ -29,6 +29,7 @@ interface WrapperProps {
   title?: string;
   onRightPress?: () => void;
   onBackPress?: () => void;
+  onEndIcon?: any;
 }
 
 export const AppWrapper: React.FC<WrapperProps> = ({
@@ -40,6 +41,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   showAppLoader = false,
   goBack = true,
   title,
+  onEndIcon,
   loading,
   onRightPress,
 }) => {
@@ -94,6 +96,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
       {/* ✅ Cool Animated Header */}
       <Animated.View entering={FadeInDown.duration(500)} style={styles.headerContainer}>
         <View style={styles.headerRow}>
+          {/* Left: Back Button */}
           {goBack ? (
             <TouchableOpacity onPress={onBack} style={styles.backBtn}>
               <Icon componentName='Ionicons' iconName='arrow-back' color={COLORS.WHITE} size={22} />
@@ -102,22 +105,28 @@ export const AppWrapper: React.FC<WrapperProps> = ({
             <View style={{ width: ms(40) }} />
           )}
 
-          <Typography style={styles.headerTitle}>{title}</Typography>
+          {/* Center: Title */}
+          <View style={styles.titleContainer}>
+            <Typography style={styles.headerTitle} numberOfLines={1}>
+              {title}
+            </Typography>
+          </View>
 
-          {/* Placeholder for right side */}
-          {onRightPress ? (
-            <TouchableOpacity onPress={onRightPress}>
-              <Image
-                source={require('../../assets/images/common/plus.png')}
-                style={{
-                  width: 30,
-                  height: 30,
-                }}
-              />
-            </TouchableOpacity>
-          ) : (
-            <View style={{ width: ms(40) }} />
-          )}
+          {/* Right: Either Custom Icon or End Icon */}
+          <View style={styles.rightContainer}>
+            {onEndIcon ? (
+              onEndIcon()
+            ) : onRightPress ? (
+              <TouchableOpacity style={{}} onPress={onRightPress}>
+                <Image
+                  source={require('../../assets/images/common/plus.png')}
+                  style={styles.plusIcon}
+                />
+              </TouchableOpacity>
+            ) : (
+              <View style={{ width: ms(30) }} />
+            )}
+          </View>
         </View>
       </Animated.View>
 
@@ -158,9 +167,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  backBtn: {
-    padding: ms(6),
-    borderRadius: ms(8),
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rightContainer: {
+    minWidth: ms(40),
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  plusIcon: {
+    width: ms(26),
+    height: ms(26),
   },
   headerTitle: {
     fontSize: ms(18),

@@ -84,7 +84,7 @@ const MyBookings = () => {
           {item.date} • {item.time}
         </Typography>
         <TouchableOpacity
-          onPress={() => navigate(SCREENS.RescheduleBooking)}
+          // onPress={() => navigate(SCREENS.RescheduleBooking)}
           style={styles.rescheduleBtn}
         >
           <Typography style={styles.rescheduleText}>Reschedule</Typography>

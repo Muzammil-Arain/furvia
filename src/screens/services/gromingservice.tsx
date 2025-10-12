@@ -5,6 +5,8 @@ import { Icon, Typography } from 'components/index';
 import { ms } from 'react-native-size-matters';
 import { COLORS } from 'utils/colors';
 import { AppWrapper } from 'components/common/AppWapper';
+import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
 
 const GromingService = () => {
   const data = [
@@ -25,24 +27,34 @@ const GromingService = () => {
   ];
 
   const renderServiceItem = ({ item, index }) => (
-    <Animated.View entering={FadeInDown.delay(index * 150).springify()} style={styles.serviceCard}>
-      <View style={styles.cardLeft}>
-        <View style={styles.iconContainer}>
-          <Image
-            source={require('../../assets/icons/services/Brushing.png')}
-            style={styles.icon}
-            resizeMode='contain'
+    <TouchableOpacity activeOpacity={0.8} onPress={() => navigate(SCREENS.ServiceDetails)}>
+      <Animated.View
+        entering={FadeInDown.delay(index * 150).springify()}
+        style={styles.serviceCard}
+      >
+        <View style={styles.cardLeft}>
+          <View style={styles.iconContainer}>
+            <Image
+              source={require('../../assets/icons/services/Brushing.png')}
+              style={styles.icon}
+              resizeMode='contain'
+            />
+          </View>
+          <View>
+            <Typography style={styles.serviceName}>{item.name}</Typography>
+            {item.desc ? <Typography style={styles.serviceDesc}>{item.desc}</Typography> : null}
+          </View>
+        </View>
+        <TouchableOpacity style={styles.scheduleIcon}>
+          <Icon
+            componentName='Ionicons'
+            iconName='calendar-outline'
+            size={20}
+            color={COLORS.WHITE}
           />
-        </View>
-        <View>
-          <Typography style={styles.serviceName}>{item.name}</Typography>
-          {item.desc ? <Typography style={styles.serviceDesc}>{item.desc}</Typography> : null}
-        </View>
-      </View>
-      <TouchableOpacity style={styles.scheduleIcon}>
-        <Icon componentName='Ionicons' iconName='calendar-outline' size={20} color={COLORS.WHITE} />
-      </TouchableOpacity>
-    </Animated.View>
+        </TouchableOpacity>
+      </Animated.View>
+    </TouchableOpacity>
   );
 
   const BottomCard = () => (

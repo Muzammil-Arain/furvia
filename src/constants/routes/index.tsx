@@ -115,5 +115,9 @@ export const SCREENS = {
   EDIT_PROFILE: 'EditProfile',
   Dashboard: 'Dashboard',
   CreateEvent:'CreateEvent',
-  StoryView:'StoryView'
+  StoryView:'StoryView',
+  ParksScreen:'ParksScreen',
+  ParkInfoScreen:'ParkInfoScreen',
+  GroupsScreen:'GroupsScreen',
+  CommentsScreen:'CommentsScreen'
 } as const;
