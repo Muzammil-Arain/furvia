@@ -5,12 +5,18 @@ import { View, StyleSheet, Image } from 'react-native';
 import { FontSize, FontWeight } from 'types/fontTypes';
 import { isIOS, screenHeight } from 'utils/index';
 import { Home } from 'screens/user';
-import { useTranslation } from 'hooks/useTranslation';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Services from 'screens/petowner/services';
 import MyPetProfile from 'screens/petowner/PetProfile';
 import MyBooking from 'screens/petowner/MyBooking';
 import MenuScreen from 'screens/petowner/Menu';
+
+//PROVIERS SCREENS
+import DashboardScreen from 'screens/provider/DashboardScreen';
+import ProfileScreen from 'screens/provider/ProfileScreen';
+import AllAppointmentsScreen from 'screens/provider/AllAppointmentsScreen';
+import WalletScreens from 'screens/provider/WalletScreens';
+import { useAppSelector } from 'types/reduxTypes';
 
 const screens = {
   [SCREENS.HOME]: Home,
@@ -18,6 +24,13 @@ const screens = {
   [SCREENS.MyPetProfile]: MyPetProfile,
   [SCREENS.MyBooking]: MyBooking,
   [SCREENS.MENU]: MenuScreen,
+};
+
+const ProviderScreens = {
+  [SCREENS.DashboardScreen]: DashboardScreen,
+  [SCREENS.AllAppointmentsScreen]: AllAppointmentsScreen,
+  [SCREENS.WalletScreens]: WalletScreens,
+  [SCREENS.ProfileScreen]: ProfileScreen,
 };
 
 const getIconConfig = (routeName: string) => {
@@ -34,6 +47,14 @@ const getIconConfig = (routeName: string) => {
       return IMAGES.menuIcon;
     case SCREENS.MENU:
       return IMAGES.menuIcon;
+
+    //PROVIDER SCREENS
+    case SCREENS.ProfileScreen:
+      return IMAGES.profileIcon;
+    case SCREENS.AllAppointmentsScreen:
+      return IMAGES.BookingIcon;
+    case SCREENS.WalletScreens:
+      return IMAGES.WalletIcon;
     default:
       return IMAGES.homeIcon;
   }
@@ -41,10 +62,11 @@ const getIconConfig = (routeName: string) => {
 
 export const BottomNavigator = () => {
   const insets = useSafeAreaInsets();
-  const { isLangRTL } = useTranslation();
   const Bottom = createBottomTabNavigator();
+  const role = useAppSelector(state => state.app.userRole);
+  const isProvider = role == 'provider';
 
-  const renderedPages = isLangRTL ? Object.entries(screens).reverse() : Object.entries(screens);
+  const renderedPages = isProvider ? Object.entries(ProviderScreens) : Object.entries(screens);
 
   return (
     <Bottom.Navigator

@@ -235,10 +235,10 @@ const GroupsScreen = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
-          onPress={() => navigate(SCREENS.MESSAGES)}
+          onPress={() => navigate(SCREENS.GroupChatScreen)}
         >
           <Image
-            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/2076/2076218.png' }}
+            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/16751/16751818.png' }}
             resizeMode='contain'
             style={{
               width: ms(17),

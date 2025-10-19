@@ -7722,10 +7722,10 @@ react-native-linear-gradient@^2.8.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
   integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
 
-react-native-maps@^1.26.14:
-  version "1.26.14"
-  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.26.14.tgz#ac4076f250815db13cf48ec1015c1904ea81bb48"
-  integrity sha512-ao4FMa3Iuie8fZuj7SG9LN8D9MEdu3gPm+9UfEEK2L1z+FXtGZTzTdByOsj4KRMGU5SGguFlHpV8aL1Sq5FKnA==
+react-native-maps@1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.16.0.tgz#737144876252debc1cc7987c7c21147237d1f7ae"
+  integrity sha512-2WW77n1LoCPDeTx+DXCVMErJMmMt/QHXsVNJkxQwQMTqPw/JVzsHoJXGYnzAflBdpl7OwLg5a4Jeowcxlk6N6w==
   dependencies:
     "@types/geojson" "^7946.0.13"
 

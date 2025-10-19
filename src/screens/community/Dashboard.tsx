@@ -218,7 +218,32 @@ const Dashboard = () => {
   );
 
   return (
-    <AppWrapper onRightPress={() => navigate(SCREENS.CreateEvent)} title='Community'>
+    <AppWrapper
+      onEndIcon={() => (
+        <TouchableOpacity
+          style={{
+            backgroundColor: COLORS.PRIMARY,
+            width: ms(30),
+            height: ms(30),
+            borderRadius: 100,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => navigate(SCREENS.ChatListScreen)}
+        >
+          <Image
+            source={{ uri: 'https://cdn-icons-png.flaticon.com/128/16751/16751818.png' }}
+            resizeMode='contain'
+            style={{
+              width: ms(17),
+              height: ms(17),
+              tintColor: COLORS.WHITE,
+            }}
+          />
+        </TouchableOpacity>
+      )}
+      title='Community'
+    >
       {/* Story Section */}
       <FlatList
         data={storyData}
@@ -235,20 +260,53 @@ const Dashboard = () => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={servicesData}
+          data={[{ id: 'plus' }, ...servicesData]}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => navigate(SCREENS.GroupsScreen)}>
-              <View style={styles.serviceCard}>
-                <View style={styles.serviceIconContainer}>
-                  <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
+          renderItem={({ item }) => {
+            if (item.id === 'plus') {
+              // ➕ Plus Button Card
+              return (
+                <TouchableOpacity onPress={() => navigate(SCREENS.CreateEvent)}>
+                  <View style={[styles.serviceCard, styles.plusCard]}>
+                    <View
+                      style={[
+                        styles.serviceIconContainer,
+                        {
+                          borderWidth: 1,
+                          borderColor: COLORS.PRIMARY,
+                        },
+                      ]}
+                    >
+                      <Icon
+                        componentName='Entypo'
+                        iconName='plus'
+                        size={26}
+                        color={COLORS.PRIMARY}
+                      />
+                    </View>
+                    <Typography style={[styles.serviceText, { color: COLORS.PRIMARY }]}>
+                      Create Event
+                    </Typography>
+                  </View>
+                </TouchableOpacity>
+              );
+            }
+
+            // 🐾 Normal Service Card
+            return (
+              <TouchableOpacity onPress={() => navigate(SCREENS.GroupsScreen)}>
+                <View style={styles.serviceCard}>
+                  <View style={styles.serviceIconContainer}>
+                    <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
+                  </View>
+                  <Typography style={styles.serviceText}>{item.title}</Typography>
                 </View>
-                <Typography style={styles.serviceText}>{item.title}</Typography>
-              </View>
-            </TouchableOpacity>
-          )}
+              </TouchableOpacity>
+            );
+          }}
         />
       </View>
+
       <Typography style={styles.title}>Events</Typography>
       {/* Events Section */}
       <FlatList
@@ -537,6 +595,9 @@ const styles = StyleSheet.create({
     fontSize: ms(12),
     color: COLORS.GRAY,
     marginLeft: ms(5),
+  },
+  plusCard: {
+    // backgroundColor: COLORS.PRIMARY, // 👈 your app’s primary color
   },
 });
 

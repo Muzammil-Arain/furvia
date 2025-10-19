@@ -268,7 +268,7 @@ const BookService = () => {
 
         {/* ✅ Add-on Services */}
         <Typography type='subtitle' style={styles.sectionTitle}>
-          Add-on Services
+         Tip for Services
         </Typography>
         <View style={styles.optionRow}>
           <View style={styles.optionLeft}>

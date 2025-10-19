@@ -18,7 +18,7 @@ export const COLORS = {
   WHITE: '#FFFFFF',
   LIGHT_WHITE: '#FAFBFF',
   BLACK: '#000000',
-  BLUE: '#0000FF',
+  BLUE: '#294477',
   DARK_BLUE: '#173C47',
   LIGHT_GREY: '#D9D9D9',
   SEARCH_BAR: '#F4F5F6',

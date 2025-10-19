@@ -3,16 +3,19 @@ import MainNavigation from 'navigation/MainNavigation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import store from 'store/store';
+import { ThemeProvider } from 'theme/ThemeContext';
 
 const App = () => {
   // useFirebaseMessaging();
   return (
-    <SafeAreaProvider>
-      <Provider store={store}>
-        <MainNavigation />
-        {/* <MenuScreen /> */}
-      </Provider>
-    </SafeAreaProvider>
+    <ThemeProvider>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <MainNavigation />
+          {/* <MenuScreen /> */}
+        </Provider>
+      </SafeAreaProvider>
+    </ThemeProvider>
   );
 };
 

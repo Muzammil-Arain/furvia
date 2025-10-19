@@ -36,6 +36,7 @@ export type RootStackParamList = {
   [SCREENS.CHECKOUT]: undefined;
   [SCREENS.EDIT_PROFILE]: undefined;
   [SCREENS.LANGUAGE]: undefined;
+  [SCREENS.AppointmentDetailsScreen]: undefined;
   [SCREENS.ORDERS]: undefined;
   [SCREENS.FILTER]: {
     data: {
@@ -56,6 +57,14 @@ export type RootStackParamList = {
   [SCREENS.CREATEPETPROFILE]: undefined;
   [SCREENS.COMPLETEPETPROFILE]: undefined;
   [SCREENS.MAPLOCATIONSCREEN]: undefined;
+  [SCREENS.ParkInfoScreen]: any;
+  [SCREENS.ChatListScreen]: undefined;
+  [SCREENS.JobInProgressScreen]: undefined;
+  [SCREENS.CreateEvent]: undefined;
+  [SCREENS.NotificationScreen]: undefined;
+  [SCREENS.CreateGroupScreen]: undefined;
+  [SCREENS.AllAppointmentsScreen]: undefined;
+  [SCREENS.ProfileDetailsScreen]: undefined;
   [SCREENS.UserType]: undefined;
   [SCREENS.services]: undefined;
   [SCREENS.QuestionScreen]: undefined;

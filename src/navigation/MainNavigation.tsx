@@ -1,4 +1,3 @@
-import { theme } from 'theme/index';
 import { AppNavigator, AuthNavigator, navigationRef } from './index';
 import { useUserLoginStatus } from 'hooks/index';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,7 +12,7 @@ const MainNavigation = () => {
   }
 
   return (
-    <NavigationContainer theme={theme} ref={navigationRef}>
+    <NavigationContainer  ref={navigationRef}>
       {isUserLoggedIn ? <AppNavigator /> : <AuthNavigator />}
       <Toast />
       <OfflineBanner />

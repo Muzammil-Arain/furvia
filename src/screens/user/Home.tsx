@@ -24,7 +24,7 @@ const pets = [
     name: 'Persian Charlie',
     gender: 'Male',
     age: '1 yr 3 m',
-    weight: '2.5 KG',
+    weight: '2.5 P',
     image: require('../../assets/images/pet2.png'),
     bgColor: '#E5F9FF',
   },
@@ -33,7 +33,7 @@ const pets = [
     name: 'Oliver Derry',
     gender: 'Male',
     age: '1 yr 1 m',
-    weight: '1.8 KG',
+    weight: '1.8 P',
     image: require('../../assets/images/pet3.png'),
     bgColor: '#FFEFF5',
   },
@@ -221,7 +221,7 @@ export const Home = () => {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Typography style={styles.sectionTitle}>Our Services</Typography>
-            <TouchableOpacity onPress={() => navigate(SCREENS.services)}>
+            <TouchableOpacity onPress={() => navigate(SCREENS.DashboardScreen)}>
               <Typography style={styles.seeAllView}>See All</Typography>
             </TouchableOpacity>
           </View>

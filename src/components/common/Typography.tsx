@@ -54,7 +54,7 @@ export const Typography: React.FC<Props> = ({
   const textStyle: TextStyle = {
     ...(!isLangRTL && { fontFamily: AddfontFamily() }),
     fontSize: fontSize || FontSize.Medium,
-    color: color || COLORS.BLACK,
+    color: color ?? COLORS.BLACK,
     fontWeight: fontWeight || 'normal',
     fontStyle: italic ? 'italic' : 'normal',
     textDecorationLine: underline ? 'underline' : 'none',

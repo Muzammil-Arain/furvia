@@ -51,8 +51,19 @@ import CreateEvent from 'screens/community/CreateEvent';
 import StoryView from 'screens/community/ViewStory';
 import GroupsScreen from 'screens/community/GroupsScreen';
 import CommentScreen from 'screens/community/CommentsScreen';
-import Messages from 'screens/user/Messages';
-import GroupChatScreen from 'screens/user/Messages';
+import GroupChatScreen from 'screens/chat/GroupChatScreen';
+import CreateGroupScreen from 'screens/community/CreateGroupScreen';
+import AppointmentDetailsScreen from 'screens/provider/AppointmentDetailsScreen';
+import AllAppointmentsScreen from 'screens/provider/AllAppointmentsScreen';
+import ProfileDetailsScreen from 'screens/provider/ProfileDetailsScreen';
+import ProfileScreen from 'screens/provider/ProfileScreen';
+import WalletScreens from 'screens/provider/WalletScreens';
+import ChatListScreen from '../screens/chat/ChatListScreen';
+import UserChatScreen from 'screens/chat/UserChatScreen';
+import NotificationScreen from 'screens/common/NoticiationList';
+import JobInProgressScreen from 'screens/provider/JobInProgressScreen';
+import JobCompletedScreen from 'screens/provider/JobCompletedScreen';
+import NavigationScreen from 'screens/provider/NavigationScreen';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -94,6 +105,10 @@ export const AppNavigator = () => {
     },
     [SCREENS.Wallet]: {
       component: Wallet,
+      options: { headerShown: false },
+    },
+    [SCREENS.CreateGroupScreen]: {
+      component: CreateGroupScreen,
       options: { headerShown: false },
     },
     [SCREENS.TrainerDetails]: {
@@ -160,10 +175,10 @@ export const AppNavigator = () => {
       component: StoryView,
       options: { headerShown: false },
     },
-    [SCREENS.MESSAGES]: {
-      component: GroupChatScreen,
-      options: { headerShown: false },
-    },
+    // [SCREENS.MESSAGES]: {
+    //   component: GroupChatScreen,
+    //   options: { headerShown: false },
+    // },
     //extra
     [SCREENS.NOTIFICATION_LISTING]: {
       component: NotificationListing,
@@ -215,10 +230,7 @@ export const AppNavigator = () => {
       component: Filter,
       options: { headerShown: true, headerTitle: t(COMMON_TEXT.FILTERS) },
     },
-    [SCREENS.MESSAGES]: {
-      component: Messages,
-      options: { headerShown: false },
-    },
+
     [SCREENS.SETTINGS]: {
       component: Settings,
       options: { headerShown: true, headerTitle: t(COMMON_TEXT.SETTINGS) },
@@ -247,10 +259,7 @@ export const AppNavigator = () => {
       component: Checkout,
       options: { headerShown: true, headerTitle: 'Checkout' },
     },
-    [SCREENS.DashboardScreen]: {
-      component: DashboardScreen,
-      options: { headerShown: false },
-    },
+
     [SCREENS.services]: {
       component: services,
       options: { headerShown: false },
@@ -267,7 +276,64 @@ export const AppNavigator = () => {
       component: CommentScreen,
       options: { headerShown: false },
     },
+    [SCREENS.JobInProgressScreen]: {
+      component: JobInProgressScreen,
+      options: { headerShown: false },
+    },
+
+    //PROVIDERS SCREENS
+    [SCREENS.DashboardScreen]: {
+      component: DashboardScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.AppointmentDetailsScreen]: {
+      component: AppointmentDetailsScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.AllAppointmentsScreen]: {
+      component: AllAppointmentsScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.ProfileDetailsScreen]: {
+      component: ProfileDetailsScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.ProfileScreen]: {
+      component: ProfileScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.WalletScreens]: {
+      component: WalletScreens,
+      options: { headerShown: false },
+    },
+    [SCREENS.JobCompletedScreen]: {
+      component: JobCompletedScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.NavigationScreen]: {
+      component: NavigationScreen,
+      options: { headerShown: false },
+    },
+
+    //COMMON SCREENS
+    [SCREENS.ChatListScreen]: {
+      component: ChatListScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.UserChatScreen]: {
+      component: UserChatScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.GroupChatScreen]: {
+      component: GroupChatScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.NotificationScreen]: {
+      component: NotificationScreen,
+      options: { headerShown: false },
+    },
   };
+
   return (
     <Stack.Navigator screenOptions={screenOptions}>
       {Object.entries(screens).map(

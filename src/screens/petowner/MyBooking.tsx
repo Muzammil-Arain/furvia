@@ -146,7 +146,7 @@ const MyBookings = () => {
           onPress={() => setActiveTab('ongoing')}
         >
           <Typography style={[styles.tabText, activeTab === 'ongoing' && styles.activeTabText]}>
-            Ongoing Order
+            Ongoing Booking
           </Typography>
         </TouchableOpacity>
         <TouchableOpacity
@@ -154,7 +154,7 @@ const MyBookings = () => {
           onPress={() => setActiveTab('history')}
         >
           <Typography style={[styles.tabText, activeTab === 'history' && styles.activeTabText]}>
-            Order History
+            Booking History
           </Typography>
         </TouchableOpacity>
       </View>

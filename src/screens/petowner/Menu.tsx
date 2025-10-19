@@ -1,5 +1,15 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  Image,
+  Pressable,
+  Animated,
+  TouchableOpacity,
+  FlatList,
+  Appearance,
+  Modal,
+} from 'react-native';
 import { Typography, Icon } from 'components/index';
 import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';
@@ -7,63 +17,135 @@ import { AppWrapper } from 'components/common/AppWapper';
 import { CustomToggle } from 'components/appComponents/CustomToggle';
 import { SCREENS } from 'constants/routes';
 import { navigate } from 'navigation/index';
+import { DarkTheme, LightTheme } from 'theme/CommonTheme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppDispatch } from 'types/reduxTypes';
+import { setIsUserLoggedIn } from 'store/slices/appSettings';
+import { setUserDetails } from 'store/slices/user';
+import { clearAllStorageItems } from 'utils/storage';
 
 const menuItems = [
   {
     id: '1',
-    // navigate: SCREENS.EDIT_PROFILE,
     label: 'My Account',
     icon: require('../../assets/images/common/menu_user.png'),
+    navigate: SCREENS.EDIT_PROFILE,
   },
   {
     id: '2',
-    // navigate: SCREENS.MyBooking,
     label: 'My Bookings',
     icon: require('../../assets/images/common/menu_history.png'),
+    navigate: SCREENS.MyBooking,
   },
   {
     id: '3',
-    // navigate: SCREENS.MyPetProfile,
     label: 'Gallery',
     icon: require('../../assets/images/common/menu_history.png'),
+    navigate: SCREENS.MyPetProfile,
   },
   {
-    id: '3',
-    // navigate: SCREENS.ReferralProgram,
+    id: '4',
     label: 'Referral Program',
     icon: require('../../assets/images/common/menu_history.png'),
+    navigate: SCREENS.ReferralProgram,
   },
-  // { id: '4', label: 'Testimonials', icon: require('../../assets/images/common/menu_history.png') },
   {
     id: '5',
-    // navigate: SCREENS.CHANGE_PASSWORD,
     label: 'Change Password',
     icon: require('../../assets/images/common/menu_locked.png'),
+    navigate: SCREENS.CHANGE_PASSWORD,
   },
   {
     id: '6',
-    // navigate: SCREENS.AddAddress,
     label: 'My Address',
     icon: require('../../assets/images/common/menu_location.png'),
+    navigate: SCREENS.AddAddress,
   },
   {
     id: '7',
-    // navigate: SCREENS.HelpAndSupport,
     label: 'Help and Support',
     icon: require('../../assets/images/common/menu_support.png'),
+    navigate: SCREENS.HelpAndSupport,
   },
   {
     id: '8',
-    // navigate: SCREENS.TermsAndConditions,
     label: 'Terms & Conditions',
     icon: require('../../assets/images/common/menu_policy.png'),
+    navigate: SCREENS.TermsAndConditions,
+  },
+  {
+    id: '9',
+    label: 'Logout',
+    icon: require('../../assets/images/common/menu_policy.png'),
+    action: 'logout',
   },
 ];
 
 const MenuScreen = () => {
+  const dispatch = useAppDispatch();
   const [darkmode, setDarkMode] = useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
+  const [scaleAnim] = useState(new Animated.Value(0.8));
+  const [fadeAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const loadTheme = async () => {
+      const savedTheme = await AsyncStorage.getItem('appTheme');
+      const isDark = savedTheme ? savedTheme === 'dark' : Appearance.getColorScheme() === 'dark';
+      setDarkMode(isDark);
+    };
+    loadTheme();
+  }, []);
+
+  const toggleTheme = async () => {
+    const newIsDark = !darkmode;
+    setDarkMode(newIsDark);
+    await AsyncStorage.setItem('appTheme', newIsDark ? 'dark' : 'light');
+  };
+
+  const openLogoutModal = () => {
+    setLogoutModalVisible(true);
+    Animated.parallel([
+      Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }),
+    ]).start();
+  };
+
+  const closeLogoutModal = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, { toValue: 0, duration: 200, useNativeDriver: true }),
+      Animated.spring(scaleAnim, { toValue: 0.8, useNativeDriver: true }),
+    ]).start(() => setLogoutModalVisible(false));
+  };
+
+  const handleLogout = () => {
+    closeLogoutModal();
+    dispatch(setIsUserLoggedIn(false));
+    dispatch(setUserDetails(null));
+    clearAllStorageItems();
+  };
+
+  const renderMenuItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        if (item.action === 'logout') {
+          openLogoutModal();
+        } else if (item.navigate) {
+          navigate(item.navigate);
+        }
+      }}
+      style={styles.menuItem}
+    >
+      <View style={styles.menuLeft}>
+        <Image source={item.icon} resizeMode="contain" style={styles.menuIcon} />
+        <Typography style={styles.menuLabel}>{item.label}</Typography>
+      </View>
+      <Icon componentName="Feather" iconName="chevron-right" size={18} color={COLORS.GRAY} />
+    </TouchableOpacity>
+  );
+
   return (
-    <AppWrapper title='Menu'>
+    <AppWrapper title="Menu">
       <View style={styles.container}>
         {/* Profile Card */}
         <View style={styles.profileCard}>
@@ -75,15 +157,7 @@ const MenuScreen = () => {
           />
           <View>
             <Typography style={styles.name}>William Anderson</Typography>
-            <View
-              style={{
-                backgroundColor: '#EBFFFF',
-                width: ms(50),
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 6,
-              }}
-            >
+            <View style={styles.freeBadge}>
               <Typography style={styles.freeText}>Free</Typography>
             </View>
           </View>
@@ -91,18 +165,13 @@ const MenuScreen = () => {
 
         {/* Points Section */}
         <View style={styles.pointsRow}>
-          <TouchableOpacity
-            //  onPress={() => navigate(SCREENS.Wallet)}
-            style={styles.pointsCard}
-          >
+          <TouchableOpacity style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Visit Points</Typography>
             <Typography style={styles.pointsValue}>850 Pts</Typography>
             <Typography style={styles.pointsSub}>($850.00)</Typography>
           </TouchableOpacity>
-          <TouchableOpacity
-            // onPress={() => navigate(SCREENS.Wallet)}
-            style={styles.pointsCard}
-          >
+
+          <TouchableOpacity style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Referral Points</Typography>
             <Typography style={styles.pointsValue}>100 Pts</Typography>
             <Typography style={styles.pointsSub}>($100.00)</Typography>
@@ -113,50 +182,50 @@ const MenuScreen = () => {
         <View style={styles.darkModeRow}>
           <Image
             source={require('../../assets/images/common/menu_darkmode.png')}
-            resizeMode='contain'
-            style={{
-              width: ms(40),
-              height: ms(40),
-            }}
+            resizeMode="contain"
+            style={styles.menuIcon}
           />
           <Typography style={styles.darkModeText}>Dark Mode</Typography>
-          {/* <Switch value={false} onValueChange={() => {}} /> */}
-          <CustomToggle value={darkmode} onValueChange={setDarkMode} />
+          <CustomToggle value={darkmode} onValueChange={toggleTheme} />
         </View>
 
-        {/* Menu Items */}
+        {/* Menu List */}
         <FlatList
           data={menuItems}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              // onPress={() => {
-              //   if (item.navigate) {
-              //     navigate(item.navigate);
-              //   }
-              // }}
-              style={styles.menuItem}
-            >
-              <View style={styles.menuLeft}>
-                <Image
-                  source={item.icon}
-                  resizeMode='contain'
-                  style={{
-                    width: ms(40),
-                    height: ms(40),
-                  }}
-                />
-                <Typography style={styles.menuLabel}>{item.label}</Typography>
-              </View>
-              <Icon
-                componentName='Feather'
-                iconName='chevron-right'
-                size={18}
-                color={COLORS.GRAY}
-              />
-            </TouchableOpacity>
-          )}
+          keyExtractor={(item) => item.id}
+          renderItem={renderMenuItem}
+          showsVerticalScrollIndicator={false}
         />
+
+        {/* Logout Modal */}
+        <Modal transparent visible={logoutModalVisible} animationType="none">
+          <View style={styles.modalOverlay}>
+            <Animated.View
+              style={[
+                styles.modalContainer,
+                { opacity: fadeAnim, transform: [{ scale: scaleAnim }] },
+              ]}
+            >
+              <Image
+                source={{ uri: 'https://cdn-icons-png.flaticon.com/128/4400/4400828.png' }}
+                style={styles.logoutIcon}
+              />
+              <Typography style={styles.modalTitle}>Logout</Typography>
+              <Typography style={styles.modalMessage}>
+                Are you sure you want to log out?
+              </Typography>
+
+              <View style={styles.modalButtons}>
+                <Pressable style={[styles.button, styles.cancelButton]} onPress={closeLogoutModal}>
+                  <Typography style={styles.cancelText}>Cancel</Typography>
+                </Pressable>
+                <Pressable style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
+                  <Typography style={styles.logoutText}>Logout</Typography>
+                </Pressable>
+              </View>
+            </Animated.View>
+          </View>
+        </Modal>
       </View>
     </AppWrapper>
   );
@@ -189,6 +258,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: COLORS.BLACK,
   },
+  freeBadge: {
+    backgroundColor: '#EBFFFF',
+    width: ms(50),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+  },
   freeText: {
     fontSize: ms(12),
     color: COLORS.PRIMARY,
@@ -209,48 +285,19 @@ const styles = StyleSheet.create({
     marginHorizontal: ms(6),
     elevation: 2,
   },
+  pointsLabel: {
+    fontSize: ms(12),
+    color: COLORS.BLACK,
+  },
   pointsValue: {
     fontSize: ms(18),
     fontWeight: '700',
     color: COLORS.PRIMARY,
   },
-  pointsLabel: {
-    fontSize: ms(12),
-    color: COLORS.BLACK,
-  },
   pointsSub: {
     fontSize: ms(11),
     marginTop: ms(4),
     color: COLORS.BLACK,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: ms(12),
-    paddingHorizontal: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#E0E0E0',
-  },
-  menuLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  menuLabel: {
-    fontSize: ms(13),
-    marginLeft: ms(8),
-    color: COLORS.BLACK,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: ms(16),
-    alignItems: 'center',
-  },
-  activeNav: {
-    backgroundColor: '#E6F7FF',
-    padding: ms(10),
-    borderRadius: ms(12),
   },
   darkModeRow: {
     flexDirection: 'row',
@@ -266,5 +313,82 @@ const styles = StyleSheet.create({
     marginLeft: ms(8),
     fontSize: ms(13),
     color: COLORS.BLACK,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: ms(12),
+    paddingHorizontal: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#E0E0E0',
+  },
+  menuLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  menuIcon: {
+    width: ms(40),
+    height: ms(40),
+  },
+  menuLabel: {
+    fontSize: ms(13),
+    marginLeft: ms(8),
+    color: COLORS.BLACK,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: '#00000070',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  modalContainer: {
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 20,
+    width: '80%',
+    padding: ms(20),
+    alignItems: 'center',
+    elevation: 6,
+  },
+  logoutIcon: {
+    width: ms(60),
+    height: ms(60),
+    marginBottom: 10,
+  },
+  modalTitle: {
+    fontSize: ms(18),
+    fontWeight: '700',
+    color: COLORS.BLACK,
+  },
+  modalMessage: {
+    fontSize: ms(12),
+    color: COLORS.GRAY_600,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 10,
+  },
+  button: {
+    flex: 1,
+    borderRadius: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#E5E5E5',
+  },
+  logoutButton: {
+    backgroundColor: COLORS.PRIMARY,
+  },
+  cancelText: {
+    color: COLORS.BLACK,
+    fontWeight: '600',
+  },
+  logoutText: {
+    color: COLORS.WHITE,
+    fontWeight: '600',
   },
 });

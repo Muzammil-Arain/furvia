@@ -14,7 +14,10 @@ import { COLORS } from 'utils/colors';
 import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
 import { useAppDispatch } from 'types/reduxTypes';
-import { setUserRole } from 'store/slices/appSettings';
+import { setIsUserLoggedIn, setUserRole } from 'store/slices/appSettings';
+import { setItem } from 'utils/storage';
+import { VARIABLES } from 'constants/common';
+import store from 'store/store';
 
 const UserType: React.FC = () => {
   // Animations
@@ -67,7 +70,9 @@ const UserType: React.FC = () => {
           <Button
             onPress={() => {
               dispatch(setUserRole('user'));
-              navigate(SCREENS.LOGIN);
+              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+              store.dispatch(setIsUserLoggedIn(true));
+              // navigate(SCREENS.LOGIN);
             }}
             title='I’m a Pet Owner'
           />
@@ -75,7 +80,9 @@ const UserType: React.FC = () => {
           <Button
             onPress={() => {
               dispatch(setUserRole('provider'));
-              navigate(SCREENS.LOGIN);
+              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+              store.dispatch(setIsUserLoggedIn(true));
+              // navigate(SCREENS.LOGIN);
             }}
             style={[styles.secondaryButton, { backgroundColor: COLORS.WHITE }]}
             textStyle={{ color: COLORS.BLACK }}

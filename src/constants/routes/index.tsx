@@ -114,10 +114,27 @@ export const SCREENS = {
   TestimonialsScreen: 'TestimonialsScreen',
   EDIT_PROFILE: 'EditProfile',
   Dashboard: 'Dashboard',
-  CreateEvent:'CreateEvent',
-  StoryView:'StoryView',
-  ParksScreen:'ParksScreen',
-  ParkInfoScreen:'ParkInfoScreen',
-  GroupsScreen:'GroupsScreen',
-  CommentsScreen:'CommentsScreen'
+  CreateEvent: 'CreateEvent',
+  StoryView: 'StoryView',
+  ParksScreen: 'ParksScreen',
+  ParkInfoScreen: 'ParkInfoScreen',
+  GroupsScreen: 'GroupsScreen',
+  CommentsScreen: 'CommentsScreen',
+  CreateGroupScreen: 'CreateGroupScreen',
+
+  //PROVIDER SCREENS
+  AppointmentDetailsScreen: 'AppointmentDetailsScreen',
+  AllAppointmentsScreen: 'AllAppointmentsScreen',
+  ProfileDetailsScreen: 'ProfileDetailsScreen',
+  ProfileScreen: 'ProfileScreen',
+  WalletScreens: 'WalletScreens',
+  JobInProgressScreen:'JobInProgressScreen',
+  JobCompletedScreen:'JobCompletedScreen',
+  NavigationScreen:'NavigationScreen',
+
+  //COMON SCREN
+  ChatListScreen: 'ChatListScreen',
+  GroupChatScreen: 'GroupChatScreen',
+  UserChatScreen: 'UserChatScreen',
+  NotificationScreen:'NotificationScreen'
 } as const;

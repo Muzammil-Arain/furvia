@@ -47,6 +47,9 @@ export const IMAGES = {
   menuIcon: require('assets/icons/menuIcon.png'),
   homeIcon: require('assets/icons/homeIcon.png'),
   petIcon: require('assets/icons/petIcon.png'),
+  BookingIcon: require('assets/icons/bookingIcon.png'),
+  WalletIcon: require('assets/icons/walletIcon.png'),
+  profileIcon: require('assets/icons/profile_icon.png'),
   GroupIcon: require('assets/icons/GroupIcon.png'),
 
   //TEMPORARY:
