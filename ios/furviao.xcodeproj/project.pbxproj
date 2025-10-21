@@ -19,7 +19,7 @@
 		AB040772DE514AC1AF265933 /* PoppinsSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F1B39C6C3FA74310865C1EDE /* PoppinsSemiBold.ttf */; };
 		C6CE980DA3BE4510AABB69C3 /* PoppinsBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA5BA4062EF4920A6D03AB3 /* PoppinsBold.ttf */; };
 		CB9EEC15D29046A19D7F6C5B /* GorditaMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0B404F00DAF846C7A8036450 /* GorditaMedium.otf */; };
-		D9291999CFDB60C359B6460B /* Pods_yourappname.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD6D49F82166B8F2E665AC1 /* Pods_yourappname.framework */; };
+		D9291999CFDB60C359B6460B /* Pods_furviao.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6CD6D49F82166B8F2E665AC1 /* Pods_furviao.framework */; };
 		D9353931395D4D3AA7872C44 /* GorditaBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = EC49D890B4704A70BAD0E502 /* GorditaBold.otf */; };
 		E2296A67A1DF49949E5F8111 /* PoppinsRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A9691E0A10C4073BAC8861E /* PoppinsRegular.ttf */; };
 /* End PBXBuildFile section */
@@ -28,19 +28,19 @@
 		0A9691E0A10C4073BAC8861E /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../src/assets/fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
 		0B404F00DAF846C7A8036450 /* GorditaMedium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GorditaMedium.otf; path = ../src/assets/fonts/GorditaMedium.otf; sourceTree = "<group>"; };
 		12C8521589574CE299C42D15 /* GorditaLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GorditaLight.otf; path = ../src/assets/fonts/GorditaLight.otf; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* yourappname.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yourappname.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = yourappname/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = yourappname/Info.plist; sourceTree = "<group>"; };
-		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = yourappname/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-yourappname.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-yourappname.debug.xcconfig"; path = "Target Support Files/Pods-yourappname/Pods-yourappname.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* furviao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = furviao.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = furviao/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = furviao/Info.plist; sourceTree = "<group>"; };
+		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = furviao/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-furviao.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-furviao.debug.xcconfig"; path = "Target Support Files/Pods-furviao/Pods-furviao.debug.xcconfig"; sourceTree = "<group>"; };
 		3CA5BA4062EF4920A6D03AB3 /* PoppinsBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsBold.ttf; path = ../src/assets/fonts/PoppinsBold.ttf; sourceTree = "<group>"; };
 		4D7391172FE9473BAECD52F0 /* GorditaRegular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GorditaRegular.otf; path = ../src/assets/fonts/GorditaRegular.otf; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-yourappname.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-yourappname.release.xcconfig"; path = "Target Support Files/Pods-yourappname/Pods-yourappname.release.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-furviao.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-furviao.release.xcconfig"; path = "Target Support Files/Pods-furviao/Pods-furviao.release.xcconfig"; sourceTree = "<group>"; };
 		6BCF4984E6F640F2A6AA31C8 /* PoppinsMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsMedium.ttf; path = ../src/assets/fonts/PoppinsMedium.ttf; sourceTree = "<group>"; };
-		6CD6D49F82166B8F2E665AC1 /* Pods_yourappname.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_yourappname.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = yourappname/AppDelegate.swift; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = yourappname/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		AA94A2302E296FFD005B5B6E /* yourappname.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = yourappname.entitlements; path = yourappname/yourappname.entitlements; sourceTree = "<group>"; };
+		6CD6D49F82166B8F2E665AC1 /* Pods_furviao.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_furviao.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = furviao/AppDelegate.swift; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = furviao/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AA94A2302E296FFD005B5B6E /* furviao.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = furviao.entitlements; path = furviao/furviao.entitlements; sourceTree = "<group>"; };
 		AA94A2312E297271005B5B6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AB28400179A549E19EEDCF64 /* GorditaBlack.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GorditaBlack.otf; path = ../src/assets/fonts/GorditaBlack.otf; sourceTree = "<group>"; };
 		EC49D890B4704A70BAD0E502 /* GorditaBold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = GorditaBold.otf; path = ../src/assets/fonts/GorditaBold.otf; sourceTree = "<group>"; };
@@ -53,31 +53,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9291999CFDB60C359B6460B /* Pods_yourappname.framework in Frameworks */,
+				D9291999CFDB60C359B6460B /* Pods_furviao.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* yourappname */ = {
+		13B07FAE1A68108700A75B9A /* furviao */ = {
 			isa = PBXGroup;
 			children = (
-				AA94A2302E296FFD005B5B6E /* yourappname.entitlements */,
+				AA94A2302E296FFD005B5B6E /* furviao.entitlements */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
-			name = yourappname;
+			name = furviao;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				6CD6D49F82166B8F2E665AC1 /* Pods_yourappname.framework */,
+				6CD6D49F82166B8F2E665AC1 /* Pods_furviao.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -109,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				AA94A2312E297271005B5B6E /* GoogleService-Info.plist */,
-				13B07FAE1A68108700A75B9A /* yourappname */,
+				13B07FAE1A68108700A75B9A /* furviao */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -124,7 +124,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* yourappname.app */,
+				13B07F961A680F5B00A75B9A /* furviao.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,8 +132,8 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-yourappname.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-yourappname.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-furviao.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-furviao.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -141,9 +141,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* yourappname */ = {
+		13B07F861A680F5B00A75B9A /* furviao */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "yourappname" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "furviao" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -159,9 +159,9 @@
 			);
 			dependencies = (
 			);
-			name = yourappname;
-			productName = yourappname;
-			productReference = 13B07F961A680F5B00A75B9A /* yourappname.app */;
+			name = furviao;
+			productName = furviao;
+			productReference = 13B07F961A680F5B00A75B9A /* furviao.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -177,7 +177,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "yourappname" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "furviao" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -190,7 +190,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* yourappname */,
+				13B07F861A680F5B00A75B9A /* furviao */,
 			);
 		};
 /* End PBXProject section */
@@ -241,15 +241,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		48FD2926D5A2AA81F0ACDA59 /* [CP-User] [RNFB] Core Configuration */ = {
@@ -294,7 +294,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-yourappname-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-furviao-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -307,15 +307,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-yourappname/Pods-yourappname-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-furviao/Pods-furviao-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -334,17 +334,17 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-yourappname.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-furviao.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = yourappname/yourappname.entitlements;
+				CODE_SIGN_ENTITLEMENTS = furviao/furviao.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3ZG53CCNMB;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = yourappname/Info.plist;
+				INFOPLIST_FILE = furviao/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -356,8 +356,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.company.yourappname-";
-				PRODUCT_NAME = yourappname;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.company.furviao-";
+				PRODUCT_NAME = furviao;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -372,16 +372,16 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-yourappname.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-furviao.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = yourappname/yourappname.entitlements;
+				CODE_SIGN_ENTITLEMENTS = furviao/furviao.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3ZG53CCNMB;
-				INFOPLIST_FILE = yourappname/Info.plist;
+				INFOPLIST_FILE = furviao/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -393,8 +393,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.company.yourappname-";
-				PRODUCT_NAME = yourappname;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.company.furviao-";
+				PRODUCT_NAME = furviao;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -587,7 +587,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "yourappname" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "furviao" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -596,7 +596,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "yourappname" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "furviao" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

@@ -1,4 +1,4 @@
-package com.company.yourappname
+package com.company.furviao
 
 import android.app.Application
 import com.facebook.react.PackageList
