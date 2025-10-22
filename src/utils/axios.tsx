@@ -9,19 +9,18 @@ const api = axios.create({
   },
 });
 
-
 // ✅ Generic POST function with toast
 export const postRequest = async <T,>(
   endpoint: string,
   data: any,
   headers: Record<string, string> = {},
 ): Promise<T> => {
-  console.log("🚀 ~ postRequest ~ data:", data);
-  console.log("🚀 ~ postRequest ~ endpoint:", endpoint);
+  console.log('🚀 ~ postRequest ~ data:', data);
+  console.log('🚀 ~ postRequest ~ endpoint:', endpoint);
 
   try {
     const response = await api.post(endpoint, data, { headers });
-    console.log("🚀 ~ postRequest ~ response:", response);
+    console.log('🚀 ~ postRequest ~ response:', response);
 
     // ✅ Success toast
     showToast({
@@ -31,7 +30,8 @@ export const postRequest = async <T,>(
 
     return response.data;
   } catch (error: any) {
-    console.log("🚀 ~ postRequest ~ error:", error);
+    console.log('🐾 Validation Errors:', error?.response?.data?.errors);
+    console.log('🚀 ~ postRequest ~ error:', error);
     console.error('POST Request Error:', error?.response || error);
 
     // ✅ Error toast

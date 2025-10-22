@@ -4,7 +4,7 @@ import { ms } from 'react-native-size-matters';
 import { Button, Typography, Wrapper } from '../../../components';
 import AppTextInput from 'components/common/Input';
 import { COLORS } from 'utils/colors';
-import { navigate } from 'navigation/index';
+import { navigate, reset } from 'navigation/index';
 import { IMAGES } from 'constants/assets';
 import PhoneInputField, { PhoneInputFieldRef } from 'components/appComponents/PhoneInputField';
 import { SCREENS } from 'constants/routes';
@@ -13,7 +13,10 @@ import { useAppSelector } from 'types/reduxTypes';
 import { setItem } from 'utils/storage';
 import { VARIABLES } from 'constants/common';
 import store from 'store/store';
-import { setIsUserLoggedIn } from 'store/slices/appSettings';
+import { setIsUserLoggedIn, setUserRole } from 'store/slices/appSettings';
+import { setUserDetails } from 'store/slices/user';
+import { saveUserSession } from './helper';
+import { showToast } from 'utils/toast';
 
 type TabType = 'login' | 'signup';
 
@@ -86,32 +89,66 @@ const Login: React.FC = () => {
 
   /* 🔹 Handle Login */
   const handleLogin = async () => {
-    setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
-    store.dispatch(setIsUserLoggedIn(true));
-    return;
+    if (!validateLogin()) return;
 
-    if (validateLogin()) {
-      const payload = {
-        email: form.email.trim(),
-        password: form.password,
-      };
-      console.log('🚀 ~ handleLogin ~ payload:', payload);
+    const payload = {
+      email: form.email.trim(),
+      password: form.password,
+      fcm_token: '',
+    };
 
-      setLoading(true);
-      try {
-        const response = await loginUser(payload);
-        console.log('🚀 ~ handleLogin ~ response:', response?.data);
-        // return;
-        if (response?.data?.user?.type == 'user') {
-          navigate(SCREENS.MAPLOCATIONSCREEN);
-        } else {
-          navigate(SCREENS.QuestionScreen);
-        }
-      } catch (e) {
-        console.error('Login Error:', e);
-      } finally {
-        setLoading(false);
+    setLoading(true);
+    try {
+      const response = await loginUser(payload);
+
+      const user = response?.data?.user;
+      console.log("🚀 ~ handleLogin ~ user:", user)
+      const token = response?.data?.access_token;
+
+      if (!user || !token) {
+        showToast({ message: 'Invalid response from server.' });
+        return;
       }
+
+      const isUser = user.type == 'user';
+      const hasLocation = user.location;
+      const hasPetProfile = user.zip_code;
+
+      // 🔹 Navigation logic
+      if (isUser) {
+        if (!hasLocation) {
+          navigate(SCREENS.MAPLOCATIONSCREEN);
+        } 
+        // else if (!hasPetProfile) {
+        //   navigate(SCREENS.CREATEPETPROFILE);
+        // } 
+        else {
+          setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN),
+            store.dispatch(setIsUserLoggedIn(true));
+          reset(SCREENS.BOTTOM_STACK);
+        }
+        setItem(VARIABLES.USER_TOKEN, token),
+        setItem(VARIABLES.USER_DATA, user),
+        store.dispatch(setUserRole(isUser ? 'user' : 'provider'));
+        store.dispatch(setUserDetails(user));
+      } else {
+        // 🔹 Save user/session data
+        store.dispatch(setUserRole(isUser ? 'user' : 'provider'));
+        store.dispatch(setUserDetails(user));
+
+        await Promise.all([
+          setItem(VARIABLES.USER_TOKEN, token),
+          setItem(VARIABLES.USER_DATA, user),
+          setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN),
+        ]);
+
+        store.dispatch(setIsUserLoggedIn(true));
+        reset(SCREENS.BOTTOM_STACK);
+      }
+    } catch (error) {
+      console.log('🚀 ~ handleLogin ~ error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 

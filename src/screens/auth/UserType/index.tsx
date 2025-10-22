@@ -70,9 +70,9 @@ const UserType: React.FC = () => {
           <Button
             onPress={() => {
               dispatch(setUserRole('user'));
-              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
-              store.dispatch(setIsUserLoggedIn(true));
-              // navigate(SCREENS.LOGIN);
+              // setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+              // store.dispatch(setIsUserLoggedIn(true));
+              navigate(SCREENS.LOGIN);
             }}
             title='I’m a Pet Owner'
           />
@@ -80,9 +80,9 @@ const UserType: React.FC = () => {
           <Button
             onPress={() => {
               dispatch(setUserRole('provider'));
-              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
-              store.dispatch(setIsUserLoggedIn(true));
-              // navigate(SCREENS.LOGIN);
+              // setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
+              // store.dispatch(setIsUserLoggedIn(true));
+              navigate(SCREENS.LOGIN);
             }}
             style={[styles.secondaryButton, { backgroundColor: COLORS.WHITE }]}
             textStyle={{ color: COLORS.BLACK }}

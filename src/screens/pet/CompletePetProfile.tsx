@@ -2,9 +2,9 @@ import { Button, Typography, Wrapper } from 'components/index';
 import { IMAGES } from 'constants/assets';
 import { VARIABLES } from 'constants/common';
 import { SCREENS } from 'constants/routes';
-import { navigate } from 'navigation/index';
+import { navigate, reset } from 'navigation/index';
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { setIsUserLoggedIn } from 'store/slices/appSettings';
 import store from 'store/store';
@@ -32,14 +32,15 @@ const CompletePetProfile: React.FC = () => {
             marginTop: 20,
           }}
         >
-          <Button onPress={() => {}} title='Add another FurBaby' />
+          <Button onPress={() => navigate(SCREENS.CREATEPETPROFILE)} title='Add another FurBaby' />
 
           <Button
             style={[styles.secondaryButton, { backgroundColor: COLORS.WHITE }]}
             textStyle={{ color: COLORS.BLACK }}
             onPress={() => {
-              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN);
-              store.dispatch(setIsUserLoggedIn(true));
+              setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN),
+                store.dispatch(setIsUserLoggedIn(true));
+              reset(SCREENS.BOTTOM_STACK);
             }}
             title='Go to Home Page'
           />

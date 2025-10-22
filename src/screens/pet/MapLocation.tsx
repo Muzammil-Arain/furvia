@@ -15,7 +15,8 @@ import { SCREENS } from 'constants/routes';
 import { navigate } from 'navigation/index';
 import { COLORS } from 'utils/colors';
 import { getCurrentLocation, reverseGeocode } from 'utils/location';
-import { addLocation } from 'api/functions/app/home';
+import { showToast } from 'utils/toast';
+import { addUserLocation } from 'api/functions/app/location';
 
 const MapLocationScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
@@ -81,23 +82,14 @@ const MapLocationScreen: React.FC = () => {
         zip_code: '',
       };
 
-      setTimeout(() => {
-        navigate(SCREENS.CREATEPETPROFILE);
-        setLoading(false);
-      }, 4000);
-
-      // const apiResponse = await addLocation(payload);
-      // console.log('✅ addLocation Response:', apiResponse);
-
-      // if (apiResponse?.success) {
-      //   navigate(SCREENS.CREATEPETPROFILE);
-      // } else {
-      //   console.error('❌ addLocation Error:', apiResponse.message);
-      // }
-    } catch (err) {
-      console.error('Error saving location:', err);
+      const apiResponse = await addUserLocation(payload);
+      console.log('✅ addLocation Response:', apiResponse);
+      navigate(SCREENS.CREATEPETPROFILE);
+    } catch (err: any) {
+      const errorMessage = err?.message || 'Unexpected error occurred.';
+      console.error('❌ Error saving location:', errorMessage);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 

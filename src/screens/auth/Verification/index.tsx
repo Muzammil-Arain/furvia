@@ -114,11 +114,12 @@ const Verification: React.FC<{ route: any }> = ({ route }) => {
           // const loginres = await loginUser(loginpayload);
           // console.log("🚀 ~ handleVerifyOtp ~ loginres:", loginres)
           // store.dispatch(setUserDetails(loginres));
-          if (role == 'user') {
-            navigate(SCREENS.MAPLOCATIONSCREEN);
-          } else {
-            navigate(SCREENS.QuestionScreen);
-          }
+          // if (role == 'user') {
+          //   navigate(SCREENS.MAPLOCATIONSCREEN);
+          // } else {
+          //   navigate(SCREENS.QuestionScreen);
+          // }
+          navigate(SCREENS.LOGIN)
         }
       } else {
         showToast({ message: res?.message || 'Invalid code!', isError: true });

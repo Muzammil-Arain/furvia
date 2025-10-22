@@ -16,13 +16,12 @@ import { COLORS } from 'utils/colors';
 import * as Progress from 'react-native-progress';
 import { IMAGES } from 'constants/assets';
 import { navigate } from 'navigation/index';
-import PetAgePicker from 'components/appComponents/PetAgePicker';
 import { SCREENS } from 'constants/routes';
 import { useMediaPicker, UseMediaPickerOptions } from 'hooks/useMediaPicker';
 import { CameraGalleryPicker } from 'components/appComponents/openCameraOrGallery';
 import PetAgeWheel from 'components/appComponents/PetAgePicker';
-import { addPet } from 'api/functions/app/home';
 import { showToast } from 'utils/toast';
+import { addPet } from 'api/functions/app/pet';
 
 const TOTAL_STEPS = 7;
 
@@ -123,44 +122,24 @@ const PetProfileScreen: React.FC = () => {
     try {
       setLoading(true);
 
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('type', type || '');
-      formData.append('breed', breed);
-      formData.append('gender', gender || '');
-      formData.append('gender_castration', genderCastration || '');
-      formData.append('dob', JSON.stringify(dob));
+      const response = await addPet({
+        name,
+        type,
+        breed,
+        gender,
+        genderCastration,
+        dob,
+        selectedMedia,
+      });
+      console.log('✅ Pet added successfully:', response);
 
-      if (selectedMedia?.[0]?.uri) {
-        formData.append('photo', {
-          uri: selectedMedia[0].uri,
-          type: selectedMedia[0].type || 'image/jpeg',
-          name: selectedMedia[0].fileName || 'photo.jpg',
-        });
-      }
-
-      console.log('🚀 ~ Final Payload:', formData);
-
-      // const res = await addPet(formData);
-
-      // console.log('🚀 ~ Add Pet Response:', res);
-
-      setTimeout(() => {
+      if (response) {
         navigate(SCREENS.COMPLETEPETPROFILE);
-        setLoading(false);
-      }, 5000);
-
-      // if (res?.status === 'success') {
-      //   showToast({ message: res.message || 'Pet added successfully!', isError: false });
-      //   navigate(SCREENS.COMPLETEPETPROFILE);
-      // } else {
-      //   showToast({ message: res?.message || 'Failed to add pet', isError: true });
-      // }
+      }
     } catch (error: any) {
-      // console.error('❌ Add Pet Error:', error);
-      // showToast({ message: error?.message || 'Something went wrong', isError: true });
+      console.error('❌ Add Pet Error:', error);
     } finally {
-      // setLoading(false); // 🔹 Loader stop
+      setLoading(false);
     }
   };
 

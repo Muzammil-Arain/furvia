@@ -93,6 +93,7 @@ export const VARIABLES = {
   COMPLETED: 'Completed',
 
   USER_TOKEN: 'token',
+  USER_DATA: 'userdata',
   LANGUAGE: 'user selected language',
   IS_USER_LOGGED_IN: 'Is user logged in?',
   IS_USER_VISITED_THE_APP: "Is user visited the app so don't show onboarding screen.",

@@ -29,7 +29,8 @@ export interface LoginPayload {
   password: string;
 }
 export const loginUser = async (payload: LoginPayload): Promise<AuthResponse> => {
-  return postRequest<AuthResponse>(API_ROUTES.LOGIN, payload);
+  const user = await postRequest<AuthResponse>(API_ROUTES.LOGIN, payload);
+  return user;
 };
 
 // Forgot Password (send email / phone)
