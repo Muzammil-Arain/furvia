@@ -7,7 +7,10 @@ export const API_ROUTES = {
   OTP_VERIFICATION: 'otp-verification',
   RESET_PASSWORD: 'reset-password',
   ADD_LOCATION: 'add-location',
+
+  //PETS
   ADD_PET: 'add-pet',
+  GET_PETS: 'get-pets',
 
   LOGOUT: 'signup',
   SOCIAL_LOGIN: 'user/social-login',

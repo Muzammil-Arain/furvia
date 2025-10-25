@@ -52,7 +52,7 @@ const MyBookings = () => {
       time: '11:30',
       status: 'Cancelled',
       image:
-        'https://images.unsplash.com/photo-1619885187921-9f11c4f1e47a?crop=entropy&cs=tinysrgb&w=1080',
+       'https://hips.hearstapps.com/hmg-prod/images/best-guard-dogs-1650302456.jpeg?crop=0.75xw:1.00xh;0.06xw,0&resize=1200:*',
     },
   ];
 
@@ -84,7 +84,7 @@ const MyBookings = () => {
           {item.date} • {item.time}
         </Typography>
         <TouchableOpacity
-          // onPress={() => navigate(SCREENS.RescheduleBooking)}
+          onPress={() => navigate(SCREENS.RescheduleBooking)}
           style={styles.rescheduleBtn}
         >
           <Typography style={styles.rescheduleText}>Reschedule</Typography>

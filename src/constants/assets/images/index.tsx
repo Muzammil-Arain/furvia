@@ -61,5 +61,5 @@ export const IMAGES = {
 
 
 export const DEFULT_IMAGE = 'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352010-stock-illustration-default-placeholder-man-and-woman.jpg'
-
+export const PLACEHOLDER_PROFILE_PICTURE = 'https://s3.eu-central-1.amazonaws.com/uploads.mangoweb.org/shared-prod/visegradfund.org/uploads/2021/08/placeholder-male.jpg'
 export const VIDEO = {};

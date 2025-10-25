@@ -64,6 +64,9 @@ import NotificationScreen from 'screens/common/NoticiationList';
 import JobInProgressScreen from 'screens/provider/JobInProgressScreen';
 import JobCompletedScreen from 'screens/provider/JobCompletedScreen';
 import NavigationScreen from 'screens/provider/NavigationScreen';
+import SetupProfileScreen from 'screens/provider/SetupProfile/SetupProfileScreen';
+import ParkInfoScreen from 'screens/community/ParkInfoScreen';
+import ParksScreen from 'screens/community/Parks';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -280,6 +283,14 @@ export const AppNavigator = () => {
       component: JobInProgressScreen,
       options: { headerShown: false },
     },
+     [SCREENS.ParkInfoScreen]: {
+      component: ParkInfoScreen,
+      options: { headerShown: false },
+    },
+      [SCREENS.ParksScreen]: {
+      component: ParksScreen,
+      options: { headerShown: false },
+    },
 
     //PROVIDERS SCREENS
     [SCREENS.DashboardScreen]: {
@@ -312,6 +323,10 @@ export const AppNavigator = () => {
     },
     [SCREENS.NavigationScreen]: {
       component: NavigationScreen,
+      options: { headerShown: false },
+    },
+     [SCREENS.SetupProfileScreen]: {
+      component: SetupProfileScreen,
       options: { headerShown: false },
     },
 

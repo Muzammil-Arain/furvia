@@ -4,7 +4,9 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { ms } from 'react-native-size-matters';
 import { COLORS } from 'utils/colors';
 import { AppWrapper } from 'components/common/AppWapper';
-import { Icon, Typography } from 'components/index';
+import { Button, Icon, Typography } from 'components/index';
+import { navigate } from 'navigation/index';
+import { SCREENS } from 'constants/routes';
 
 const ProfileDetailsScreen = () => {
   const user = {
@@ -80,134 +82,134 @@ const ProfileDetailsScreen = () => {
 
   return (
     <AppWrapper backgroundColor={COLORS.INPUT_BACKGROUND} title='Profile Details'>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {/* Profile Header */}
-        <Animated.View entering={FadeInUp.delay(200)} style={styles.profileCard}>
-          <Image
-            source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
-            style={styles.avatar}
-          />
-          <Typography style={styles.name}>{user.name}</Typography>
-          <Typography style={styles.subtitle}>{user.title}</Typography>
+      {/* <ScrollView showsVertiacalScrollIndicator={false} contentContainerStyle={styles.scrollContent}> */}
+      {/* Profile Header */}
+      <Animated.View entering={FadeInUp.delay(200)} style={styles.profileCard}>
+        <Image
+          source={{ uri: 'https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg' }}
+          style={styles.avatar}
+        />
+        <Typography style={styles.name}>{user.name}</Typography>
+        <Typography style={styles.subtitle}>{user.title}</Typography>
 
-          <View style={styles.ratingRow}>
-            <Icon componentName='FontAwesome' iconName='star' color='#FFB400' size={14} />
-            <Text style={styles.rating}>{user.rating}/5.0</Text>
-          </View>
+        <View style={styles.ratingRow}>
+          <Icon componentName='FontAwesome' iconName='star' color='#FFB400' size={14} />
+          <Text style={styles.rating}>{user.rating}/5.0</Text>
+        </View>
 
-          <Typography style={styles.description}>
-            Passionate veterinarian with over 8 years of experience in small animal medicine.
-            Dedicated to providing compassionate care and building lasting relationships with pets
-            and their families.
-          </Typography>
+        <Typography style={styles.description}>
+          Passionate veterinarian with over 8 years of experience in small animal medicine.
+          Dedicated to providing compassionate care and building lasting relationships with pets and
+          their families.
+        </Typography>
 
-          <View style={styles.statsRow}>
-            {[
-              { label: 'Years Experience', value: user.experience },
-              { label: 'Total Appointments', value: user.appointments },
-              { label: 'This Month', value: user.thisMonth },
-            ].map((stat, i) => (
-              <View key={i} style={styles.statBox}>
-                <Typography style={styles.statValue}>{stat.value}</Typography>
-                <Typography style={styles.statLabel}>{stat.label}</Typography>
-              </View>
-            ))}
-          </View>
-        </Animated.View>
-
-        {/* Education */}
-        <Animated.View entering={FadeInUp.delay(400)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>🎓 Education</Typography>
-          {education.map((edu, i) => (
-            <View key={i} style={styles.infoCard}>
-              <Typography style={styles.boldText}>{edu.degree}</Typography>
-              <Typography style={styles.lightText}>{edu.school}</Typography>
-              <Typography style={styles.linkText}>{edu.note}</Typography>
+        <View style={styles.statsRow}>
+          {[
+            { label: 'Years Experience', value: user.experience },
+            { label: 'Total Appointments', value: user.appointments },
+            { label: 'This Month', value: user.thisMonth },
+          ].map((stat, i) => (
+            <View key={i} style={styles.statBox}>
+              <Typography style={styles.statValue}>{stat.value}</Typography>
+              <Typography style={styles.statLabel}>{stat.label}</Typography>
             </View>
           ))}
-        </Animated.View>
+        </View>
+      </Animated.View>
 
-        {/* Licenses */}
-        <Animated.View entering={FadeInUp.delay(500)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>📜 Licenses & Certifications</Typography>
-          {licenses.map((item, i) => (
-            <View key={i} style={styles.licenseCard}>
-              <Typography style={styles.boldText}>{item}</Typography>
-              <Typography style={styles.lightText}>
-                Issued: June 2016 • Expires: June 2026
-              </Typography>
-              <Typography style={styles.validBadge}>Valid</Typography>
+      {/* Education */}
+      <Animated.View entering={FadeInUp.delay(400)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>🎓 Education</Typography>
+        {education.map((edu, i) => (
+          <View key={i} style={styles.infoCard}>
+            <Typography style={styles.boldText}>{edu.degree}</Typography>
+            <Typography style={styles.lightText}>{edu.school}</Typography>
+            <Typography style={styles.linkText}>{edu.note}</Typography>
+          </View>
+        ))}
+      </Animated.View>
+
+      {/* Licenses */}
+      <Animated.View entering={FadeInUp.delay(500)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>📜 Licenses & Certifications</Typography>
+        {licenses.map((item, i) => (
+          <View key={i} style={styles.licenseCard}>
+            <Typography style={styles.boldText}>{item}</Typography>
+            <Typography style={styles.lightText}>Issued: June 2016 • Expires: June 2026</Typography>
+            <Typography style={styles.validBadge}>Valid</Typography>
+          </View>
+        ))}
+      </Animated.View>
+
+      {/* Skills */}
+      <Animated.View entering={FadeInUp.delay(600)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>💡 Specializations & Skills</Typography>
+        <View style={styles.tagsContainer}>
+          {skills.map((tag, i) => (
+            <View key={i} style={styles.tag}>
+              <Typography style={styles.tagText}>{tag}</Typography>
             </View>
           ))}
-        </Animated.View>
+        </View>
+      </Animated.View>
 
-        {/* Skills */}
-        <Animated.View entering={FadeInUp.delay(600)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>💡 Specializations & Skills</Typography>
-          <View style={styles.tagsContainer}>
-            {skills.map((tag, i) => (
-              <View key={i} style={styles.tag}>
-                <Typography style={styles.tagText}>{tag}</Typography>
-              </View>
-            ))}
-          </View>
-        </Animated.View>
-
-        {/* Availability */}
-        <Animated.View entering={FadeInUp.delay(700)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>🕒 Availability</Typography>
-          {availability.map((item, i) => (
-            <View key={i} style={styles.availabilityRow}>
-              <Typography
-                style={[
-                  styles.availabilityDay,
-                  item.highlight && { color: COLORS.PRIMARY, fontWeight: '700' },
-                ]}
-              >
-                {item.day}
-              </Typography>
-              <Typography
-                style={[styles.availabilityTime, item.highlight && { color: COLORS.PRIMARY }]}
-              >
-                {item.time}
-              </Typography>
-            </View>
-          ))}
-        </Animated.View>
-
-        {/* Services Offered */}
-        <Animated.View entering={FadeInUp.delay(800)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>💼 Services Offered</Typography>
-          <View style={styles.servicesContainer}>
-            {services.map((service, i) => (
-              <View key={i} style={styles.serviceCard}>
-                <Typography style={styles.serviceText}>{service}</Typography>
-              </View>
-            ))}
-          </View>
-        </Animated.View>
-
-        {/* Contact Info */}
-        <Animated.View entering={FadeInUp.delay(900)} style={styles.section}>
-          <Typography style={styles.sectionTitle}>📞 Contact Information</Typography>
-          {contactItems.map((item, i) => (
-            <TouchableOpacity
-              key={i}
-              style={styles.contactRow}
-              activeOpacity={0.7}
-              onPress={item.action}
+      {/* Availability */}
+      <Animated.View entering={FadeInUp.delay(700)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>🕒 Availability</Typography>
+        {availability.map((item, i) => (
+          <View key={i} style={styles.availabilityRow}>
+            <Typography
+              style={[
+                styles.availabilityDay,
+                item.highlight && { color: COLORS.PRIMARY, fontWeight: '700' },
+              ]}
             >
-              <Icon
-                componentName='Ionicons'
-                iconName={item.icon}
-                size={18}
-                color={COLORS.PRIMARY}
-              />
-              <Typography style={styles.contactText}>{item.text}</Typography>
-            </TouchableOpacity>
+              {item.day}
+            </Typography>
+            <Typography
+              style={[styles.availabilityTime, item.highlight && { color: COLORS.PRIMARY }]}
+            >
+              {item.time}
+            </Typography>
+          </View>
+        ))}
+      </Animated.View>
+
+      {/* Services Offered */}
+      <Animated.View entering={FadeInUp.delay(800)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>💼 Services Offered</Typography>
+        <View style={styles.servicesContainer}>
+          {services.map((service, i) => (
+            <View key={i} style={styles.serviceCard}>
+              <Typography style={styles.serviceText}>{service}</Typography>
+            </View>
           ))}
-        </Animated.View>
-      </ScrollView>
+        </View>
+      </Animated.View>
+
+      {/* Contact Info */}
+      <Animated.View entering={FadeInUp.delay(900)} style={styles.section}>
+        <Typography style={styles.sectionTitle}>📞 Contact Information</Typography>
+        {contactItems.map((item, i) => (
+          <TouchableOpacity
+            key={i}
+            style={styles.contactRow}
+            activeOpacity={0.7}
+            onPress={item.action}
+          >
+            <Icon componentName='Ionicons' iconName={item.icon} size={18} color={COLORS.PRIMARY} />
+            <Typography style={styles.contactText}>{item.text}</Typography>
+          </TouchableOpacity>
+        ))}
+      </Animated.View>
+      {/* </ScrollView> */}
+      <View
+        style={{
+          margin: 10,
+        }}
+      >
+        <Button title='Edit' onPress={() => navigate(SCREENS.SetupProfileScreen)} />
+      </View>
     </AppWrapper>
   );
 };

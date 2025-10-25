@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -13,10 +13,11 @@ import { Icon, Typography } from 'components/index';
 import { ms, vs } from 'react-native-size-matters';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppSelector } from 'types/index';
-import { COLORS } from 'utils/index';
+import { COLORS, getCurrentLocation, getCurrentWithLocation } from 'utils/index';
 import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
 import { servicesData } from 'api/data';
+import { PLACEHOLDER_PROFILE_PICTURE } from 'constants/assets';
 
 const pets = [
   {
@@ -64,12 +65,22 @@ const doctors = [
 
 export const Home = () => {
   const { userDetails } = useAppSelector(state => state?.user);
+  console.log('🚀 ~ Home ~ userDetails:', userDetails);
+
+  const [location, setLocation] = useState({});
+  console.log('🚀 ~ Home ~ location:', location);
 
   // Animation Refs
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(40)).current;
 
+  const handleGetPermission = async () => {
+    const getLocation = await getCurrentWithLocation();
+    setLocation(getLocation);
+  };
+
   useEffect(() => {
+    handleGetPermission();
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 800,
@@ -173,12 +184,14 @@ export const Home = () => {
         <Animated.View
           style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
         >
-          <Image
+         <TouchableOpacity onPress={() => navigate(SCREENS.EDIT_PROFILE)}>
+           <Image
             source={{
-              uri: 'https://randomuser.me/api/portraits/women/44.jpg',
+              uri: PLACEHOLDER_PROFILE_PICTURE,
             }}
             style={styles.avatar}
           />
+         </TouchableOpacity>
           <View>
             <Typography style={styles.locationLabel}>Location</Typography>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -188,7 +201,7 @@ export const Home = () => {
                 color='#2C5EA3'
                 size={15}
               />
-              <Typography style={styles.locationText}>California, USA</Typography>
+              <Typography style={styles.locationText}>{location?.city || 'California'}, {location?.countryName || 'USA'}</Typography>
             </View>
           </View>
           <Image
@@ -377,7 +390,7 @@ const styles = StyleSheet.create({
   seeAllView: {
     fontSize: ms(12),
     marginBottom: vs(10),
-    fontWeight: '500',
+    fontWeight: '600',
     color: COLORS.SECONDARY,
   },
 

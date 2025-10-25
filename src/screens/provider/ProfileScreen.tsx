@@ -21,7 +21,7 @@ import { setIsUserLoggedIn } from 'store/slices/appSettings';
 import { setUserDetails } from 'store/slices/user';
 import { clearAllStorageItems } from 'utils/storage';
 
-const IMAGE_URL = 'https://randomuser.me/api/portraits/men/32.jpg';
+const IMAGE_URL = 'https://img.freepik.com/premium-photo/happy-man-ai-generated-portrait-user-profile_1119669-1.jpg';
 
 const ProfileScreen = () => {
   const dispatch = useAppDispatch();

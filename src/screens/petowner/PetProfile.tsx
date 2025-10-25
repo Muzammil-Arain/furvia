@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   ImageBackground,
@@ -15,6 +15,8 @@ import { COLORS } from 'utils/colors';
 import { ms } from 'react-native-size-matters';
 import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
+import { getUserPets } from 'api/functions/app/pet';
+import { useIsFocused } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
@@ -42,6 +44,22 @@ const MyPetProfile = () => {
         'https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=720&q=80',
     },
   ];
+
+  const isFcused = useIsFocused();
+
+  // useEffect(() => {
+  //   const fetchPets = async () => {
+  //     try {
+  //       const response = await getUserPets();
+  //       console.log('🐾 My Pets:', response?.data);
+  //       // setPets(response?.data || []); // assuming you store in state
+  //     } catch (e) {
+  //       console.error('Fetch pets error:', e);
+  //     }
+  //   };
+
+  //   fetchPets();
+  // }, [isFcused]);
 
   return (
     <AppWrapper title='My Pets'>

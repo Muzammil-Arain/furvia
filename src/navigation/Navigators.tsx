@@ -61,6 +61,7 @@ export type RootStackParamList = {
   [SCREENS.ChatListScreen]: undefined;
   [SCREENS.JobInProgressScreen]: undefined;
   [SCREENS.CreateEvent]: undefined;
+  [SCREENS.SetupProfileScreen]: undefined;
   [SCREENS.NotificationScreen]: undefined;
   [SCREENS.CreateGroupScreen]: undefined;
   [SCREENS.AllAppointmentsScreen]: undefined;

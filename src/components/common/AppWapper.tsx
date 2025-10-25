@@ -30,6 +30,7 @@ interface WrapperProps {
   onRightPress?: () => void;
   onBackPress?: () => void;
   onEndIcon?: any;
+  Header?: boolean;
 }
 
 export const AppWrapper: React.FC<WrapperProps> = ({
@@ -43,6 +44,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   title,
   onEndIcon,
   loading,
+  Header = true,
   onRightPress,
 }) => {
   const isAppLoading = useAppSelector((state: RootState) => state.app.isAppLoading);
@@ -94,41 +96,48 @@ export const AppWrapper: React.FC<WrapperProps> = ({
       {(loading || (showAppLoader && isAppLoading)) && <Loader />}
 
       {/* ✅ Cool Animated Header */}
-      <Animated.View entering={FadeInDown.duration(500)} style={styles.headerContainer}>
-        <View style={styles.headerRow}>
-          {/* Left: Back Button */}
-          {goBack ? (
-            <TouchableOpacity onPress={onBack} style={styles.backBtn}>
-              <Icon componentName='Ionicons' iconName='arrow-back' color={COLORS.WHITE} size={22} />
-            </TouchableOpacity>
-          ) : (
-            <View style={{ width: ms(40) }} />
-          )}
-
-          {/* Center: Title */}
-          <View style={styles.titleContainer}>
-            <Typography style={styles.headerTitle} numberOfLines={1}>
-              {title}
-            </Typography>
-          </View>
-
-          {/* Right: Either Custom Icon or End Icon */}
-          <View style={styles.rightContainer}>
-            {onEndIcon ? (
-              onEndIcon()
-            ) : onRightPress ? (
-              <TouchableOpacity style={{}} onPress={onRightPress}>
-                <Image
-                  source={require('../../assets/images/common/plus.png')}
-                  style={styles.plusIcon}
+      {Header && (
+        <Animated.View entering={FadeInDown.duration(500)} style={styles.headerContainer}>
+          <View style={styles.headerRow}>
+            {/* Left: Back Button */}
+            {goBack ? (
+              <TouchableOpacity onPress={onBack} style={styles.backBtn}>
+                <Icon
+                  componentName='Ionicons'
+                  iconName='arrow-back'
+                  color={COLORS.WHITE}
+                  size={22}
                 />
               </TouchableOpacity>
             ) : (
-              <View style={{ width: ms(30) }} />
+              <View style={{ width: ms(40) }} />
             )}
+
+            {/* Center: Title */}
+            <View style={styles.titleContainer}>
+              <Typography style={styles.headerTitle} numberOfLines={1}>
+                {title}
+              </Typography>
+            </View>
+
+            {/* Right: Either Custom Icon or End Icon */}
+            <View style={styles.rightContainer}>
+              {onEndIcon ? (
+                onEndIcon()
+              ) : onRightPress ? (
+                <TouchableOpacity style={{}} onPress={onRightPress}>
+                  <Image
+                    source={require('../../assets/images/common/plus.png')}
+                    style={styles.plusIcon}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <View style={{ width: ms(30) }} />
+              )}
+            </View>
           </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      )}
 
       {Content}
     </>

@@ -136,5 +136,6 @@ export const SCREENS = {
   ChatListScreen: 'ChatListScreen',
   GroupChatScreen: 'GroupChatScreen',
   UserChatScreen: 'UserChatScreen',
-  NotificationScreen:'NotificationScreen'
+  NotificationScreen:'NotificationScreen',
+  SetupProfileScreen:'SetupProfileScreen'
 } as const;

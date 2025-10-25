@@ -137,15 +137,15 @@ const MenuScreen = () => {
       style={styles.menuItem}
     >
       <View style={styles.menuLeft}>
-        <Image source={item.icon} resizeMode="contain" style={styles.menuIcon} />
+        <Image source={item.icon} resizeMode='contain' style={styles.menuIcon} />
         <Typography style={styles.menuLabel}>{item.label}</Typography>
       </View>
-      <Icon componentName="Feather" iconName="chevron-right" size={18} color={COLORS.GRAY} />
+      <Icon componentName='Feather' iconName='chevron-right' size={18} color={COLORS.GRAY} />
     </TouchableOpacity>
   );
 
   return (
-    <AppWrapper title="Menu">
+    <AppWrapper title='Menu'>
       <View style={styles.container}>
         {/* Profile Card */}
         <View style={styles.profileCard}>
@@ -165,13 +165,13 @@ const MenuScreen = () => {
 
         {/* Points Section */}
         <View style={styles.pointsRow}>
-          <TouchableOpacity style={styles.pointsCard}>
+          <TouchableOpacity onPress={() => navigate(SCREENS.WALLET)} style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Visit Points</Typography>
             <Typography style={styles.pointsValue}>850 Pts</Typography>
             <Typography style={styles.pointsSub}>($850.00)</Typography>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.pointsCard}>
+          <TouchableOpacity onPress={() => navigate(SCREENS.WALLET)} style={styles.pointsCard}>
             <Typography style={styles.pointsLabel}>Referral Points</Typography>
             <Typography style={styles.pointsValue}>100 Pts</Typography>
             <Typography style={styles.pointsSub}>($100.00)</Typography>
@@ -182,7 +182,7 @@ const MenuScreen = () => {
         <View style={styles.darkModeRow}>
           <Image
             source={require('../../assets/images/common/menu_darkmode.png')}
-            resizeMode="contain"
+            resizeMode='contain'
             style={styles.menuIcon}
           />
           <Typography style={styles.darkModeText}>Dark Mode</Typography>
@@ -192,13 +192,13 @@ const MenuScreen = () => {
         {/* Menu List */}
         <FlatList
           data={menuItems}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           renderItem={renderMenuItem}
           showsVerticalScrollIndicator={false}
         />
 
         {/* Logout Modal */}
-        <Modal transparent visible={logoutModalVisible} animationType="none">
+        <Modal transparent visible={logoutModalVisible} animationType='none'>
           <View style={styles.modalOverlay}>
             <Animated.View
               style={[
@@ -211,9 +211,7 @@ const MenuScreen = () => {
                 style={styles.logoutIcon}
               />
               <Typography style={styles.modalTitle}>Logout</Typography>
-              <Typography style={styles.modalMessage}>
-                Are you sure you want to log out?
-              </Typography>
+              <Typography style={styles.modalMessage}>Are you sure you want to log out?</Typography>
 
               <View style={styles.modalButtons}>
                 <Pressable style={[styles.button, styles.cancelButton]} onPress={closeLogoutModal}>
@@ -362,7 +360,7 @@ const styles = StyleSheet.create({
   },
   modalMessage: {
     fontSize: ms(12),
-    color: COLORS.GRAY_600,
+    color: COLORS.GRAY,
     textAlign: 'center',
     marginVertical: 10,
   },

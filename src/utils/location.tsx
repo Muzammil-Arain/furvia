@@ -3,6 +3,7 @@ import Permissions, { check, PERMISSIONS, RESULTS } from 'react-native-permissio
 import { Alert, Linking } from 'react-native';
 import { isIOS } from './helpers';
 import { ENV_CONSTANTS } from 'constants/common';
+import countries from 'i18n-iso-countries';
 // import { getUniqueId } from 'react-native-device-info';
 
 interface AddressComponents {
@@ -186,6 +187,96 @@ const getCurrentLocation = async (): Promise<GeolocationResponse | null> => {
   } catch (error) {
     console.error('Error getting current location:', error);
     return null;
+  }
+};
+
+export const getCurrentWithLocation = async (): Promise<{
+  latitude: number | null;
+  longitude: number | null;
+  countryCode: string | null;
+  countryName: string | null;
+  city: string | null;
+}> => {
+  try {
+    const hasPermission = await getLocationPermission();
+    if (!hasPermission) {
+      return {
+        latitude: null,
+        longitude: null,
+        countryCode: null,
+        countryName: null,
+        city: null,
+      };
+    }
+
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        async position => {
+          try {
+            const { latitude, longitude } = position.coords;
+
+            // 🌍 Reverse Geocode API
+            const res = await fetch(
+              `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
+            );
+            const data = await res.json();
+
+            const countryCode = data.countryCode || null;
+            const city =
+              data.city ||
+              data.locality ||
+              data.principalSubdivision ||
+              data.localityInfo?.administrative?.[0]?.name ||
+              null;
+
+            let countryName =
+              data.countryName || (countryCode ? countries.getName(countryCode, 'en') : null);
+
+            // 🔹 Fix UAE naming
+            if (countryCode === 'AE') {
+              countryName = 'United Arab Emirates';
+            }
+
+            resolve({
+              latitude,
+              longitude,
+              countryCode,
+              countryName,
+              city,
+            });
+          } catch (err) {
+            console.error('Error fetching location data:', err);
+            resolve({
+              latitude: null,
+              longitude: null,
+              countryCode: null,
+              countryName: null,
+              city: null,
+            });
+          }
+        },
+        error => {
+          console.log('Geolocation error:', error);
+          reject(error);
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: 10000,
+          forceRequestLocation: true,
+          showLocationDialog: true,
+        },
+      );
+    });
+  } catch (error) {
+    console.error('Error getting current location:', error);
+    return {
+      latitude: null,
+      longitude: null,
+      countryCode: null,
+      countryName: null,
+      city: null,
+    };
   }
 };
 
