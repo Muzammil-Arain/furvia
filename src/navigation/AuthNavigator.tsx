@@ -14,6 +14,7 @@ import PetProfileScreen from 'screens/pet/PetProfile';
 import CompletePetProfile from 'screens/pet/CompletePetProfile';
 import UserType from 'screens/auth/UserType';
 import QuestionScreen from 'screens/provider/questions';
+import PrivacyPolicy from 'screens/common/PrivacyPolicy/PrivacyPolicy';
 
 export const AuthNavigator = () => {
   useBackHandler();
@@ -82,6 +83,10 @@ export const AuthNavigator = () => {
     },
     [SCREENS.COMPLETEPETPROFILE]: {
       component: CompletePetProfile,
+      options: { headerShown: false },
+    },
+    [SCREENS.PRIVACY_POLICY]: {
+      component: PrivacyPolicy,
       options: { headerShown: false },
     },
   };

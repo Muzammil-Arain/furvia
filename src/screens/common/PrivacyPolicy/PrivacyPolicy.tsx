@@ -6,9 +6,9 @@ import { COLORS } from 'utils/colors';
 import { ms, mvs } from 'react-native-size-matters';
 import * as Animatable from 'react-native-animatable';
 
-const TermsAndConditions = ({ navigation }) => {
+const PrivacyPolicy = ({ navigation }) => {
   return (
-    <AppWrapper title='Terms & Conditions'>
+    <AppWrapper title='Privacy Policy'>
       <ScrollView
         style={styles.container}
         contentContainerStyle={{ paddingBottom: ms(100) }}
@@ -16,7 +16,7 @@ const TermsAndConditions = ({ navigation }) => {
       >
         {/* Header */}
         <Animatable.View animation='fadeInDown' duration={700}>
-          <Typography style={styles.heading}>About FURVIA TERMS OF USE</Typography>
+          <Typography style={styles.heading}>FURVIA PRIVACY POLICY</Typography>
           <Typography style={styles.subheading}>
             Welcome to Furvia — where pet care meets convenience.
           </Typography>
@@ -25,84 +25,83 @@ const TermsAndConditions = ({ navigation }) => {
         {/* Body */}
         <Animatable.View animation='fadeInUp' delay={200}>
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>1. About Furvia</Typography>
+            <Typography style={styles.sectionTitle}>1. What We Collect</Typography>
             <Typography style={styles.text}>
-              Furvia is a digital platform connecting pet owners with independent Providers offering
-              grooming, walking, training, and boarding services. Providers are not employees or
-              agents of Furvia. Any agreement or payment is strictly between User and Provider.
+              We collect personal info (name, email, payment), pet details, and device data to
+              deliver and improve our services.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>2. Your Account</Typography>
+            <Typography style={styles.sectionTitle}>2. How We Use It</Typography>
             <Typography style={styles.text}>
-              You agree to provide accurate information, protect your login credentials, and remain
-              responsible for activity under your account. Furvia may suspend or terminate accounts
-              for fraud or misuse.
+              To manage accounts, facilitate bookings, communicate, and ensure safety. Data helps us
+              prevent fraud and improve user experience.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>3. Payments</Typography>
+            <Typography style={styles.sectionTitle}>3. Sharing Your Information</Typography>
             <Typography style={styles.text}>
-              Payments are processed via trusted third-party partners like Stripe. Furvia acts only
-              as a facilitator. All payment obligations exist between Users and Providers.
+              We only share data with Providers, payment partners, and authorities when required by
+              law. We never sell personal data.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>4. Cancellations and Refunds</Typography>
+            <Typography style={styles.sectionTitle}>4. Cookies and Tracking</Typography>
             <Typography style={styles.text}>
-              Each Provider sets their own policies. Check before you book. Furvia may assist with
-              disputes but does not guarantee refunds.
+              We use cookies and analytics for better performance and personalization. You may
+              adjust your browser settings to disable them.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>5. Your Conduct</Typography>
+            <Typography style={styles.sectionTitle}>5. Your Choices</Typography>
             <Typography style={styles.text}>
-              Treat others with respect. Do not harass, discriminate, post false information, or
-              attempt off-platform transactions. Violations may lead to suspension.
+              Access or delete your data, opt out of marketing, or request corrections anytime by
+              contacting privacy@furvia.com.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>6. Platform Limitations</Typography>
+            <Typography style={styles.sectionTitle}>6. Data Security</Typography>
             <Typography style={styles.text}>
-              Furvia is provided 'as is'. We do not guarantee uninterrupted service or quality of
-              Providers. We are not responsible for damages, losses, or injuries.
+              We use encryption and security protocols but cannot guarantee absolute protection. Use
+              the platform responsibly.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>7. Disputes and Legal Stuff</Typography>
+            <Typography style={styles.sectionTitle}>7. Children’s Privacy</Typography>
             <Typography style={styles.text}>
-              Disputes will be resolved by binding arbitration in Clark County, Nevada. You waive
-              rights to a jury trial or class action. Furvia’s liability is limited to the amount
-              paid in the last 12 months.
+              Furvia is not directed to children under 13, and we do not knowingly collect their
+              data.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>8. Termination</Typography>
+            <Typography style={styles.sectionTitle}>8. Changes to This Policy</Typography>
             <Typography style={styles.text}>
-              You may close your account at any time. Furvia may suspend access for misuse or
-              violation of Terms.
+              We may update this Policy to reflect service changes. Updates will appear in-app with
+              revised dates.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>9. Updates</Typography>
+            <Typography style={styles.sectionTitle}>9. Contact Us</Typography>
             <Typography style={styles.text}>
-              We may update these Terms periodically. Continued use means acceptance of the new
-              Terms.
+              For privacy concerns, email privacy@furvia.com or write to Furvia, Inc., Las Vegas, NV
+              89143.
             </Typography>
           </View>
 
           <View style={styles.section}>
-            <Typography style={styles.sectionTitle}>10. Contact Us</Typography>
+            <Typography style={styles.sectionTitle}>App Checkbox Summary</Typography>
             <Typography style={styles.text}>
-              Questions? Email legal@furvia.com or write to Furvia, Inc., Las Vegas, NV 89143.
+              By continuing, you agree that Furvia connects you with independent Providers and that
+              Furvia is not responsible for Provider actions, refunds, or outcomes. You agree to our
+              Terms of Use and Privacy Policy.
             </Typography>
           </View>
         </Animatable.View>
@@ -122,7 +121,7 @@ const TermsAndConditions = ({ navigation }) => {
   );
 };
 
-export default TermsAndConditions;
+export default PrivacyPolicy;
 
 const styles = StyleSheet.create({
   container: {

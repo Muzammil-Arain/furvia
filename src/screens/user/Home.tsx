@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -18,6 +18,7 @@ import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
 import { servicesData } from 'api/data';
 import { PLACEHOLDER_PROFILE_PICTURE } from 'constants/assets';
+import { ThemeContext } from 'theme/ThemeContext';
 
 const pets = [
   {
@@ -66,6 +67,9 @@ const doctors = [
 export const Home = () => {
   const { userDetails } = useAppSelector(state => state?.user);
   console.log('🚀 ~ Home ~ userDetails:', userDetails);
+
+  const { theme } = useContext(ThemeContext);
+  console.log('🚀 ~ Home ~ theme:', theme?.colors?.background);
 
   const [location, setLocation] = useState({});
   console.log('🚀 ~ Home ~ location:', location);
@@ -174,7 +178,14 @@ export const Home = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[
+        styles.safeArea,
+        {
+          backgroundColor: theme?.colors?.background,
+        },
+      ]}
+    >
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContent}
@@ -184,16 +195,25 @@ export const Home = () => {
         <Animated.View
           style={[styles.header, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
         >
-         <TouchableOpacity onPress={() => navigate(SCREENS.EDIT_PROFILE)}>
-           <Image
-            source={{
-              uri: PLACEHOLDER_PROFILE_PICTURE,
-            }}
-            style={styles.avatar}
-          />
-         </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigate(SCREENS.EDIT_PROFILE)}>
+            <Image
+              source={{
+                uri: PLACEHOLDER_PROFILE_PICTURE,
+              }}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
           <View>
-            <Typography style={styles.locationLabel}>Location</Typography>
+            <Typography
+              style={[
+                styles.locationLabel,
+                {
+                  color: theme?.colors?.text,
+                },
+              ]}
+            >
+              Location
+            </Typography>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Icon
                 componentName='FontAwesome5'
@@ -201,7 +221,16 @@ export const Home = () => {
                 color='#2C5EA3'
                 size={15}
               />
-              <Typography style={styles.locationText}>{location?.city || 'California'}, {location?.countryName || 'USA'}</Typography>
+              <Typography
+                style={[
+                  styles.locationText,
+                  {
+                    color: theme?.colors?.text,
+                  },
+                ]}
+              >
+                {location?.city || 'California'}, {location?.countryName || 'USA'}
+              </Typography>
             </View>
           </View>
           <Image
@@ -233,7 +262,9 @@ export const Home = () => {
         {/* Services */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Typography style={styles.sectionTitle}>Our Services</Typography>
+            <Typography style={[styles.sectionTitle,{
+              color:theme?.colors?.text
+            }]}>Our Services</Typography>
             <TouchableOpacity onPress={() => navigate(SCREENS.DashboardScreen)}>
               <Typography style={styles.seeAllView}>See All</Typography>
             </TouchableOpacity>
@@ -280,7 +311,9 @@ export const Home = () => {
           ]}
         >
           <View style={styles.sectionHeader}>
-            <Typography style={styles.sectionTitle}>My Pet</Typography>
+            <Typography style={[styles.sectionTitle,{
+              color:theme?.colors?.text
+            }]}>My Pet</Typography>
             <Typography style={styles.seeAllView}>See All</Typography>
           </View>
           <FlatList
@@ -301,7 +334,9 @@ export const Home = () => {
               style={styles.bottomImage}
             />
             <View style={styles.bottomContent}>
-              <Typography style={styles.bottomTitle}>Pet Care Boarding</Typography>
+              <Typography style={[styles.bottomTitle,{
+                color:theme?.colors?.text
+              }]}>Pet Care Boarding</Typography>
               <Typography style={styles.bottomSubtitle}>
                 We offer long-term and short-term boarding
               </Typography>
@@ -327,7 +362,9 @@ export const Home = () => {
           ]}
         >
           <View style={styles.sectionHeader}>
-            <Typography style={styles.sectionTitle}>Emergency Advisor</Typography>
+            <Typography style={[styles.sectionTitle,{
+              color:theme?.colors?.text
+            }]}>Emergency Advisor</Typography>
             <Typography style={styles.seeAllView}>See All</Typography>
           </View>
           <FlatList

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { AppWrapper } from 'components/common/AppWapper';
 import { Icon, Typography } from 'components/index';
@@ -7,6 +7,7 @@ import { ms } from 'react-native-size-matters';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { navigate } from 'navigation/index';
 import { SCREENS } from 'constants/routes';
+import { ThemeContext } from 'theme/ThemeContext';
 
 // Dummy Data
 const servicesData = [
@@ -21,6 +22,9 @@ const servicesData = [
 ];
 
 const Services = () => {
+  const { theme } = useContext(ThemeContext);
+  console.log('🚀 ~ Home ~ theme:', theme?.colors?.background);
+
   const renderService = ({ item, index }: { item: any; index: number }) => (
     <TouchableOpacity
       onPress={() => {
@@ -38,7 +42,9 @@ const Services = () => {
         <View style={styles.iconWrapper}>
           <Image source={item.icon} resizeMode='contain' style={styles.serviceIcon} />
         </View>
-        <Typography style={styles.serviceText}>{item.title}</Typography>
+        <Typography style={[styles.serviceText,{
+          color:theme.colors.text
+        }]}>{item.title}</Typography>
       </Animated.View>
     </TouchableOpacity>
   );
@@ -74,7 +80,16 @@ const Services = () => {
 
   return (
     <AppWrapper title='Services'>
-      <Typography style={styles.headerTitle}>Explore Services</Typography>
+      <Typography
+        style={[
+          styles.headerTitle,
+          {
+            color: theme?.colors?.text,
+          },
+        ]}
+      >
+        Explore Services
+      </Typography>
       <FlatList
         data={servicesData}
         numColumns={4}

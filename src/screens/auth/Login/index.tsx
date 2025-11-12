@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { ms } from 'react-native-size-matters';
 import { Button, Typography, Wrapper } from '../../../components';
@@ -15,8 +15,8 @@ import { VARIABLES } from 'constants/common';
 import store from 'store/store';
 import { setIsUserLoggedIn, setUserRole } from 'store/slices/appSettings';
 import { setUserDetails } from 'store/slices/user';
-import { saveUserSession } from './helper';
 import { showToast } from 'utils/toast';
+import { getCurrentLocation, reverseGeocode } from 'utils/location';
 
 type TabType = 'login' | 'signup';
 
@@ -35,10 +35,17 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
 
+  const [address, setAddress] = useState('');
+  const [coords, setCoords] = useState<{ lat: number; long: number } | null>(null);
+
   // Validation regex
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const nameRegex = /^[a-zA-Z\s]{3,}$/;
+
+  useEffect(() => {
+    getUserCurrentLocation();
+  }, []);
 
   const handleChange = useCallback((field: keyof typeof form, value: string) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -102,7 +109,6 @@ const Login: React.FC = () => {
       const response = await loginUser(payload);
 
       const user = response?.data?.user;
-      console.log("🚀 ~ handleLogin ~ user:", user)
       const token = response?.data?.access_token;
 
       if (!user || !token) {
@@ -118,18 +124,18 @@ const Login: React.FC = () => {
       if (isUser) {
         if (!hasLocation) {
           navigate(SCREENS.MAPLOCATIONSCREEN);
-        } 
+        }
         // else if (!hasPetProfile) {
         //   navigate(SCREENS.CREATEPETPROFILE);
-        // } 
+        // }
         else {
           setItem(VARIABLES.IS_USER_LOGGED_IN, VARIABLES.IS_USER_LOGGED_IN),
             store.dispatch(setIsUserLoggedIn(true));
           reset(SCREENS.BOTTOM_STACK);
         }
-        setItem(VARIABLES.USER_TOKEN, token),
-        setItem(VARIABLES.USER_DATA, user),
-        store.dispatch(setUserRole(isUser ? 'user' : 'provider'));
+          setItem(VARIABLES.USER_TOKEN, token),
+          setItem(VARIABLES.USER_DATA, user),
+          store.dispatch(setUserRole(isUser ? 'user' : 'provider'));
         store.dispatch(setUserDetails(user));
       } else {
         // 🔹 Save user/session data
@@ -152,6 +158,23 @@ const Login: React.FC = () => {
     }
   };
 
+  // Step 1: Get User Location
+  const getUserCurrentLocation = async () => {
+    try {
+      const position = await getCurrentLocation();
+      if (!position) throw new Error('Unable to fetch location');
+
+      const { latitude, longitude } = position.coords;
+      const response = await reverseGeocode({ latitude, longitude });
+
+      setCoords({ lat: latitude, long: longitude });
+      setAddress(response?.fullAddress || '');
+    } catch (error) {
+      console.error('Error getting location:', error);
+    } finally {
+    }
+  };
+
   /* 🔹 Handle Signup */
   const handleSignup = async () => {
     if (validateSignup()) {
@@ -162,6 +185,7 @@ const Login: React.FC = () => {
         type: role,
         confirm_password: form.confirm_password,
         phone: phoneRef.current?.getValue?.() || '',
+        location: address ?? 'abc',
       };
       console.log('🚀 ~ handleSignup ~ payload:', payload);
 

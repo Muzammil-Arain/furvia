@@ -6,13 +6,12 @@ import store from 'store/store';
 import { ThemeProvider } from 'theme/ThemeContext';
 
 const App = () => {
-  // useFirebaseMessaging();
+  useFirebaseMessaging();
   return (
     <ThemeProvider>
       <SafeAreaProvider>
         <Provider store={store}>
           <MainNavigation />
-          {/* <MenuScreen /> */}
         </Provider>
       </SafeAreaProvider>
     </ThemeProvider>

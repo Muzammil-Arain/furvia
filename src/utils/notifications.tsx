@@ -117,8 +117,10 @@ async function requestNotificationPermission() {
 export const getFCMToken = async () => {
   try {
     const token = await messaging().getToken();
+    console.log("🚀 ~ getFCMToken ~ token:", token)
     return token;
   } catch (e) {
+    console.log("🚀 ~ getFCMToken ~ e:", e)
     console.log(e);
     return '';
   }

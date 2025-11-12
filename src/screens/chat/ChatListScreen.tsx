@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import {
   View,
   FlatList,
@@ -22,6 +22,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { useAppSelector } from 'types/reduxTypes';
+import { createOrGetChatRoom, listenToUserChats } from 'utils/hlpers/chatUtils';
 
 interface ChatItem {
   id: string;
@@ -147,13 +148,29 @@ const AnimatedChatCard = memo(({ item, index }: { item: ChatItem; index: number 
 
 const ChatListScreen = () => {
   const role = useAppSelector(state => state.app.userRole);
-  // const role = 'user'; // for testing
+  const { userDetails } = useAppSelector(state => state.user);
+  const [chats, setChats] = useState<ChatItem[]>([]);
+  console.log('🚀 ~ ChatListScreen ~ chats:', chats);
 
   // ✅ Only show group chats if role == 'user'
-  const filteredChatData = chatData.filter(item => (role === 'user' ? true : !item.isGroup));
+  const filteredChatData = chatData.filter(item => (role == 'user' ? true : !item.isGroup));
+
+  useEffect(() => {
+    createRoom();
+    if (!userDetails?.id) return;
+
+    // 👇 Real-time listener for user’s chatrooms
+    const unsubscribe = listenToUserChats(userDetails.id, setChats);
+    return () => unsubscribe();
+  }, [userDetails?.id]);
+
+  const createRoom = async () => {
+    await createOrGetChatRoom(userDetails?.id, 11);
+    console.log('🚀 ~ createRoom ~ chatId:', chatId);
+  };
 
   const renderEndIcon = () =>
-    role === 'user' ? (
+    role == 'user' ? (
       <TouchableOpacity
         style={styles.iconButton}
         onPress={() => navigate(SCREENS.CreateGroupScreen)}

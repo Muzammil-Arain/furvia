@@ -1,46 +1,82 @@
-// src/context/ThemeContext.js
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState, useMemo, useContext } from 'react';
 import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Darktheme } from './DarkTheme';
-import { DarkTheme, LightTheme } from './CommonTheme';
+import { LightTheme } from '../theme/LightTheme';
+import { Darktheme } from '../theme/DarkTheme';
 
-export const ThemeContext = createContext();
+export type ThemeType = typeof LightTheme | typeof Darktheme;
 
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(LightTheme);
+interface ThemeContextProps {
+  theme: ThemeType;
+  toggleTheme: () => Promise<void>;
+  isDarkMode: boolean;
+  isThemeLoaded: boolean;
+}
 
+export const ThemeContext = createContext<ThemeContextProps>({
+  theme: LightTheme,
+  toggleTheme: async () => {},
+  isDarkMode: false,
+  isThemeLoaded: false,
+});
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [theme, setTheme] = useState<ThemeType>(LightTheme);
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
+
+  // Load theme from storage or system
   useEffect(() => {
     const loadTheme = async () => {
-      const savedTheme = await AsyncStorage.getItem('appTheme');
-      if (savedTheme) {
-        setTheme(savedTheme === 'dark' ? Darktheme : LightTheme);
-      } else {
-        // Auto-detect system preference if not saved
-        const colorScheme = Appearance.getColorScheme();
-        setTheme(colorScheme === 'dark' ? DarkTheme : LightTheme);
+      try {
+        const storedTheme = await AsyncStorage.getItem('theme');
+        let isDark = false;
+
+        if (storedTheme === 'dark') {
+          isDark = true;
+        } else if (storedTheme === 'light') {
+          isDark = false;
+        } else {
+          // If nothing stored, follow system theme
+          const colorScheme = Appearance.getColorScheme();
+          isDark = colorScheme === 'dark';
+        }
+
+        setIsDarkMode(isDark);
+        setTheme(isDark ? Darktheme : LightTheme);
+      } catch (error) {
+        console.log('Error loading theme:', error);
+        setTheme(LightTheme);
+      } finally {
+        setIsThemeLoaded(true);
       }
     };
 
     loadTheme();
+  }, []);
 
-    // Listen for system theme changes
-    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-      setTheme(colorScheme === 'dark' ? DarkTheme : LightTheme);
+  // Optional: react to system changes
+  useEffect(() => {
+    const listener = Appearance.addChangeListener(({ colorScheme }) => {
+      setIsDarkMode(colorScheme === 'dark');
+      setTheme(colorScheme === 'dark' ? Darktheme : LightTheme);
     });
-
-    return () => subscription.remove();
+    return () => listener.remove();
   }, []);
 
   const toggleTheme = async () => {
-    const newTheme = theme.mode === 'light' ? DarkTheme : LightTheme;
-    setTheme(newTheme);
-    await AsyncStorage.setItem('appTheme', newTheme.mode);
+    const newIsDark = !isDarkMode;
+    setIsDarkMode(newIsDark);
+    setTheme(newIsDark ? Darktheme : LightTheme);
+    await AsyncStorage.setItem('theme', newIsDark ? 'dark' : 'light');
   };
 
+  const value = useMemo(
+    () => ({ theme, toggleTheme, isDarkMode, isThemeLoaded }),
+    [theme, isDarkMode, isThemeLoaded],
+  );
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{isThemeLoaded ? children : null}</ThemeContext.Provider>
   );
 };

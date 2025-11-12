@@ -1,6 +1,5 @@
 import { API_ROUTES } from 'api/routes';
 import { getRequest, postRequest } from 'utils/index';
-import { showToast } from 'utils/toast';
 import moment from 'moment';
 
 export const addPet = async (payload: {

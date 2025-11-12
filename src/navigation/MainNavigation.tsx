@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import { Splash } from 'screens/index';
 import { OfflineBanner } from 'components/index';
+import { theme } from 'theme/CommonTheme';
 
 const MainNavigation = () => {
   const { isUserLoggedIn, isLoading } = useUserLoginStatus();
@@ -12,7 +13,7 @@ const MainNavigation = () => {
   }
 
   return (
-    <NavigationContainer  ref={navigationRef}>
+    <NavigationContainer theme={theme} ref={navigationRef}>
       {isUserLoggedIn ? <AppNavigator /> : <AuthNavigator />}
       <Toast />
       <OfflineBanner />

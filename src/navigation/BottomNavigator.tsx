@@ -17,6 +17,10 @@ import ProfileScreen from 'screens/provider/ProfileScreen';
 import AllAppointmentsScreen from 'screens/provider/AllAppointmentsScreen';
 import WalletScreens from 'screens/provider/WalletScreens';
 import { useAppSelector } from 'types/reduxTypes';
+import { useContext } from 'react';
+import { ThemeContext } from 'theme/ThemeContext';
+import FloatingWotNot from 'components/common/FloatingWotNot';
+import { navigate } from '.';
 
 const screens = {
   [SCREENS.HOME]: Home,
@@ -66,52 +70,57 @@ export const BottomNavigator = () => {
   const role = useAppSelector(state => state.app.userRole);
   const isProvider = role == 'provider';
 
+  const { theme } = useContext(ThemeContext);
+
   const renderedPages = isProvider ? Object.entries(ProviderScreens) : Object.entries(screens);
 
   return (
-    <Bottom.Navigator
-      screenOptions={({ route }) => {
-        const icon = getIconConfig(route.name);
-        return {
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: COLORS.WHITE,
-            height: screenHeight(isIOS() ? 10 : 10) + insets.bottom,
-            borderTopLeftRadius: 15,
-            borderTopRightRadius: 15,
-            paddingTop: 18,
-          },
-          tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.iconContainer,
-                {
-                  padding: 18,
-                  borderRadius: 12,
-                  backgroundColor: focused ? '#E9FEFF' : COLORS.WHITE,
-                  elevation: 5,
-                  shadowColor: focused ? '#ccc' : '#fff',
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                },
-              ]}
-            >
-              <Image
-                source={icon}
-                style={[styles.iconImage, { tintColor: focused ? '#008081' : COLORS.BORDER }]}
-                resizeMode='contain'
-              />
-            </View>
-          ),
-          tabBarLabel: ({ focused }) => focused && <></>,
-          tabBarHideOnKeyboard: true,
-        };
-      }}
-    >
-      {renderedPages.map(([screenName, component]) => (
-        <Bottom.Screen key={screenName} name={screenName} component={component} />
-      ))}
-    </Bottom.Navigator>
+    <>
+      <Bottom.Navigator
+        screenOptions={({ route }) => {
+          const icon = getIconConfig(route.name);
+          return {
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: theme?.colors?.background,
+              height: screenHeight(isIOS() ? 10 : 10) + insets.bottom,
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              paddingTop: 18,
+            },
+            tabBarIcon: ({ focused }) => (
+              <View
+                style={[
+                  styles.iconContainer,
+                  {
+                    padding: 18,
+                    borderRadius: 12,
+                    backgroundColor: focused ? '#E9FEFF' : theme?.colors?.background,
+                    elevation: 5,
+                    shadowColor: focused ? '#ccc' : theme?.colors?.background,
+                    shadowOffset: { width: 0, height: 1 },
+                    shadowOpacity: 0.8,
+                  },
+                ]}
+              >
+                <Image
+                  source={icon}
+                  style={[styles.iconImage, { tintColor: focused ? '#008081' : COLORS.BORDER }]}
+                  resizeMode='contain'
+                />
+              </View>
+            ),
+            tabBarLabel: ({ focused }) => focused && <></>,
+            tabBarHideOnKeyboard: true,
+          };
+        }}
+      >
+        {renderedPages.map(([screenName, component]) => (
+          <Bottom.Screen key={screenName} name={screenName} component={component} />
+        ))}
+      </Bottom.Navigator>
+      <FloatingWotNot onPress={() => navigate(SCREENS.DASHBOARD)} />
+    </>
   );
 };
 

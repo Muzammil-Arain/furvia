@@ -12,6 +12,17 @@ export const API_ROUTES = {
   ADD_PET: 'add-pet',
   GET_PETS: 'get-pets',
 
+  //PROVIDERS
+  SAVED_EXPERIENCES: 'experiences/save',
+  SAVED_SKILLS: 'skills/save',
+  SAVED_CERTIFICATION: 'certification/save',
+  SAVED_EDUCTION: 'educations/save',
+  SAVED_LICENSES: 'licenses',
+
+  //PROFILE
+  GET_USER: 'user?query=1',
+  UPDATE_PROFILE: 'update-profile',
+
   LOGOUT: 'signup',
   SOCIAL_LOGIN: 'user/social-login',
   APP_INFO: 'info',
@@ -26,7 +37,6 @@ export const API_ROUTES = {
   SEND_OTP: 'auth/otp/send',
   LOGOUT_ALL: 'auth/logout/all',
   EMAIL_UNSUBSCRIBE: 'auth/email/unsubscribe',
-  UPDATE_PROFILE: 'user/update',
   UPLOAD_PROFILE_PICTURE: 'user/profile/picture/upload',
   DELETE_PROFILE_PICTURE: 'user/profile/picture/delete',
   UPDATE_CONTACT_INFO: 'user/profile/contact',

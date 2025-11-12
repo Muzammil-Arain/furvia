@@ -4,7 +4,8 @@ import { COLORS } from 'utils/colors';
 import { StyleProp } from 'react-native';
 import { FONT_FAMILY } from 'constants/assets/fonts';
 import { useTranslation } from 'hooks/index';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
+import { ThemeContext } from 'theme/ThemeContext';
 
 interface Props extends TextProps {
   children: ReactNode; // ✅ allow string, number, JSX

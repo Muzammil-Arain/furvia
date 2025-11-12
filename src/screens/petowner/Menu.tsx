@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -23,6 +23,7 @@ import { useAppDispatch } from 'types/reduxTypes';
 import { setIsUserLoggedIn } from 'store/slices/appSettings';
 import { setUserDetails } from 'store/slices/user';
 import { clearAllStorageItems } from 'utils/storage';
+import { ThemeContext } from 'theme/ThemeContext';
 
 const menuItems = [
   {
@@ -73,8 +74,14 @@ const menuItems = [
     icon: require('../../assets/images/common/menu_policy.png'),
     navigate: SCREENS.TermsAndConditions,
   },
-  {
+   {
     id: '9',
+    label: 'Privacy Policy',
+    icon: require('../../assets/images/common/menu_policy.png'),
+    navigate: SCREENS.PRIVACY_POLICY,
+  },
+  {
+    id: '10',
     label: 'Logout',
     icon: require('../../assets/images/common/menu_policy.png'),
     action: 'logout',
@@ -83,25 +90,10 @@ const menuItems = [
 
 const MenuScreen = () => {
   const dispatch = useAppDispatch();
-  const [darkmode, setDarkMode] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
   const [scaleAnim] = useState(new Animated.Value(0.8));
   const [fadeAnim] = useState(new Animated.Value(0));
-
-  useEffect(() => {
-    const loadTheme = async () => {
-      const savedTheme = await AsyncStorage.getItem('appTheme');
-      const isDark = savedTheme ? savedTheme === 'dark' : Appearance.getColorScheme() === 'dark';
-      setDarkMode(isDark);
-    };
-    loadTheme();
-  }, []);
-
-  const toggleTheme = async () => {
-    const newIsDark = !darkmode;
-    setDarkMode(newIsDark);
-    await AsyncStorage.setItem('appTheme', newIsDark ? 'dark' : 'light');
-  };
+  const { theme, isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const openLogoutModal = () => {
     setLogoutModalVisible(true);
@@ -138,7 +130,16 @@ const MenuScreen = () => {
     >
       <View style={styles.menuLeft}>
         <Image source={item.icon} resizeMode='contain' style={styles.menuIcon} />
-        <Typography style={styles.menuLabel}>{item.label}</Typography>
+        <Typography
+          style={[
+            styles.menuLabel,
+            {
+              color: theme.colors.text,
+            },
+          ]}
+        >
+          {item.label}
+        </Typography>
       </View>
       <Icon componentName='Feather' iconName='chevron-right' size={18} color={COLORS.GRAY} />
     </TouchableOpacity>
@@ -185,8 +186,12 @@ const MenuScreen = () => {
             resizeMode='contain'
             style={styles.menuIcon}
           />
-          <Typography style={styles.darkModeText}>Dark Mode</Typography>
-          <CustomToggle value={darkmode} onValueChange={toggleTheme} />
+          <Typography style={[styles.darkModeText,{
+            color:theme.colors.text,
+          }]}>Dark Mode</Typography>
+          <CustomToggle value={isDarkMode} onValueChange={()=>{}} />
+          
+          {/* <CustomToggle value={isDarkMode} onValueChange={toggleTheme} /> */}
         </View>
 
         {/* Menu List */}

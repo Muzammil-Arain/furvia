@@ -22,7 +22,6 @@ import {
 import { BottomNavigator } from './BottomNavigator';
 import { useBackHandler, useTranslation } from 'hooks/index';
 import { screenOptions } from '.';
-import { PrivacyPolicy } from 'screens/common';
 import DashboardScreen from 'screens/provider/DashboardScreen';
 import services from 'screens/petowner/services';
 import TrainersScreen from 'screens/petowner/Trainer';
@@ -67,6 +66,7 @@ import NavigationScreen from 'screens/provider/NavigationScreen';
 import SetupProfileScreen from 'screens/provider/SetupProfile/SetupProfileScreen';
 import ParkInfoScreen from 'screens/community/ParkInfoScreen';
 import ParksScreen from 'screens/community/Parks';
+import PrivacyPolicy from 'screens/common/PrivacyPolicy/PrivacyPolicy';
 
 export const AppNavigator = () => {
   useBackHandler();
@@ -213,10 +213,6 @@ export const AppNavigator = () => {
       options: { headerShown: true, headerTitle: 'My Profile' },
     },
 
-    [SCREENS.PRIVACY_POLICY]: {
-      component: PrivacyPolicy,
-      options: { headerShown: true, headerTitle: t(COMMON_TEXT.PRIVACY_POLICY) },
-    },
     // [SCREENS.TERMS_AND_CONDITIONS]: {
     //   component: EditProfile,
     //   options: { headerShown: true, headerTitle: t(COMMON_TEXT.TERMS_AND_CONDITIONS) },
@@ -345,6 +341,10 @@ export const AppNavigator = () => {
     },
     [SCREENS.NotificationScreen]: {
       component: NotificationScreen,
+      options: { headerShown: false },
+    },
+    [SCREENS.PRIVACY_POLICY]: {
+      component: PrivacyPolicy,
       options: { headerShown: false },
     },
   };

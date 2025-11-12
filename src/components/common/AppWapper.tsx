@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -16,6 +16,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ms } from 'react-native-size-matters';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { onBack } from 'navigation/index';
+import { ThemeContext } from 'theme/ThemeContext';
 
 interface WrapperProps {
   children: React.ReactNode;
@@ -37,8 +38,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   children,
   useSafeArea = true,
   useScrollView = true,
-  backgroundColor = COLORS.WHITE,
-  darkMode = false,
+  backgroundColor,
   showAppLoader = false,
   goBack = true,
   title,
@@ -47,6 +47,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   Header = true,
   onRightPress,
 }) => {
+  const { theme, isDarkMode } = useContext(ThemeContext);
   const isAppLoading = useAppSelector((state: RootState) => state.app.isAppLoading);
   const insets = useSafeAreaInsets();
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -63,7 +64,13 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   const Content = (
     <KeyboardAvoidingView
       behavior={isIOS() ? 'padding' : isKeyboardVisible ? 'height' : undefined}
-      style={[styles.flex, { paddingBottom: insets.bottom, backgroundColor }]}
+      style={[
+        styles.flex,
+        {
+          paddingBottom: insets.bottom,
+          backgroundColor: backgroundColor || theme.colors.background,
+        },
+      ]}
     >
       {useScrollView ? (
         <ScrollView
@@ -80,24 +87,34 @@ export const AppWrapper: React.FC<WrapperProps> = ({
   );
 
   return (
-    <>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}
+    >
+      {/* ✅ SafeArea top color */}
       {useSafeArea && (
         <SafeAreaView
           edges={['top']}
-          style={[styles.safeArea, { backgroundColor: COLORS.HEADER_BACKGROUND }]}
+          style={[styles.safeArea, { backgroundColor: theme.colors.HEADER_BACKGROUND }]}
         />
       )}
 
+      {/* ✅ StatusBar color and style */}
       <StatusBar
-        backgroundColor={COLORS.HEADER_BACKGROUND}
-        barStyle={darkMode ? 'light-content' : 'light-content'}
+        backgroundColor={theme.colors.HEADER_BACKGROUND}
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
       />
 
       {(loading || (showAppLoader && isAppLoading)) && <Loader />}
 
-      {/* ✅ Cool Animated Header */}
+      {/* ✅ Header */}
       {Header && (
-        <Animated.View entering={FadeInDown.duration(500)} style={styles.headerContainer}>
+        <Animated.View
+          entering={FadeInDown.duration(500)}
+          style={[styles.headerContainer, { backgroundColor: theme.colors.HEADER_BACKGROUND }]}
+        >
           <View style={styles.headerRow}>
             {/* Left: Back Button */}
             {goBack ? (
@@ -106,6 +123,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
                   componentName='Ionicons'
                   iconName='arrow-back'
                   color={COLORS.WHITE}
+                  // color={theme.colors.text}
                   size={22}
                 />
               </TouchableOpacity>
@@ -115,20 +133,23 @@ export const AppWrapper: React.FC<WrapperProps> = ({
 
             {/* Center: Title */}
             <View style={styles.titleContainer}>
-              <Typography style={styles.headerTitle} numberOfLines={1}>
+              <Typography
+                style={[styles.headerTitle, { color: theme.colors.background }]}
+                numberOfLines={1}
+              >
                 {title}
               </Typography>
             </View>
 
-            {/* Right: Either Custom Icon or End Icon */}
+            {/* Right: Custom Icon or End Icon */}
             <View style={styles.rightContainer}>
               {onEndIcon ? (
                 onEndIcon()
               ) : onRightPress ? (
-                <TouchableOpacity style={{}} onPress={onRightPress}>
+                <TouchableOpacity onPress={onRightPress}>
                   <Image
                     source={require('../../assets/images/common/plus.png')}
-                    style={styles.plusIcon}
+                    style={[styles.plusIcon, { tintColor: theme.colors.text }]}
                   />
                 </TouchableOpacity>
               ) : (
@@ -140,7 +161,7 @@ export const AppWrapper: React.FC<WrapperProps> = ({
       )}
 
       {Content}
-    </>
+    </View>
   );
 };
 
@@ -160,7 +181,6 @@ const styles = StyleSheet.create({
     padding: ms(16),
   },
   headerContainer: {
-    backgroundColor: COLORS.HEADER_BACKGROUND,
     paddingVertical: ms(24),
     paddingHorizontal: ms(16),
     borderBottomLeftRadius: ms(20),
@@ -193,7 +213,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: ms(18),
     fontWeight: '600',
-    color: COLORS.WHITE,
     textAlign: 'center',
   },
 });
